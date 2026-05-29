@@ -94,6 +94,36 @@ class MusicSearchService
 
   private
 
+  def parse_track_result(result)
+    return nil unless result["trackId"] && result["collectionId"]
+
+    year = begin
+      Date.parse(result["releaseDate"]).year
+    rescue StandardError
+      nil
+    end
+
+    total_ms = result["trackTimeMillis"].to_i
+    duration = if total_ms.positive?
+      total_s = total_ms / 1000
+      format("%d:%02d", total_s / 60, total_s % 60)
+    end
+
+    {
+      itunes_track_id: result["trackId"].to_s,
+      itunes_album_id: result["collectionId"].to_s,
+      title:           result["trackName"],
+      artist:          result["artistName"],
+      album_title:     result["collectionName"],
+      duration_ms:     total_ms,
+      duration:        duration,
+      position:        result["trackNumber"].to_i,
+      cover_url:       result["artworkUrl100"]&.gsub("100x100bb", "60x60bb"),
+      release_year:    year,
+      is_single:       result["collectionType"] == "Single"
+    }
+  end
+
   def parse_album_result(result)
     return nil unless result["collectionId"]
 
