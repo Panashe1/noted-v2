@@ -29,7 +29,14 @@
       "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle exec rails routes)",
       "mcp__Claude_in_Chrome__list_connected_browsers",
       "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle exec rails runner 'puts \"OK\"')",
-      "Bash(/Users/panashemugayapi/.rbenv/shims/rails routes *)"
+      "Bash(/Users/panashemugayapi/.rbenv/shims/rails routes *)",
+      "Read(//Users/panashemugayapi/**)",
+      "Bash(git config *)",
+      "Bash(ssh -T git@github.com)",
+      "Bash(security find-internet-password *)",
+      "Bash(ssh-keyscan github.com)",
+      "Bash(git remote *)",
+      "Bash(git push *)"
     ]
   }
 }
