@@ -1,0 +1,60 @@
+<% content_for :title, "Edit log — #{@track.title} — Soundlog" %>
+
+<div class="h-40 bg-gradient-to-b from-zinc-800 to-zinc-950 px-8 pt-8 flex flex-col justify-end pb-4">
+  <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1">Editing track log</p>
+  <h1 class="text-2xl font-bold truncate"><%= @track.album.artist %> — <%= @track.title %></h1>
+  <p class="text-sm text-zinc-400 mt-0.5"><%= @track.album.title %></p>
+</div>
+
+<div class="px-8 py-8 max-w-lg">
+  <%= form_with model: @track_log, class: "space-y-5" do |f| %>
+
+    <%# Rating (optional) %>
+    <div>
+      <label class="block text-xs uppercase tracking-widest text-zinc-500 mb-3">
+        Rating <span class="normal-case text-zinc-600">(optional)</span>
+      </label>
+      <div class="flex gap-1.5">
+        <% (1..10).each do |i| %>
+          <label class="rating-option cursor-pointer">
+            <%= f.radio_button :rating, i, class: "sr-only" %>
+            <span class="flex items-center justify-center w-9 h-9 rounded-full text-sm font-bold text-zinc-400 hover:bg-white/10 transition-colors select-none <%= @track_log.rating == i ? 'bg-sp-green !text-black' : '' %>">
+              <%= i %>
+            </span>
+          </label>
+        <% end %>
+        <%# Clear rating option %>
+        <label class="cursor-pointer flex items-center ml-1">
+          <%= f.radio_button :rating, "", class: "sr-only" %>
+          <span class="text-xs text-zinc-500 hover:text-white transition-colors">clear</span>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :listened_on, "Date listened", class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
+      <%= f.date_field :listened_on, required: true,
+            class: "w-full bg-sp-muted rounded-lg px-4 py-3 text-sm text-zinc-300 focus:outline-none focus:ring-1 focus:ring-white/30 transition" %>
+    </div>
+
+    <div>
+      <%= f.label :review, "Review", class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
+      <%= f.text_area :review, rows: 5,
+            placeholder: "What did you think? (optional)",
+            class: "w-full bg-sp-muted rounded-lg px-4 py-3 text-sm placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition resize-none" %>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <%= f.check_box :is_relisten, class: "w-4 h-4 rounded accent-sp-green cursor-pointer" %>
+      <%= f.label :is_relisten, "This is a relisten", class: "text-sm text-zinc-400 cursor-pointer" %>
+    </div>
+
+    <div class="flex items-center gap-4 pt-2">
+      <%= f.submit "Save changes",
+            class: "bg-white text-black font-bold text-sm px-6 py-3 rounded-full hover:scale-105 transition-transform cursor-pointer" %>
+      <%= link_to "Cancel", track_path(@track),
+            class: "text-zinc-400 hover:text-white text-sm transition-colors" %>
+    </div>
+
+  <% end %>
+</div>

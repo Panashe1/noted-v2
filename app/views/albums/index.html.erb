@@ -1,0 +1,48 @@
+<% content_for :title, "Albums — Soundlog" %>
+
+<div class="h-56 bg-gradient-to-b from-blue-900 via-zinc-950/80 to-zinc-950 px-8 pt-10 flex flex-col justify-end pb-6">
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Browse</p>
+  <h1 class="text-4xl font-extrabold text-white">All Albums</h1>
+  <p class="text-zinc-400 text-sm mt-1"><%= @albums.total_count rescue @albums.count %> albums logged by the community</p>
+</div>
+
+<div class="px-8 py-8">
+  <% if @albums.any? %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+      <% @albums.each do |album| %>
+        <%= link_to album_path(album), class: "group bg-sp-surface hover:bg-sp-raised rounded-lg p-4 transition-all cursor-pointer block" do %>
+          <div class="aspect-square rounded-md mb-4 shadow-md group-hover:shadow-lg transition-shadow overflow-hidden">
+            <% if album.cover_url(size: 300).present? %>
+              <img src="<%= album.cover_url(size: 300) %>"
+                   alt="<%= album.title %>"
+                   class="w-full h-full object-cover" />
+            <% else %>
+              <div class="w-full h-full bg-gradient-to-br <%= album_gradient(album) %> to-zinc-900 flex items-center justify-center">
+                <svg class="w-14 h-14 text-white/20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+              </div>
+            <% end %>
+          </div>
+          <p class="font-semibold text-sm text-white truncate"><%= album.title %></p>
+          <p class="text-xs text-zinc-400 truncate mt-0.5"><%= album.artist %></p>
+          <div class="flex items-center gap-2 mt-2">
+            <% if album.average_rating %>
+              <span class="text-xs font-bold <%= rating_color(album.average_rating) %>"><%= album.average_rating %>/10</span>
+              <span class="text-zinc-700 text-xs">·</span>
+            <% end %>
+            <span class="text-xs text-zinc-500"><%= album.log_count %> <%= album.log_count == 1 ? "log" : "logs" %></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="mt-10 flex justify-center">
+      <%= paginate @albums %>
+    </div>
+  <% else %>
+    <div class="text-center py-24">
+      <div class="text-6xl mb-4">📀</div>
+      <p class="text-xl font-bold mb-2">No albums yet</p>
+      <p class="text-zinc-400 text-sm">Be the first to log one.</p>
+    </div>
+  <% end %>
+</div>

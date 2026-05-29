@@ -1,0 +1,79 @@
+class UsersController < ApplicationController
+  before_action :authenticate_user!, only: [:home, :search]
+
+  # Root redirect — sends signed-in users to their own profile
+  def home
+    redirect_to user_path(current_user.username)
+  end
+
+  private
+
+  # Preloads current_user's follow relationships into two Sets so the
+  # follow-list partial can determine button state in O(1) without extra queries.
+  def prep_follow_sets
+    if user_signed_in?
+      @my_following_ids = current_user.following.pluck(:id).to_set
+      @my_follower_ids  = current_user.followers.pluck(:id).to_set
+    else
+      @my_following_ids = Set.new
+      @my_follower_ids  = Set.new
+    end
+  end
+
+  public
+
+  def search
+    @query = params[:q].to_s.strip
+
+    @results = if @query.length >= 2
+      User.where("username ILIKE ?", "%#{@query}%")
+          .where.not(id: current_user.id)
+          .order(:username)
+          .limit(20)
+    else
+      User.none
+    end
+
+    # For Turbo Frame requests just render the results partial
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render partial: "users/search_results", locals: { results: @results, query: @query } }
+    end
+  end
+
+  # GET /u/:username/following  (no layout — injected into modal)
+  def following
+    @user = User.find_by!(username: params[:username])
+    @list = @user.following.order(:username)
+    prep_follow_sets
+    render layout: false
+  end
+
+  # GET /u/:username/followers  (no layout — injected into modal)
+  def followers
+    @user = User.find_by!(username: params[:username])
+    @list = @user.followers.order(:username)
+    prep_follow_sets
+    render layout: false
+  end
+
+  def show
+    @user = User.find_by!(username: params[:username])
+
+    # Common data
+    @logs         = @user.listen_logs.includes(:album).order(listened_on: :desc)
+    @track_logs   = @user.track_logs.includes(track: :album).order(listened_on: :desc)
+    @is_following = current_user&.following&.include?(@user) || false
+
+    # Extra data only loaded when viewing your own profile
+    if user_signed_in? && @user == current_user
+      @own_profile     = true
+      @recent_logs     = @logs.first(10)
+      @following_logs  = ListenLog.includes(:user, :album)
+                                  .where(user: current_user.following)
+                                  .order(created_at: :desc)
+                                  .limit(20)
+      @taste_profile   = current_user.ai_taste_profile
+    end
+  end
+end

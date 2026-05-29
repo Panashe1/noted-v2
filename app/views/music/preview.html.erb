@@ -1,0 +1,49 @@
+<%# Rendered without layout — injected into the modal preview area %>
+
+<div class="flex gap-4 mb-5">
+  <% if @album_data[:cover_url].present? %>
+    <img src="<%= @album_data[:cover_url] %>"
+         alt="<%= @album_data[:title] %>"
+         class="w-24 h-24 rounded-lg object-cover shadow-xl shrink-0" />
+  <% else %>
+    <div class="w-24 h-24 rounded-lg bg-sp-muted shrink-0 flex items-center justify-center">
+      <svg class="w-10 h-10 text-zinc-600" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
+      </svg>
+    </div>
+  <% end %>
+  <div class="flex-1 min-w-0 pt-1">
+    <p class="text-xs uppercase tracking-widest text-zinc-500 mb-0.5">Album</p>
+    <h3 class="text-xl font-extrabold text-white leading-tight truncate"><%= @album_data[:title] %></h3>
+    <p class="text-sm text-zinc-300 mt-0.5"><%= @album_data[:artist] %></p>
+    <p class="text-xs text-zinc-500 mt-1">
+      <% if @album_data[:release_year] %><%= @album_data[:release_year] %><% end %>
+      <% if @album_data[:genre] %> · <%= @album_data[:genre] %><% end %>
+      <% if @tracks.any? %> · <%= @tracks.size %> tracks<% end %>
+    </p>
+  </div>
+</div>
+
+<%# Hidden fields carry iTunes metadata into the log form %>
+<input type="hidden" data-log-flow-target="itunesId"       value="<%= @album_data[:itunes_id] %>" />
+<input type="hidden" data-log-flow-target="coverUrl"       value="<%= @album_data[:cover_url] %>" />
+<input type="hidden" data-log-flow-target="appleUrl"       value="<%= @album_data[:apple_music_url] %>" />
+<input type="hidden" data-log-flow-target="previewTitle"   value="<%= @album_data[:title] %>" />
+<input type="hidden" data-log-flow-target="previewArtist"  value="<%= @album_data[:artist] %>" />
+<input type="hidden" data-log-flow-target="previewYear"    value="<%= @album_data[:release_year] %>" />
+<input type="hidden" data-log-flow-target="previewGenre"   value="<%= @album_data[:genre] %>" />
+
+<% if @tracks.any? %>
+  <div class="mb-5 max-h-40 overflow-y-auto rounded-lg bg-sp-muted px-1 py-1">
+    <% @tracks.each do |track| %>
+      <div class="flex items-center gap-3 px-3 py-1.5 hover:bg-white/5 rounded-md transition-colors">
+        <span class="text-xs text-zinc-600 w-5 text-right shrink-0"><%= track[:position] %></span>
+        <span class="flex-1 text-xs text-zinc-300 truncate"><%= track[:title] %></span>
+        <% if track[:duration_ms]&.positive? %>
+          <% total = track[:duration_ms] / 1000; m = total / 60; s = total % 60 %>
+          <span class="text-xs text-zinc-600 shrink-0"><%= format("%d:%02d", m, s) %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

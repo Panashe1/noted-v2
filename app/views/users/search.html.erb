@@ -1,0 +1,35 @@
+<% content_for :title, "Find People — Soundlog" %>
+
+<div class="h-48 bg-gradient-to-b from-violet-900 via-zinc-950/80 to-zinc-950 px-8 pt-10 flex flex-col justify-end pb-6">
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Community</p>
+  <h1 class="text-4xl font-extrabold text-white">Find People</h1>
+</div>
+
+<div class="px-8 py-8 max-w-2xl">
+
+  <%# Search form — auto-submits into the Turbo Frame below %>
+  <%= form_with url: user_search_path, method: :get,
+        data: { controller: "search", turbo_frame: "search-results" } do %>
+    <div class="relative mb-8">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 pointer-events-none"
+           viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+      </svg>
+      <input type="text"
+             name="q"
+             value="<%= @query %>"
+             placeholder="Search by username…"
+             autofocus
+             autocomplete="off"
+             data-search-target="input"
+             data-action="input->search#onInput"
+             class="w-full bg-sp-muted text-white rounded-full pl-12 pr-5 py-3.5 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" />
+    </div>
+  <% end %>
+
+  <%# Results rendered into this Turbo Frame %>
+  <%= turbo_frame_tag "search-results" do %>
+    <%= render "users/search_results", results: @results, query: @query %>
+  <% end %>
+
+</div>

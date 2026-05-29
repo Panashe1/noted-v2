@@ -1,0 +1,12 @@
+<% if resource.errors.any? %>
+  <div class="bg-red-950 border border-red-800 rounded-lg px-4 py-3 mb-4" data-turbo-temporary>
+    <p class="text-red-400 text-sm font-semibold mb-1">
+      <%= pluralize(resource.errors.count, "error") %> prevented this from saving:
+    </p>
+    <ul class="list-disc list-inside space-y-0.5">
+      <% resource.errors.full_messages.each do |message| %>
+        <li class="text-red-300 text-sm"><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

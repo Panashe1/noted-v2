@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soundlog — UI Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #0d0d0d;
+      --surface:  #161616;
+      --card:     #1e1e1e;
+      --border:   #2a2a2a;
+      --accent:   #e8c547;
+      --accent2:  #c47b3a;
+      --text:     #f0ece4;
+      --muted:    #7a7670;
+      --green:    #4caf72;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .wordmark {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .wordmark span {
+      font-style: italic;
+      color: var(--text);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover, nav ul a.active { color: var(--text); }
+
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* ── LAYOUT ── */
+    .shell {
+      display: grid;
+      grid-template-columns: 260px 1fr 320px;
+      gap: 0;
+      min-height: calc(100vh - 65px);
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 20px 0 8px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .sidebar-item:hover { background: var(--surface); color: var(--text); }
+    .sidebar-item.active { background: var(--surface); color: var(--text); }
+    .sidebar-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    /* ── MAIN FEED ── */
+    .main { padding: 32px 40px; overflow-y: auto; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+    }
+
+    .section-link {
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── TASTE PROFILE CARD ── */
+    .taste-card {
+      background: linear-gradient(135deg, #1a1500 0%, #1e1e1e 60%);
+      border: 1px solid #3a2f00;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .taste-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(232,197,71,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .taste-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .taste-label::before {
+      content: '✦';
+      font-size: 0.6rem;
+    }
+
+    .taste-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #d4cfc4;
+    }
+
+    .taste-meta {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── LOG ENTRY CARD ── */
+    .log-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+
+    .log-entry {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--surface);
+      padding: 16px 20px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .log-entry:hover { background: var(--card); }
+
+    .album-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .log-info .album-title {
+      font-weight: 500;
+      font-size: 0.92rem;
+      margin-bottom: 2px;
+    }
+
+    .log-info .album-artist {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .log-right { text-align: right; }
+
+    .rating {
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .log-date {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-top: 2px;
+    }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .activity-text {
+      font-size: 0.83rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .activity-text strong { color: var(--text); font-weight: 400; }
+    .activity-text .album-ref { color: var(--accent); }
+
+    .activity-rating {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      border-left: 1px solid var(--border);
+      padding: 32px 24px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── LOG FORM ── */
+    .log-form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 12px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus { border-color: var(--accent); }
+
+    .rating-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .rating-btn {
+      flex: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 7px 4px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .rating-btn:hover, .rating-btn.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0d0d0d;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(232,197,71,0.08);
+      border: 1px solid rgba(232,197,71,0.2);
+      border-radius: 100px;
+      padding: 3px 8px;
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .taste-card  { animation: fadeUp 0.5s ease both; }
+    .log-grid    { animation: fadeUp 0.5s ease 0.1s both; }
+    .right-panel > * { animation: fadeUp 0.4s ease both; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wordmark">sound<span>log</span></div>
+    <ul>
+      <li><a href="#" class="active">Feed</a></li>
+      <li><a href="#">Discover</a></li>
+      <li><a href="#">Charts</a></li>
+      <li><a href="#">Members</a></li>
+    </ul>
+    <div class="nav-avatar">PM</div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-label">You</div>
+      <a class="sidebar-item active" href="#"><span class="icon">◉</span> Dashboard</a>
+      <a class="sidebar-item" href="#"><span class="icon">♪</span> My Log</a>
+      <a class="sidebar-item" href="#"><span class="icon">★</span> Lists</a>
+      <a class="sidebar-item" href="#"><span class="icon">◎</span> Profile</a>
+
+      <div class="sidebar-label">Explore</div>
+      <a class="sidebar-item" href="#"><span class="icon">⊕</span> New Releases</a>
+      <a class="sidebar-item" href="#"><span class="icon">↑</span> Popular</a>
+      <a class="sidebar-item" href="#"><span class="icon">✦</span> AI Discover</a>
+
+      <div class="sidebar-label">Social</div>
+      <a class="sidebar-item" href="#"><span class="icon">◈</span> Following</a>
+      <a class="sidebar-item" href="#"><span class="icon">◇</span> Followers</a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- AI Taste Profile -->
+      <div class="taste-card">
+        <div class="taste-label">Your taste profile <span class="ai-badge">✦ AI</span></div>
+        <p class="taste-text">
+          You're drawn to music that sits in productive tension — polished enough to feel intentional,
+          rough enough to feel alive. Your log skews toward mid-career records where artists have
+          something to prove: not debuts, not victory laps. You have a quiet preference for slower
+          tempos and a consistent weakness for anything with a great bass line.
+        </p>
+        <div class="taste-meta">Generated from 47 entries · Updated 3 days ago</div>
+      </div>
+
+      <!-- Recent Logs -->
+      <div class="section-header">
+        <h2 class="section-title">Recently logged</h2>
+        <a href="#" class="section-link">View all →</a>
+      </div>
+
+      <div class="log-grid">
+        <div class="log-entry">
+          <div class="album-thumb" style="background:#1a1a2e">🎵</div>
+          <div class="log-info">
+            <div class="album-title">Javelin</div>
+            <div class="album-artist">Sufjan Stevens</div>
+          </div>
+          <div class="log-right">
+            <div class="rating">9</div>
+            <div class="log-date">May 24</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="album-thumb" style="background:#0d1f0d">🎷</div>
+          <div class="log-info">
+            <div class="album-title">Desire, I Want to Turn Into You</div>
+            <div class="album-artist">Caroline Polachek</div>
+          </div>
+          <div class="log-right">
+            <div class="rating">8</div>
+            <div class="log-date">May 19</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="album-thumb" style="background:#1f0d0d">🥁</div>
+          <div class="log-info">
+            <div class="album-title">Rings Around the World</div>
+            <div class="album-artist">Super Furry Animals</div>
+          </div>
+          <div class="log-right">
+            <div class="rating">8</div>
+            <div class="log-date">May 14</div>
+          </div>
+        </div>
+        <div class="log-entry">
+          <div class="album-thumb" style="background:#0d1a1f">🎸</div>
+          <div class="log-info">
+            <div class="album-title">The Record</div>
+            <div class="album-artist">boygenius</div>
+          </div>
+          <div class="log-right">
+            <div class="rating">7</div>
+            <div class="log-date">May 10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Friends Activity -->
+      <div class="section-header">
+        <h2 class="section-title">Friends' activity</h2>
+        <a href="#" class="section-link">Following →</a>
+      </div>
+
+      <div>
+        <div class="activity-item">
+          <div class="activity-avatar" style="background: linear-gradient(135deg, #3a1f5c, #7b4fa6)">VL</div>
+          <div>
+            <div class="activity-text"><strong>vivienne_l</strong> logged <span class="album-ref">Bright Magic</span> by PC Music All Stars <span class="activity-rating">· 9/10</span></div>
+            <div class="log-date" style="margin-top:4px">2 hours ago</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar" style="background: linear-gradient(135deg, #1f3a2a, #2d6b45)">KO</div>
+          <div>
+            <div class="activity-text"><strong>kojo_osei</strong> logged <span class="album-ref">Jaguar II</span> by Victoria Monét <span class="activity-rating">· 8/10</span></div>
+            <div class="log-date" style="margin-top:4px">Yesterday</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-avatar" style="background: linear-gradient(135deg, #3a2a1f, #a06030)">RA</div>
+          <div>
+            <div class="activity-text"><strong>rach_a</strong> logged <span class="album-ref">Did You Know That There's a Tunnel Under Ocean Blvd</span> by Lana Del Rey <span class="activity-rating">· 10/10</span></div>
+            <div class="log-date" style="margin-top:4px">2 days ago</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-value">47</div>
+          <div class="stat-label">Albums logged</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">7.4</div>
+          <div class="stat-label">Avg rating</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Following</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">8</div>
+          <div class="stat-label">Followers</div>
+        </div>
+      </div>
+
+      <!-- Quick Log Form -->
+      <div class="log-form-card">
+        <div style="font-size:0.78rem; color: var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px;">
+          Log an album
+        </div>
+
+        <label class="form-label">Artist</label>
+        <input class="form-input" type="text" placeholder="e.g. Radiohead" />
+
+        <label class="form-label">Album</label>
+        <input class="form-input" type="text" placeholder="e.g. OK Computer" />
+
+        <label class="form-label">Rating</label>
+        <div class="rating-row">
+          <div class="rating-btn">1</div>
+          <div class="rating-btn">2</div>
+          <div class="rating-btn">3</div>
+          <div class="rating-btn">4</div>
+          <div class="rating-btn">5</div>
+          <div class="rating-btn">6</div>
+          <div class="rating-btn">7</div>
+          <div class="rating-btn selected">8</div>
+          <div class="rating-btn">9</div>
+          <div class="rating-btn">10</div>
+        </div>
+
+        <button class="btn-primary">Log it</button>
+        <button class="btn-secondary">✦ Draft review with AI</button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <script>
+    // Rating button interaction
+    document.querySelectorAll('.rating-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+    });
+  </script>
+
+</body>
+</html>

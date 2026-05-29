@@ -1,0 +1,48 @@
+<%# locals: list, my_following_ids, my_follower_ids %>
+
+<% if list.any? %>
+  <div class="space-y-1 py-2">
+    <% list.each do |u| %>
+      <div class="flex items-center gap-3 px-5 py-3 rounded-lg hover:bg-white/5 transition-colors">
+
+        <%# Avatar + name — _top escapes any parent Turbo Frame %>
+        <%= link_to user_path(u.username), data: { turbo_frame: "_top" }, class: "shrink-0" do %>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-sm font-black select-none">
+            <%= u.username[0].upcase %>
+          </div>
+        <% end %>
+
+        <div class="flex-1 min-w-0">
+          <%= link_to "@#{u.username}", user_path(u.username),
+                data: { turbo_frame: "_top" },
+                class: "font-semibold text-sm text-white hover:underline truncate block" %>
+          <p class="text-xs text-zinc-500"><%= u.listen_logs.count %> logs</p>
+        </div>
+
+        <%# Follow button — hidden for current user, otherwise shows relationship state %>
+        <% if user_signed_in? && u != current_user %>
+          <% i_follow_them = my_following_ids.include?(u.id) %>
+          <% they_follow_me = my_follower_ids.include?(u.id) %>
+
+          <%= turbo_frame_tag "follow_#{u.id}", class: "shrink-0" do %>
+            <% if i_follow_them %>
+              <%= button_to "Following", unfollow_user_path(u.username), method: :delete,
+                    class: "text-xs font-semibold border border-zinc-600 hover:border-red-500 hover:text-red-400 rounded-full px-3 py-1.5 transition-colors bg-transparent text-white cursor-pointer" %>
+            <% elsif they_follow_me %>
+              <%= button_to "Follow back", follow_user_path(u.username),
+                    class: "text-xs font-bold bg-sp-green text-black rounded-full px-3 py-1.5 hover:bg-sp-green2 transition-colors cursor-pointer" %>
+            <% else %>
+              <%= button_to "Follow", follow_user_path(u.username),
+                    class: "text-xs font-bold bg-white text-black rounded-full px-3 py-1.5 hover:scale-105 transition-transform cursor-pointer" %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="text-center py-12 text-zinc-600">
+    <p class="text-sm">Nobody here yet.</p>
+  </div>
+<% end %>

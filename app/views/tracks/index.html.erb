@@ -1,0 +1,105 @@
+<% content_for :title, "Tracks — Soundlog" %>
+
+<div class="h-56 bg-gradient-to-b from-rose-900 via-zinc-950/80 to-zinc-950 px-8 pt-10 flex flex-col justify-end pb-6">
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Library</p>
+  <h1 class="text-4xl font-extrabold text-white">Tracks</h1>
+  <p class="text-zinc-400 text-sm mt-1"><%= Track.count %> songs across <%= Album.count %> albums</p>
+</div>
+
+<div class="px-8 py-6">
+
+  <%# Search bar %>
+  <%= form_with url: tracks_path, method: :get,
+        data: { controller: "search", turbo_frame: "tracks-results" } do %>
+    <div class="relative max-w-xl mb-6">
+      <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none"
+           viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input type="text"
+             name="q"
+             value="<%= @query %>"
+             placeholder="Search tracks, albums, artists…"
+             autocomplete="off"
+             data-search-target="input"
+             data-action="input->search#onInput"
+             class="w-full bg-sp-muted text-white rounded-full pl-11 pr-5 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" />
+    </div>
+  <% end %>
+
+  <%# Results table in a Turbo Frame %>
+  <%= turbo_frame_tag "tracks-results" do %>
+
+    <% if @tracks.any? %>
+      <%# Column headers %>
+      <div class="grid grid-cols-[2rem_1fr_auto_auto] gap-4 px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
+        <span>#</span>
+        <span>Title</span>
+        <span class="text-right hidden sm:block">Album</span>
+        <span class="text-right">Time</span>
+      </div>
+
+      <div class="space-y-0.5 mt-1">
+        <% @tracks.each_with_index do |track, i| %>
+          <%= link_to track_path(track),
+                data: { turbo_frame: "_top" },
+                class: "grid grid-cols-[2rem_1fr_auto_auto] gap-4 items-center px-4 py-2.5 rounded-lg hover:bg-white/5 transition-colors group" do %>
+
+            <%# Position %>
+            <span class="text-zinc-600 text-sm tabular-nums group-hover:text-zinc-400 transition-colors">
+              <%= track.position %>
+            </span>
+
+            <%# Track + album info %>
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-9 h-9 rounded shrink-0 overflow-hidden">
+                <% if track.album.cover_url(size: 60).present? %>
+                  <img src="<%= track.album.cover_url(size: 60) %>"
+                       alt="<%= track.album.title %>"
+                       class="w-full h-full object-cover" />
+                <% else %>
+                  <div class="w-full h-full bg-gradient-to-br <%= album_gradient(track.album) %> to-zinc-900"></div>
+                <% end %>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-white truncate group-hover:text-sp-green transition-colors">
+                  <%= track.title %>
+                </p>
+                <p class="text-xs text-zinc-500 truncate"><%= track.album.artist %></p>
+              </div>
+            </div>
+
+            <%# Album title (hidden on small screens) %>
+            <p class="text-xs text-zinc-500 truncate text-right hidden sm:block max-w-[160px]">
+              <%= track.album.title %>
+            </p>
+
+            <%# Duration %>
+            <span class="text-xs text-zinc-600 tabular-nums text-right">
+              <%= track.duration_formatted || "—" %>
+            </span>
+
+          <% end %>
+        <% end %>
+      </div>
+
+      <%# Pagination %>
+      <% if @tracks.respond_to?(:total_pages) && @tracks.total_pages > 1 %>
+        <div class="mt-8 flex justify-center">
+          <%= paginate @tracks %>
+        </div>
+      <% end %>
+
+    <% elsif @query.length >= 2 %>
+      <div class="text-center py-20">
+        <p class="text-zinc-500 text-sm">No tracks found for "<%= @query %>"</p>
+      </div>
+    <% else %>
+      <div class="text-center py-20">
+        <p class="text-zinc-500 text-sm">No tracks yet — log some albums to populate this page.</p>
+      </div>
+    <% end %>
+
+  <% end %>
+
+</div>

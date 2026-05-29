@@ -1,0 +1,40 @@
+<% content_for :title, "Sign up — Soundlog" %>
+
+<div class="min-h-screen flex items-center justify-center py-16 px-4">
+  <div class="w-full max-w-sm">
+    <div class="text-center mb-10">
+      <svg class="w-12 h-12 text-sp-green mx-auto mb-4" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.65 14.58c-.19.31-.59.4-.9.21-2.47-1.51-5.58-1.85-9.24-.97-.35.08-.71-.14-.79-.49-.08-.35.14-.71.49-.79 4.01-.92 7.45-.52 10.22 1.12.31.19.4.59.22.92zm1.24-2.77c-.24.38-.74.5-1.12.26-2.83-1.74-7.14-2.24-10.49-1.23-.43.13-.89-.12-1.02-.55-.13-.43.12-.89.55-1.02 3.82-1.16 8.57-.6 11.82 1.41.38.24.5.74.26 1.13zm.11-2.89c-3.39-2.01-8.99-2.2-12.23-1.22-.52.16-1.07-.14-1.23-.66-.16-.52.14-1.07.66-1.23 3.72-1.13 9.91-.91 13.81 1.41.47.28.62.88.35 1.35-.28.47-.88.62-1.36.35z"/>
+      </svg>
+      <h1 class="text-2xl font-extrabold text-white">Sign up free</h1>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <%= f.text_field :username, autofocus: true, autocomplete: "username",
+            placeholder: "Username (e.g. panashe_sounds)",
+            class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
+
+      <%= f.email_field :email, autocomplete: "email",
+            placeholder: "Email address",
+            class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
+
+      <%= f.password_field :password, autocomplete: "new-password",
+            placeholder: "Password #{ "(#{@minimum_password_length}+ characters)" if @minimum_password_length }",
+            class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
+
+      <%= f.password_field :password_confirmation, autocomplete: "new-password",
+            placeholder: "Confirm password",
+            class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
+
+      <%= f.submit "Create account",
+            class: "w-full bg-sp-green text-black font-bold py-3 rounded-full hover:bg-sp-green2 hover:scale-[1.02] transition-all cursor-pointer mt-2" %>
+    <% end %>
+
+    <div class="mt-8 text-center text-sm text-zinc-500">
+      Already have an account?
+      <%= link_to "Log in", new_user_session_path, class: "text-white font-semibold hover:underline" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+/*
+ *= require_tree .
+ *= require_self
+ */
+
+/* ── Soundlog design tokens ───────────────────────────── */
+:root {
+  --sp-black:   #000000;
+  --sp-base:    #121212;
+  --sp-surface: #181818;
+  --sp-card:    #202020;
+  --sp-raised:  #282828;
+  --sp-input:   #3e3e3e;
+  --sp-muted:   #242424;
+  --sp-green:   #1db954;
+  --sp-green2:  #1ed760;
+}
+
+/* Background utilities */
+.bg-sp-black   { background-color: var(--sp-black); }
+.bg-sp-base    { background-color: var(--sp-base); }
+.bg-sp-surface { background-color: var(--sp-surface); }
+.bg-sp-card    { background-color: var(--sp-card); }
+.bg-sp-raised  { background-color: var(--sp-raised); }
+.bg-sp-input   { background-color: var(--sp-input); }
+.bg-sp-muted   { background-color: var(--sp-muted); }
+.bg-sp-green   { background-color: var(--sp-green); }
+.bg-sp-green2  { background-color: var(--sp-green2); }
+
+/* Text utilities */
+.text-sp-green { color: var(--sp-green); }
+
+/* Border utilities */
+.border-sp-green { border-color: var(--sp-green); }
+
+/* Hover utilities */
+.hover\:bg-sp-base:hover    { background-color: var(--sp-base); }
+.hover\:bg-sp-surface:hover { background-color: var(--sp-surface); }
+.hover\:bg-sp-card:hover    { background-color: var(--sp-card); }
+.hover\:bg-sp-raised:hover  { background-color: var(--sp-raised); }
+.hover\:bg-sp-muted:hover   { background-color: var(--sp-muted); }
+.hover\:bg-sp-green:hover   { background-color: var(--sp-green); }
+.hover\:bg-sp-green2:hover  { background-color: var(--sp-green2); }
+
+/* Group-hover utilities */
+.group:hover .group-hover\:bg-sp-green { background-color: var(--sp-green); }
+
+/* via- gradient stop (for gradient headers that use via-sp-base) */
+.via-sp-base\/80 {
+  --tw-gradient-via: color-mix(in srgb, var(--sp-base) 80%, transparent);
+  --tw-gradient-via-stops: var(--tw-gradient-from, #0000), var(--tw-gradient-via), var(--tw-gradient-to, #0000);
+}
+.to-sp-base {
+  --tw-gradient-to: var(--sp-base);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #535353; border-radius: 6px; border: 3px solid var(--sp-base); }
+::-webkit-scrollbar-thumb:hover { background: #7c7c7c; }
+
+/* Date input color fix */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+}
+
+/* Rating radio highlight */
+.rating-option input[type="radio"]:checked + span {
+  background-color: var(--sp-green);
+  color: #000;
+}
+
+/* Flash auto-dismiss */
+@keyframes fadeOut {
+  0%   { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+.flash-message { animation: fadeOut 4s ease forwards; }

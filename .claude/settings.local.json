@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rails --version)",
+      "Bash(ruby --version)",
+      "Bash(rbenv versions *)",
+      "Bash(rbenv local *)",
+      "Bash(grep -E \"^\\(ruby|gem|bundle|rails\\)$\")",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/rails --version)",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/gem list rails)",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/rails _7.2.3_ new . --force --database=postgresql --css=tailwind --skip-bundle --skip-git --skip-test)",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/gem contents devise)",
+      "Bash(cp /Users/panashemugayapi/.rbenv/versions/3.3.0/lib/ruby/gems/3.3.0/gems/devise-5.0.4/lib/generators/templates/devise.rb /Users/panashemugayapi/code/noted-v2/config/initializers/devise.rb)",
+      "Read(//Users/panashemugayapi/.rbenv/versions/3.3.0/lib/ruby/gems/3.3.0/gems/devise-5.0.4/**)",
+      "Bash(cp /Users/panashemugayapi/.rbenv/versions/3.3.0/lib/ruby/gems/3.3.0/gems/devise-5.0.4/config/locales/en.yml /Users/panashemugayapi/code/noted-v2/config/locales/devise.en.yml)",
+      "Bash(brew services *)",
+      "Bash(brew list *)",
+      "Bash(pg_config --version)",
+      "Bash(psql --version)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/**)",
+      "Bash(ls /Applications/ | grep -i postgres; ls /usr/local/opt/ 2>/dev/null | grep post; ls /opt/homebrew/opt/ | grep post)",
+      "Bash(find /Users/panashemugayapi/.rbenv/versions/3.3.0/lib/ruby/gems/3.3.0/gems -maxdepth 1 -name \"anthropic*\" -type d)",
+      "Bash(grep -v \"^$\")",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle install)",
+      "Bash(xargs sed -i '' -e 's/\\\\[#121212\\\\]/sp-base/g' -e 's/\\\\[#181818\\\\]/sp-surface/g' -e 's/\\\\[#282828\\\\]/sp-raised/g' -e 's/\\\\[#242424\\\\]/sp-muted/g' -e 's/\\\\[#3e3e3e\\\\]/sp-input/g' -e 's/\\\\[#1db954\\\\]/sp-green/g' -e 's/\\\\[#1ed760\\\\]/sp-green2/g' -e 's/\\\\[#202020\\\\]/sp-card/g')",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle exec rails tailwindcss:build)",
+      "Bash(xargs sed -i '' -e 's/via-sp-base\\\\/80/via-zinc-950\\\\/80/g' -e 's/via-sp-base\\\\/60/via-zinc-950\\\\/60/g' -e s/to-sp-base/to-zinc-950/g)",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle exec rails routes)",
+      "mcp__Claude_in_Chrome__list_connected_browsers",
+      "Bash(RBENV_VERSION=3.3.0 /Users/panashemugayapi/.rbenv/shims/bundle exec rails runner 'puts \"OK\"')",
+      "Bash(/Users/panashemugayapi/.rbenv/shims/rails routes *)"
+    ]
+  }
+}
