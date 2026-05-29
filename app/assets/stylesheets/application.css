@@ -3,17 +3,22 @@
  *= require_self
  */
 
-/* ── Soundlog design tokens ───────────────────────────── */
+/* ── Noted design tokens ───────────────────────────── */
 :root {
-  --sp-black:   #000000;
-  --sp-base:    #121212;
-  --sp-surface: #181818;
-  --sp-card:    #202020;
-  --sp-raised:  #282828;
-  --sp-input:   #3e3e3e;
-  --sp-muted:   #242424;
-  --sp-green:   #1db954;
-  --sp-green2:  #1ed760;
+  /* Dark backgrounds — purple-tinted scale */
+  --sp-black:   #0e0d16;   /* body / deepest bg      */
+  --sp-base:    #14131f;   /* sidebar / page bg       */
+  --sp-surface: #1e1c2b;   /* card / panel bg         */
+  --sp-card:    #262434;   /* card hover              */
+  --sp-raised:  #3C3744;   /* raised / modal bg       */
+  --sp-input:   #4a4758;   /* form inputs             */
+  --sp-muted:   #1a1828;   /* muted areas             */
+  /* Accent — blue palette */
+  --sp-green:   #3066BE;   /* primary accent          */
+  --sp-green2:  #090C9B;   /* deep-navy hover         */
+  /* Text palette */
+  --sp-text:    #FBFFF1;   /* primary text (off-white) */
+  --sp-subtle:  #B4C5E4;   /* muted / secondary text  */
 }
 
 /* Background utilities */
@@ -28,7 +33,9 @@
 .bg-sp-green2  { background-color: var(--sp-green2); }
 
 /* Text utilities */
-.text-sp-green { color: var(--sp-green); }
+.text-sp-green  { color: var(--sp-green); }
+.text-sp-subtle { color: var(--sp-subtle); }
+.text-sp-text   { color: var(--sp-text); }
 
 /* Border utilities */
 .border-sp-green { border-color: var(--sp-green); }
@@ -45,6 +52,15 @@
 /* Group-hover utilities */
 .group:hover .group-hover\:bg-sp-green { background-color: var(--sp-green); }
 
+/* Ensure readable text on accent-coloured backgrounds.
+   application.css loads after tailwind.css, so same-specificity rules here
+   win the cascade and override text-black utilities on buttons/flash. */
+.bg-sp-green,
+.bg-sp-green2 { color: var(--sp-text); }
+
+/* Checkbox / radio accent colour */
+.accent-sp-green { accent-color: var(--sp-green); }
+
 /* via- gradient stop (for gradient headers that use via-sp-base) */
 .via-sp-base\/80 {
   --tw-gradient-via: color-mix(in srgb, var(--sp-base) 80%, transparent);
@@ -55,21 +71,21 @@
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #535353; border-radius: 6px; border: 3px solid var(--sp-base); }
-::-webkit-scrollbar-thumb:hover { background: #7c7c7c; }
+::-webkit-scrollbar-thumb { background: #3C3744; border-radius: 5px; border: 2px solid var(--sp-base); }
+::-webkit-scrollbar-thumb:hover { background: var(--sp-subtle); }
 
-/* Date input color fix */
+/* Date input colour fix */
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* Rating radio highlight */
 .rating-option input[type="radio"]:checked + span {
   background-color: var(--sp-green);
-  color: #000;
+  color: var(--sp-text);
 }
 
 /* Flash auto-dismiss */

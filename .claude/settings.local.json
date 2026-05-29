@@ -37,7 +37,10 @@
       "Bash(ssh-keyscan github.com)",
       "Bash(git remote *)",
       "Bash(git push *)",
-      "Bash(/Users/panashemugayapi/.rbenv/shims/bundle exec *)"
+      "Bash(/Users/panashemugayapi/.rbenv/shims/bundle exec *)",
+      "Bash(xargs sed -i '' 's/Soundlog/Noted/g')",
+      "Bash(open /Users/panashemugayapi/code/noted-v2/public/logo-option-a.svg)",
+      "Bash(open /Users/panashemugayapi/code/noted-v2/public/logo-option-b.svg)"
     ]
   }
 }
