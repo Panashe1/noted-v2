@@ -1,0 +1,11 @@
+# password: "password123" — pre-computed at MIN_COST so fixture loading is fast
+# Re-generate with: ruby -e "require 'bcrypt'; puts BCrypt::Password.create('password123', cost: BCrypt::Engine::MIN_COST)"
+alice:
+  username: alice
+  email: alice@example.com
+  encrypted_password: $2a$04$F/2MgzhWYjtEf.jqnaYBbuEQf5nMigWY9GkuZ0zypLhF9.g.Pk9OK
+
+bob:
+  username: bob
+  email: bob@example.com
+  encrypted_password: $2a$04$F/2MgzhWYjtEf.jqnaYBbuEQf5nMigWY9GkuZ0zypLhF9.g.Pk9OK

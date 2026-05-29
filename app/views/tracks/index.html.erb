@@ -38,10 +38,11 @@
           <p class="text-xs uppercase tracking-widest text-zinc-500 mb-3">In your library</p>
         <% end %>
 
-        <div class="grid grid-cols-[2rem_1fr_auto_auto] gap-4 px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
+        <div class="grid grid-cols-[2rem_1fr_auto_auto_auto] gap-4 px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
           <span>#</span>
           <span>Title</span>
           <span class="text-right hidden sm:block">Album</span>
+          <span class="text-right">Avg</span>
           <span class="text-right">Time</span>
         </div>
 
@@ -49,7 +50,7 @@
           <% @tracks.each_with_index do |track, i| %>
             <%= link_to track_path(track),
                   data: { turbo_frame: "_top" },
-                  class: "grid grid-cols-[2rem_1fr_auto_auto] gap-4 items-center px-4 py-2.5 rounded-lg hover:bg-white/5 transition-colors group" do %>
+                  class: "grid grid-cols-[2rem_1fr_auto_auto_auto] gap-4 items-center px-4 py-2.5 rounded-lg hover:bg-white/5 transition-colors group" do %>
 
               <span class="text-zinc-600 text-sm tabular-nums group-hover:text-zinc-400 transition-colors">
                 <%= track.position %>
@@ -76,6 +77,12 @@
               <p class="text-xs text-zinc-500 truncate text-right hidden sm:block max-w-[160px]">
                 <%= track.album.title %>
               </p>
+
+              <% if (avg = @track_ratings[track.id]) %>
+                <span class="text-xs font-bold tabular-nums text-right <%= rating_color(avg) %>"><%= avg %></span>
+              <% else %>
+                <span class="text-xs text-zinc-700 tabular-nums text-right">—</span>
+              <% end %>
 
               <span class="text-xs text-zinc-600 tabular-nums text-right">
                 <%= track.duration_formatted || "—" %>

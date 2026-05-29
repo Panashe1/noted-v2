@@ -3,7 +3,11 @@ class TrackLogsController < ApplicationController
   before_action :set_track_log, only: [:edit, :update, :destroy]
 
   def create
-    @track    = Track.find(track_log_params[:track_id])
+    # Bug fix: use find_by + early redirect instead of find, which raises 500 on bad/missing id
+    @track = Track.find_by(id: track_log_params[:track_id])
+    unless @track
+      redirect_to tracks_path, alert: "Track not found." and return
+    end
     @track_log = current_user.track_logs.new(track_log_params)
 
     if @track_log.save
@@ -18,8 +22,9 @@ class TrackLogsController < ApplicationController
   end
 
   def update
+    @track = @track_log.track  # Bug fix: @track must be set before re-rendering :edit
     if @track_log.update(track_log_params)
-      redirect_to track_path(@track_log.track), notice: "Log updated!"
+      redirect_to track_path(@track), notice: "Log updated!"
     else
       render :edit, status: :unprocessable_entity
     end

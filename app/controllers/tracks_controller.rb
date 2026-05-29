@@ -19,13 +19,21 @@ class TracksController < ApplicationController
       @tracks        = base.order("albums.artist, albums.title, tracks.position").page(params[:page]).per(50)
       @itunes_tracks = []
     end
+
+    # One aggregation query for all displayed tracks — prevents N+1 in the view
+    @track_ratings = preload_track_ratings(@tracks)
   end
 
   def show
     @track        = Track.includes(:album).find(params[:id])
     @album        = @track.album
-    @album_tracks = @album.tracks # already ordered by position via default_scope
+    @album_tracks = @album.tracks.to_a # already ordered by position via default_scope
     @user_log     = current_user&.track_logs&.find_by(track: @track)
+
+    # Aggregate stats for the hero and sidebar tracklist
+    @track_avg       = @track.average_rating
+    @track_log_count = @track.log_count
+    @track_ratings   = preload_track_ratings(@album_tracks)
   end
 
   # GET /tracks/from_itunes?itunes_track_id=XXX&itunes_album_id=YYY
@@ -51,25 +59,29 @@ class TracksController < ApplicationController
 
     album_data = result[:album]
 
-    # Find or create the album record
-    album = Album.find_by(itunes_id: album_data[:itunes_id])
-    unless album
-      album = Album.find_or_initialize_by(
-        title:  album_data[:title].to_s.strip,
-        artist: album_data[:artist].to_s.strip
-      )
-      album.assign_attributes(
-        release_year:    album_data[:release_year],
-        genre:           album_data[:genre],
-        cover_image_url: album_data[:cover_url],
-        itunes_id:       album_data[:itunes_id],
-        apple_music_url: album_data[:apple_music_url]
-      )
-      album.save!
-    end
+    # Bug fixes:
+    # - Wrap album + track creation in a transaction so a mid-loop failure
+    #   doesn't leave an orphaned album with a partial tracklist (bug 4)
+    # - Removed `if album.tracks.none?` guard — find_or_create_by is already
+    #   idempotent and the guard caused a race with TrackImportJob (bug 2)
+    track = ActiveRecord::Base.transaction do
+      album = Album.find_by(itunes_id: album_data[:itunes_id])
+      unless album
+        album = Album.find_or_initialize_by(
+          title:  album_data[:title].to_s.strip,
+          artist: album_data[:artist].to_s.strip
+        )
+        album.assign_attributes(
+          release_year:    album_data[:release_year],
+          genre:           album_data[:genre],
+          cover_image_url: album_data[:cover_url],
+          itunes_id:       album_data[:itunes_id],
+          apple_music_url: album_data[:apple_music_url]
+        )
+        album.save!
+      end
 
-    # Import all tracks for this album if not already done
-    if album.tracks.none?
+      # Always run find_or_create_by — it's idempotent and safe under concurrency
       result[:tracks].each do |t|
         album.tracks.find_or_create_by(itunes_track_id: t[:itunes_track_id]) do |new_track|
           new_track.title       = t[:title]
@@ -77,15 +89,15 @@ class TracksController < ApplicationController
           new_track.duration_ms = t[:duration_ms]
         end
       end
-    end
 
-    # Find the specific track the user clicked
-    track = album.tracks.find_by(itunes_track_id: itunes_track_id)
+      # Return the specific track we want
+      album.tracks.find_by(itunes_track_id: itunes_track_id)
+    end
 
     if track
       redirect_to track_path(track)
     else
-      redirect_to album_path(album), notice: "Added to library! Find your track in the tracklist."
+      redirect_to tracks_path, notice: "Added to library! Find your track by searching for it."
     end
   end
 end

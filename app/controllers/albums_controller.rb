@@ -2,9 +2,11 @@ class AlbumsController < ApplicationController
   before_action :authenticate_user!, only: [:from_itunes]
 
   def show
-    @album    = Album.find(params[:id])
-    @logs     = @album.listen_logs.includes(:user).order(created_at: :desc)
-    @user_log = current_user&.listen_logs&.find_by(album: @album)
+    @album         = Album.find(params[:id])
+    @logs          = @album.listen_logs.includes(:user).order(created_at: :desc)
+    @user_log      = current_user&.listen_logs&.find_by(album: @album)
+    @album_tracks  = @album.tracks.to_a
+    @track_ratings = preload_track_ratings(@album_tracks)
   end
 
   def index

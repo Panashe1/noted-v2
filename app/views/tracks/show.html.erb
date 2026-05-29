@@ -37,6 +37,14 @@
             <span class="text-zinc-500">·</span>
             <span class="text-zinc-400"><%= @album.release_year %></span>
           <% end %>
+          <% if @track_avg %>
+            <span class="text-zinc-500">·</span>
+            <span class="font-bold <%= rating_color(@track_avg) %>">
+              <%= @track_avg %><span class="text-zinc-600 text-xs font-normal">/10 avg</span>
+            </span>
+          <% end %>
+          <span class="text-zinc-500">·</span>
+          <span class="text-zinc-400"><%= @track_log_count %> <%= @track_log_count == 1 ? "log" : "logs" %></span>
         </div>
       </div>
 
@@ -157,6 +165,11 @@
           <span class="flex-1 text-xs truncate <%= is_current ? 'text-white font-semibold' : 'text-zinc-300' %>">
             <%= t.title %>
           </span>
+          <% if (avg = @track_ratings[t.id]) %>
+            <span class="text-[11px] font-bold tabular-nums shrink-0 <%= rating_color(avg) %>">
+              <%= avg %>
+            </span>
+          <% end %>
           <% if (dur = t.duration_formatted) %>
             <span class="text-xs shrink-0 <%= is_current ? 'text-zinc-400' : 'text-zinc-600' %>">
               <%= dur %>

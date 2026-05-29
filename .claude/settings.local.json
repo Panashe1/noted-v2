@@ -36,7 +36,8 @@
       "Bash(security find-internet-password *)",
       "Bash(ssh-keyscan github.com)",
       "Bash(git remote *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(/Users/panashemugayapi/.rbenv/shims/bundle exec *)"
     ]
   }
 }

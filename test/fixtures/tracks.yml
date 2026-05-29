@@ -1,0 +1,20 @@
+paranoid_android:
+  album: ok_computer
+  title: Paranoid Android
+  position: 2
+  duration_ms: 383666
+  itunes_track_id: "111"
+
+karma_police:
+  album: ok_computer
+  title: Karma Police
+  position: 6
+  duration_ms: 263666
+  itunes_track_id: "222"
+
+come_together:
+  album: abbey_road
+  title: Come Together
+  position: 1
+  duration_ms: 259000
+  itunes_track_id: "333"

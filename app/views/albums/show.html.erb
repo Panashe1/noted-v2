@@ -50,15 +50,18 @@
 <div class="px-8 py-6 space-y-8">
 
   <%# ── Tracklist ── %>
-  <% if @album.tracks.any? %>
+  <% if @album_tracks.any? %>
     <section>
       <h2 class="text-lg font-bold mb-3">Tracklist</h2>
       <div class="bg-sp-surface rounded-xl overflow-hidden">
-        <% @album.tracks.each do |track| %>
+        <% @album_tracks.each do |track| %>
           <%= link_to track_path(track),
                 class: "flex items-center gap-4 px-5 py-2.5 hover:bg-sp-card transition-colors border-b border-white/5 last:border-0 group" do %>
             <span class="text-xs text-zinc-600 w-5 text-right shrink-0"><%= track.position %></span>
             <span class="flex-1 text-sm text-zinc-200 group-hover:text-white transition-colors"><%= track.title %></span>
+            <% if (avg = @track_ratings[track.id]) %>
+              <span class="text-xs font-bold tabular-nums shrink-0 <%= rating_color(avg) %>"><%= avg %></span>
+            <% end %>
             <% if (dur = track.duration_formatted) %>
               <span class="text-xs text-zinc-500 shrink-0"><%= dur %></span>
             <% end %>

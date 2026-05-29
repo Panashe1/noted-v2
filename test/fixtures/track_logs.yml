@@ -1,0 +1,8 @@
+# alice has already logged paranoid_android
+alice_paranoid_android:
+  user: alice
+  track: paranoid_android
+  listened_on: "2024-01-15"
+  rating: 9
+  review: "Masterpiece."
+  is_relisten: false

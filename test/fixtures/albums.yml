@@ -1,0 +1,13 @@
+ok_computer:
+  title: OK Computer
+  artist: Radiohead
+  release_year: 1997
+  genre: Alternative
+  itunes_id: "12345"
+
+abbey_road:
+  title: Abbey Road
+  artist: The Beatles
+  release_year: 1969
+  genre: Rock
+  itunes_id: "67890"
