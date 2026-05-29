@@ -1,0 +1,108 @@
+<% content_for :title, "Settings — Noted" %>
+
+<div class="max-w-lg mx-auto px-6 py-10">
+
+  <%# ── Back link ── %>
+  <%= link_to user_path(@user.username),
+        class: "inline-flex items-center gap-1.5 text-xs text-zinc-500 hover:text-white transition-colors mb-8 group" do %>
+    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+    Back to profile
+  <% end %>
+
+  <h1 class="text-2xl font-extrabold text-white mb-8">Profile settings</h1>
+
+  <%= form_with model: @user, url: user_settings_path(@user.username),
+        method: :patch, multipart: true, class: "space-y-8" do |f| %>
+
+    <%# ── Avatar ── %>
+    <div>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4">Profile picture</p>
+
+      <div class="flex items-center gap-5">
+        <%# Live preview — swapped by the JS below when a file is chosen %>
+        <div class="shrink-0">
+          <% if @user.avatar.attached? %>
+            <img id="avatar-preview"
+                 src="<%= url_for(@user.avatar) %>"
+                 alt="Current avatar"
+                 class="w-20 h-20 rounded-full object-cover ring-2 ring-white/10" />
+          <% else %>
+            <div id="avatar-preview-placeholder"
+                 class="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-3xl font-black text-white select-none ring-2 ring-white/10">
+              <%= @user.username[0].upcase %>
+            </div>
+            <img id="avatar-preview" src="" alt="Preview" class="w-20 h-20 rounded-full object-cover ring-2 ring-white/10 hidden" />
+          <% end %>
+        </div>
+
+        <div class="space-y-2">
+          <label class="cursor-pointer inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-white border border-zinc-700 hover:border-zinc-400 rounded-full px-4 py-2 transition-colors">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+            </svg>
+            Choose photo
+            <%= f.file_field :avatar, accept: "image/*", class: "sr-only",
+                  onchange: "
+                    const file = this.files[0];
+                    if (!file) return;
+                    const preview = document.getElementById('avatar-preview');
+                    const placeholder = document.getElementById('avatar-preview-placeholder');
+                    preview.src = URL.createObjectURL(file);
+                    preview.classList.remove('hidden');
+                    if (placeholder) placeholder.classList.add('hidden');
+                  " %>
+          </label>
+          <p class="text-xs text-zinc-600">JPEG, PNG or WebP · max 5 MB</p>
+        </div>
+      </div>
+    </div>
+
+    <%# ── Name ── %>
+    <div>
+      <%= f.label :name, "Display name",
+            class: "text-xs uppercase tracking-widest text-zinc-500 mb-2 block" %>
+      <%= f.text_field :name,
+            placeholder: "Your full name (optional)",
+            maxlength: 60,
+            class: "w-full bg-sp-surface border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sp-green/50 focus:border-sp-green transition" %>
+    </div>
+
+    <%# ── Bio ── %>
+    <div>
+      <%= f.label :bio, "Bio",
+            class: "text-xs uppercase tracking-widest text-zinc-500 mb-2 block" %>
+      <%= f.text_area :bio,
+            placeholder: "Say something about yourself… (optional)",
+            maxlength: 300,
+            rows: 4,
+            class: "w-full bg-sp-surface border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sp-green/50 focus:border-sp-green transition resize-none" %>
+      <p class="text-xs text-zinc-600 mt-1.5 text-right">max 300 characters</p>
+    </div>
+
+    <%# ── Username (read-only, for reference) ── %>
+    <div>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Username</p>
+      <p class="text-sm text-zinc-400 bg-sp-surface border border-white/10 rounded-lg px-4 py-3">
+        @<%= @user.username %>
+        <span class="text-zinc-700 ml-2 text-xs">· not editable here</span>
+      </p>
+    </div>
+
+    <%# ── Validation errors ── %>
+    <% if @user.errors.any? %>
+      <div class="bg-red-950/50 border border-red-800 rounded-lg px-4 py-3">
+        <% @user.errors.full_messages.each do |msg| %>
+          <p class="text-sm text-red-300">· <%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# ── Save ── %>
+    <%= f.submit "Save changes",
+          class: "w-full bg-sp-green font-bold py-3 rounded-full hover:bg-sp-green2 hover:scale-[1.02] transition-all cursor-pointer" %>
+
+  <% end %>
+
+</div>

@@ -1,12 +1,36 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:home, :search]
+  before_action :authenticate_user!, only: [:home, :search, :settings, :update_settings]
+  before_action :require_own_profile, only: [:settings, :update_settings]
 
   # Root redirect — sends signed-in users to their own profile
   def home
     redirect_to user_path(current_user.username)
   end
 
+  def settings
+    @user = current_user
+  end
+
+  def update_settings
+    @user = current_user
+    if @user.update(settings_params)
+      redirect_to user_path(@user.username), notice: "Profile updated!"
+    else
+      render :settings, status: :unprocessable_entity
+    end
+  end
+
   private
+
+  def require_own_profile
+    unless current_user.username == params[:username]
+      redirect_to user_path(current_user.username), alert: "Not authorised."
+    end
+  end
+
+  def settings_params
+    params.require(:user).permit(:name, :bio, :avatar)
+  end
 
   # Preloads current_user's follow relationships into two Sets so the
   # follow-list partial can determine button state in O(1) without extra queries.

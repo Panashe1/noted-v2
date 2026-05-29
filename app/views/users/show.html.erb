@@ -26,15 +26,31 @@
   </div>
 
 <%# ── Profile hero ── %>
-<div class="h-64 bg-gradient-to-b from-teal-900 via-zinc-950/60 to-zinc-950 px-8 pt-8 flex items-end pb-6">
+<div class="h-64 bg-gradient-to-b from-indigo-950 via-zinc-950/60 to-zinc-950 px-8 pt-8 flex items-end pb-6">
   <div class="flex items-end gap-6 w-full">
-    <div class="w-28 h-28 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-4xl font-black shadow-2xl shrink-0 select-none">
-      <%= @user.username[0].upcase %>
-    </div>
+
+    <%# Avatar ── real photo or gradient-initials fallback %>
+    <% if @user.avatar.attached? %>
+      <%= image_tag url_for(@user.avatar),
+            alt: @user.username,
+            class: "w-28 h-28 rounded-full object-cover shadow-2xl ring-2 ring-white/15 shrink-0" %>
+    <% else %>
+      <div class="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-4xl font-black shadow-2xl shrink-0 select-none ring-2 ring-white/15">
+        <%= @user.username[0].upcase %>
+      </div>
+    <% end %>
 
     <div class="flex-1 pb-1 min-w-0">
-      <p class="text-xs uppercase tracking-widest text-zinc-300 mb-1">Profile</p>
-      <h1 class="text-3xl font-extrabold text-white">@<%= @user.username %></h1>
+      <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Profile</p>
+
+      <%# Show display name as headline when set, username as subtitle %>
+      <% if @user.name.present? %>
+        <h1 class="text-3xl font-extrabold text-white leading-tight"><%= @user.name %></h1>
+        <p class="text-zinc-400 text-sm mt-0.5">@<%= @user.username %></p>
+      <% else %>
+        <h1 class="text-3xl font-extrabold text-white">@<%= @user.username %></h1>
+      <% end %>
+
       <div class="flex items-center gap-4 mt-2 text-sm text-zinc-400 flex-wrap">
         <span><strong class="text-white"><%= @user.listen_logs.count %></strong> logs</span>
 
@@ -52,23 +68,36 @@
           <strong class="text-white"><%= @user.followers.count %></strong> followers
         </button>
       </div>
+
       <% if @user.bio.present? %>
-        <p class="text-zinc-400 text-sm mt-1.5 truncate"><%= @user.bio %></p>
+        <p class="text-zinc-400 text-sm mt-1.5 line-clamp-2"><%= @user.bio %></p>
       <% end %>
     </div>
 
-    <%# Follow / unfollow ── only shown on other people's profiles %>
-    <% if user_signed_in? && @user != current_user %>
-      <%= turbo_frame_tag "follow_#{@user.id}", class: "shrink-0 self-end pb-1" do %>
-        <% if @is_following %>
-          <%= button_to "Following", unfollow_user_path(@user.username), method: :delete,
-                class: "text-sm font-semibold border border-zinc-500 hover:border-white rounded-full px-5 py-2 transition-colors bg-transparent text-white cursor-pointer" %>
-        <% else %>
-          <%= button_to "Follow", follow_user_path(@user.username),
-                class: "text-sm font-bold bg-white text-black rounded-full px-5 py-2 hover:scale-105 transition-transform cursor-pointer" %>
+    <%# Right-side actions ── settings (own profile) or follow button (others) %>
+    <div class="shrink-0 self-end pb-1 flex gap-2">
+      <% if @own_profile %>
+        <%= link_to user_settings_path(@user.username),
+              class: "inline-flex items-center gap-2 text-sm font-semibold border border-zinc-700 hover:border-zinc-400 text-zinc-400 hover:text-white rounded-full px-4 py-2 transition-colors" do %>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.22-.07.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+          Settings
+        <% end %>
+
+      <% elsif user_signed_in? %>
+        <%= turbo_frame_tag "follow_#{@user.id}" do %>
+          <% if @is_following %>
+            <%= button_to "Following", unfollow_user_path(@user.username), method: :delete,
+                  class: "text-sm font-semibold border border-zinc-500 hover:border-white rounded-full px-5 py-2 transition-colors bg-transparent text-white cursor-pointer" %>
+          <% else %>
+            <%= button_to "Follow", follow_user_path(@user.username),
+                  class: "text-sm font-bold bg-white text-black rounded-full px-5 py-2 hover:scale-105 transition-transform cursor-pointer" %>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    </div>
+
   </div>
 </div>
 

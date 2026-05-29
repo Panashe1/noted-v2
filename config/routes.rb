@@ -34,6 +34,8 @@ Rails.application.routes.draw do
     delete "/follow",     to: "follows#destroy",     as: :unfollow_user
     get    "/following",  to: "users#following",     as: :user_following
     get    "/followers",  to: "users#followers",     as: :user_followers
+    get    "/settings",   to: "users#settings",      as: :user_settings
+    patch  "/settings",   to: "users#update_settings"
   end
 
   get "/discover", to: "recommendations#index", as: :recommendations

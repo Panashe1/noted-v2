@@ -53,16 +53,30 @@
       <% if user_signed_in? %>
         <div class="mx-2 bg-sp-base rounded-lg px-3 py-3">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center text-sm font-bold shrink-0 select-none">
-              <%= current_user.username[0].upcase %>
-            </div>
+            <%# Avatar or gradient-initials fallback %>
+            <% if current_user.avatar.attached? %>
+              <%= image_tag url_for(current_user.avatar),
+                    alt: current_user.username,
+                    class: "w-9 h-9 rounded-full object-cover shrink-0 ring-1 ring-white/15" %>
+            <% else %>
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-sm font-bold shrink-0 select-none">
+                <%= current_user.username[0].upcase %>
+              </div>
+            <% end %>
+
             <div class="flex-1 min-w-0">
-              <%= link_to user_path(current_user.username), class: "text-sm font-semibold text-white hover:underline truncate block" do %>
-                <%= current_user.username %>
+              <%= link_to user_path(current_user.username), class: "hover:underline truncate block leading-tight" do %>
+                <% if current_user.name.present? %>
+                  <span class="text-sm font-semibold text-white block truncate"><%= current_user.name %></span>
+                  <span class="text-xs text-zinc-500 block truncate">@<%= current_user.username %></span>
+                <% else %>
+                  <span class="text-sm font-semibold text-white block truncate"><%= current_user.username %></span>
+                <% end %>
               <% end %>
             </div>
+
             <%= link_to destroy_user_session_path, data: { turbo_method: :delete },
-                  title: "Sign out", class: "text-zinc-500 hover:text-white shrink-0 transition-colors" do %>
+                  title: "Sign out", class: "text-zinc-600 hover:text-white shrink-0 transition-colors" do %>
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
               </svg>
