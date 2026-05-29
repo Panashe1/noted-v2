@@ -5,7 +5,11 @@ Rails.application.routes.draw do
 
   root "users#home"
 
-  resources :tracks, only: [:index, :show]
+  resources :tracks, only: [:index, :show] do
+    collection do
+      get :from_itunes
+    end
+  end
 
   resources :albums, only: [:index, :show] do
     collection do
