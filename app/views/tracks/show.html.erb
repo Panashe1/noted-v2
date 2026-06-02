@@ -111,6 +111,7 @@
               <label class="text-xs uppercase tracking-widest text-zinc-500 mb-1 block">Date listened</label>
               <input name="track_log[listened_on]" type="date" required
                      value="<%= Date.today %>"
+                     max="<%= Date.today %>"
                      class="w-full bg-sp-muted rounded-md px-4 py-2.5 text-sm text-zinc-300 focus:outline-none focus:ring-1 focus:ring-white/30" />
             </div>
             <label class="flex items-center gap-2 text-sm text-zinc-400 cursor-pointer pb-2.5">

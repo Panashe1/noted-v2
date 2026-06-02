@@ -4,6 +4,16 @@ class ListenLog < ApplicationRecord
 
   validates :rating,      presence: true, inclusion: { in: 1..10 }
   validates :listened_on, presence: true
+  validate  :listened_on_not_in_future
+
+  private
+
+  def listened_on_not_in_future
+    return unless listened_on.present?
+    errors.add(:listened_on, "can't be in the future") if listened_on > Date.current
+  end
+
+  public
   validates :user_id, uniqueness: {
     scope: :album_id,
     message: "you've already logged this album — edit your existing entry instead"
