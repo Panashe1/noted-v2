@@ -47,7 +47,22 @@
       "Bash(curl -v -L \"https://rss.itunes.apple.com/api/v1/us/apple-music/top-albums/all/5/explicit.json\")",
       "Bash(curl -s -L \"https://itunes.apple.com/us/rss/topalbums/limit=5/json\")",
       "Bash(python3 -c ' *)",
-      "Bash(bundle exec *)"
+      "Bash(bundle exec *)",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold+Choker&entity=album&limit=8&media=music\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Choker&entity=album&limit=8&media=music\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(r['collectionName'], '|', r['artistName']\\) for r in d['results']]\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold&entity=album&limit=8&media=music\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Choker+Heaven&entity=album&limit=8&media=music&country=us\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Choker+Heaven+Ain%27t+Sold&entity=song&limit=10&media=music\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(r.get\\('trackName'\\), '|', r.get\\('artistName'\\), '|', r.get\\('collectionName'\\), '|', r.get\\('collectionId'\\)\\) for r in d['results']]\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Choker&entity=musicArtist&limit=5\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(r.get\\('artistName'\\), '|', r.get\\('artistId'\\)\\) for r in d['results']]\")",
+      "Bash(curl -s \"https://itunes.apple.com/lookup?id=1851028227&entity=song&country=us\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold&entity=album&limit=8&media=music&country=us\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Results:', d['resultCount']\\)\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold+Choker&entity=album&limit=8&media=music&country=us&explicit=Yes\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold+Choker&entity=song&limit=25&media=music\")",
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Radiohead&entity=song&limit=25&media=music\")"
     ]
   }
 }

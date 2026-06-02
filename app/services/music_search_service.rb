@@ -5,23 +5,26 @@ class MusicSearchService
   TIMEOUT      = 5 # seconds
 
   # Search for albums matching a query string.
-  # Returns an array of hashes, e.g.:
+  # Returns an array of up to 8 hashes:
   #   [{ itunes_id:, title:, artist:, release_year:, genre:, cover_url:, apple_music_url: }, ...]
+  #
+  # Strategy: song-entity search first, album-entity search as supplement.
+  #
+  # Why song-first? iTunes' entity=album search silently omits a large number of real
+  # albums — smaller/independent artists, recent releases, and explicit albums are
+  # frequently missing. The entity=song index is far broader; deduplicating song results
+  # by collectionId reconstructs the album list and captures what album search misses.
+  # Album-entity results are then added for anything the song search didn't surface.
   def search_albums(query)
     return [] if query.blank?
 
-    response = HTTParty.get(
-      SEARCH_URL,
-      query:   { term: query, entity: "album", limit: 8, media: "music" },
-      timeout: TIMEOUT
-    )
+    song_hits  = search_albums_via_song_entity(query)
+    album_hits = search_by_album_entity(query)
 
-    return [] unless response.success?
-
-    data = JSON.parse(response.body)
-    results = data["results"] || []
-
-    results.map { |r| parse_album_result(r) }.compact
+    # Song-derived albums lead; album-entity fills in anything not already found.
+    seen_ids = song_hits.map { |a| a[:itunes_id] }.to_set
+    merged   = song_hits + album_hits.reject { |a| seen_ids.include?(a[:itunes_id]) }
+    merged.first(8)
   rescue StandardError => e
     Rails.logger.error("[MusicSearchService#search_albums] #{e.message}")
     []
@@ -112,6 +115,43 @@ class MusicSearchService
   end
 
   private
+
+  # entity=album search — good for well-catalogued mainstream releases.
+  def search_by_album_entity(query)
+    response = HTTParty.get(
+      SEARCH_URL,
+      query:   { term: query, entity: "album", limit: 8, media: "music" },
+      timeout: TIMEOUT
+    )
+    return [] unless response.success?
+
+    (JSON.parse(response.body)["results"] || []).map { |r| parse_album_result(r) }.compact
+  rescue StandardError
+    []
+  end
+
+  # entity=song search, deduplicated to unique albums by collectionId.
+  # Catches albums that iTunes doesn't surface via entity=album — common with
+  # smaller/independent artists, newer releases, and explicit albums.
+  # Song results carry identical album-level metadata fields so parse_album_result works directly.
+  def search_albums_via_song_entity(query)
+    response = HTTParty.get(
+      SEARCH_URL,
+      query:   { term: query, entity: "song", limit: 25, media: "music" },
+      timeout: TIMEOUT
+    )
+    return [] unless response.success?
+
+    seen = Set.new
+    (JSON.parse(response.body)["results"] || []).filter_map do |r|
+      cid = r["collectionId"]&.to_s
+      next if cid.nil? || seen.include?(cid)
+      seen.add(cid)
+      parse_album_result(r)
+    end
+  rescue StandardError
+    []
+  end
 
   def parse_chart_entry(entry, rank)
     itunes_id = entry.dig("id", "attributes", "im:id")
