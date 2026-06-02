@@ -1,7 +1,8 @@
 class MusicSearchService
-  SEARCH_URL  = "https://itunes.apple.com/search".freeze
-  LOOKUP_URL  = "https://itunes.apple.com/lookup".freeze
-  TIMEOUT     = 5 # seconds
+  SEARCH_URL   = "https://itunes.apple.com/search".freeze
+  LOOKUP_URL   = "https://itunes.apple.com/lookup".freeze
+  TOP_FEED_URL = "https://itunes.apple.com/us/rss/topalbums/limit=%d/json".freeze
+  TIMEOUT      = 5 # seconds
 
   # Search for albums matching a query string.
   # Returns an array of hashes, e.g.:
@@ -92,7 +93,50 @@ class MusicSearchService
     nil
   end
 
+  # Fetch the current Apple Music top albums chart.
+  # Returns an array of up to `limit` hashes:
+  #   [{ itunes_id:, title:, artist:, release_year:, cover_url:, apple_music_url:, chart_rank: }, ...]
+  def fetch_top_albums(limit: 20)
+    url      = TOP_FEED_URL % limit
+    response = HTTParty.get(url, timeout: TIMEOUT)
+
+    return [] unless response.success?
+
+    data    = JSON.parse(response.body)
+    entries = data.dig("feed", "entry") || []
+
+    entries.each_with_index.map { |e, idx| parse_chart_entry(e, idx + 1) }.compact
+  rescue StandardError => e
+    Rails.logger.error("[MusicSearchService#fetch_top_albums] #{e.message}")
+    []
+  end
+
   private
+
+  def parse_chart_entry(entry, rank)
+    itunes_id = entry.dig("id", "attributes", "im:id")
+    return nil unless itunes_id
+
+    # Images come as an array sorted by size — take the largest (170x170) and upscale
+    raw_image = entry.dig("im:image")&.last&.dig("label")
+    cover     = raw_image&.gsub(/\d+x\d+bb/, "600x600bb")
+
+    release_year = begin
+      Date.parse(entry.dig("im:releaseDate", "label")).year
+    rescue StandardError
+      nil
+    end
+
+    {
+      itunes_id:       itunes_id,
+      title:           entry.dig("im:name", "label"),
+      artist:          entry.dig("im:artist", "label"),
+      release_year:    release_year,
+      cover_url:       cover,
+      apple_music_url: entry.dig("link", "attributes", "href"),
+      chart_rank:      rank
+    }
+  end
 
   def parse_track_result(result)
     return nil unless result["trackId"] && result["collectionId"]

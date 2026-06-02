@@ -10,7 +10,14 @@ class AlbumsController < ApplicationController
   end
 
   def index
-    @albums = Album.order(created_at: :desc).page(params[:page])
+    @albums     = Album.order(created_at: :desc).page(params[:page])
+    @top_albums = MusicSearchService.new.fetch_top_albums(limit: 20)
+
+    # Pre-load local albums that match chart entries — one query, used by the view
+    # to show community ratings and correct link destinations without N+1 lookups.
+    chart_itunes_ids      = @top_albums.map { |a| a[:itunes_id] }
+    local_albums          = Album.where(itunes_id: chart_itunes_ids).index_by(&:itunes_id)
+    @chart_local_albums   = local_albums
   end
 
   # GET /albums/from_itunes?itunes_id=123456
