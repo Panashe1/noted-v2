@@ -18,8 +18,10 @@
         style="font-family: 'Inter', sans-serif;"
         data-controller="modal">
 
-    <%# ── Sidebar ── %>
-    <aside class="w-60 shrink-0 flex flex-col gap-2 py-2 overflow-y-auto bg-sp-black">
+    <%# ══════════════════════════════════════════════════ %>
+    <%# ── Desktop sidebar (hidden on mobile) ── %>
+    <%# ══════════════════════════════════════════════════ %>
+    <aside class="hidden lg:flex w-60 shrink-0 flex-col gap-2 py-2 overflow-y-auto bg-sp-black">
 
       <div class="px-6 pt-4 pb-1">
         <%= link_to root_path do %>
@@ -53,7 +55,6 @@
       <% if user_signed_in? %>
         <div class="mx-2 bg-sp-base rounded-lg px-3 py-3">
           <div class="flex items-center gap-3">
-            <%# Avatar or gradient-initials fallback %>
             <% if current_user.avatar.attached? %>
               <%= image_tag url_for(current_user.avatar),
                     alt: current_user.username,
@@ -92,8 +93,10 @@
 
     </aside>
 
+    <%# ══════════════════════════════════════════════════ %>
     <%# ── Main content ── %>
-    <div class="flex-1 overflow-y-auto bg-sp-base rounded-tl-lg" id="main-content">
+    <%# ══════════════════════════════════════════════════ %>
+    <div class="flex-1 overflow-y-auto bg-sp-base lg:rounded-tl-lg pb-20 lg:pb-0" id="main-content">
 
       <% if notice.present? %>
         <div class="flash-message fixed top-4 right-4 z-40 bg-sp-green text-black text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 pointer-events-none">
@@ -110,22 +113,70 @@
       <%= yield %>
     </div>
 
+    <%# ══════════════════════════════════════════════════ %>
+    <%# ── Mobile bottom nav (hidden on desktop) ── %>
+    <%# ══════════════════════════════════════════════════ %>
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-sp-black border-t border-white/10 flex items-stretch">
+
+      <% mobile_active = ->(path) { current_page?(path) ? "text-white" : "text-zinc-500" } %>
+
+      <%# Profile %>
+      <% mp = user_signed_in? ? user_path(current_user.username) : new_user_session_path %>
+      <%= link_to mp, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(mp)} hover:text-white" do %>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        <span class="text-[9px] font-semibold">Profile</span>
+      <% end %>
+
+      <%# Albums %>
+      <%= link_to albums_path, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(albums_path)} hover:text-white" do %>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+        <span class="text-[9px] font-semibold">Albums</span>
+      <% end %>
+
+      <%# Log button — centre FAB (signed-in) or empty slot (signed-out) %>
+      <div class="flex-1 flex items-center justify-center py-1">
+        <% if user_signed_in? %>
+          <button data-action="click->modal#open"
+                  class="w-11 h-11 rounded-full bg-sp-green flex items-center justify-center shadow-lg hover:bg-sp-green2 active:scale-95 transition-all">
+            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </button>
+        <% end %>
+      </div>
+
+      <%# Tracks %>
+      <%= link_to tracks_path, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(tracks_path)} hover:text-white" do %>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        <span class="text-[9px] font-semibold">Tracks</span>
+      <% end %>
+
+      <%# Discover %>
+      <%= link_to recommendations_path, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(recommendations_path)} hover:text-white" do %>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <span class="text-[9px] font-semibold">Discover</span>
+      <% end %>
+
+    </nav>
+
+    <%# ══════════════════════════════════════════════════ %>
     <%# ── Log Album Modal ── %>
+    <%# ══════════════════════════════════════════════════ %>
     <% if user_signed_in? %>
       <div data-modal-target="panel"
            data-controller="log-flow"
-           class="hidden fixed inset-0 z-50 items-center justify-center"
+           class="hidden fixed inset-0 z-50 items-end lg:items-center justify-center"
            data-action="click->modal#closeBtn">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
 
-        <%# Modal card — clicks inside the card are stopped from reaching the backdrop handler %>
-        <div class="relative bg-sp-raised rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden"
+        <%# Bottom sheet on mobile, centred card on desktop %>
+        <div class="relative bg-sp-raised rounded-t-2xl lg:rounded-2xl w-full lg:max-w-lg lg:mx-4 shadow-2xl max-h-[92vh] overflow-y-auto"
              data-action="click->modal#stopPropagation">
 
+          <%# Drag handle (mobile hint) %>
+          <div class="lg:hidden mx-auto mt-3 mb-1 w-10 h-1 rounded-full bg-white/20"></div>
+
           <%# ── Header ── %>
-          <div class="flex justify-between items-center px-7 pt-6 pb-4">
+          <div class="flex justify-between items-center px-5 lg:px-7 pt-4 lg:pt-6 pb-4">
             <div class="flex items-center gap-2">
-              <%# Back button — only visible on step 2 %>
               <button type="button"
                       data-action="click->log-flow#goBack"
                       data-log-flow-target="backBtn"
@@ -141,7 +192,7 @@
           </div>
 
           <%# ══ STEP 1: Search ══ %>
-          <div data-log-flow-target="step1" class="px-7 pb-7">
+          <div data-log-flow-target="step1" class="px-5 lg:px-7 pb-6 lg:pb-7">
             <input type="text"
                    placeholder="Search for an album…"
                    autocomplete="off"
@@ -149,10 +200,8 @@
                    data-action="input->log-flow#onSearchInput"
                    class="w-full bg-sp-input rounded-md px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/30 mb-3" />
 
-            <%# Results injected here by the controller %>
-            <div data-log-flow-target="searchResults" class="space-y-0.5 max-h-72 overflow-y-auto"></div>
+            <div data-log-flow-target="searchResults" class="space-y-0.5 max-h-56 lg:max-h-72 overflow-y-auto"></div>
 
-            <%# Divider + manual fallback %>
             <div class="mt-4 border-t border-white/10 pt-4">
               <p class="text-xs text-zinc-500 text-center mb-3">Can't find it? Add manually:</p>
               <button type="button"
@@ -164,12 +213,10 @@
           </div>
 
           <%# ══ STEP 2: Preview + log form ══ %>
-          <div data-log-flow-target="step2" class="hidden px-7 pb-7">
-            <%# Album art, title, tracklist injected here %>
+          <div data-log-flow-target="step2" class="hidden px-5 lg:px-7 pb-6 lg:pb-7">
             <div data-log-flow-target="previewArea"></div>
 
             <%= form_with url: listen_logs_path, method: :post, data: { "log-flow-target": "logForm" } do %>
-              <%# Hidden album metadata — populated by log_flow_controller.js %>
               <input type="hidden" name="album[title]"           data-log-flow-target="formTitle" />
               <input type="hidden" name="album[artist]"          data-log-flow-target="formArtist" />
               <input type="hidden" name="album[release_year]"    data-log-flow-target="formYear" />
@@ -192,7 +239,7 @@
 
               <div class="mb-4">
                 <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Rating</p>
-                <div class="flex gap-1.5">
+                <div class="flex gap-1 flex-wrap">
                   <% (1..10).each do |i| %>
                     <label class="rating-option cursor-pointer">
                       <input type="radio" name="listen_log[rating]" value="<%= i %>" class="sr-only" />

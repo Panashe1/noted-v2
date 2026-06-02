@@ -1,11 +1,11 @@
 <% content_for :title, "Find People — Noted" %>
 
-<div class="h-48 bg-gradient-to-b from-violet-900 via-zinc-950/80 to-zinc-950 px-8 pt-10 flex flex-col justify-end pb-6">
+<div class="h-40 sm:h-48 bg-gradient-to-b from-violet-900 via-zinc-950/80 to-zinc-950 px-4 sm:px-8 pt-8 sm:pt-10 flex flex-col justify-end pb-5 sm:pb-6">
   <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Community</p>
-  <h1 class="text-4xl font-extrabold text-white">Find People</h1>
+  <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Find People</h1>
 </div>
 
-<div class="px-8 py-8 max-w-2xl">
+<div class="px-4 sm:px-8 py-6 sm:py-8 max-w-2xl">
 
   <%# Search form — auto-submits into the Turbo Frame below %>
   <%= form_with url: user_search_path, method: :get,

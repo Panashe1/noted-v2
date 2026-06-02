@@ -26,16 +26,16 @@
   </div>
 
 <%# ── Profile hero ── %>
-<div class="h-64 bg-gradient-to-b from-indigo-950 via-zinc-950/60 to-zinc-950 px-8 pt-8 flex items-end pb-6">
-  <div class="flex items-end gap-6 w-full">
+<div class="min-h-[14rem] sm:h-64 bg-gradient-to-b from-indigo-950 via-zinc-950/60 to-zinc-950 px-4 sm:px-8 pt-6 sm:pt-8 flex items-end pb-5 sm:pb-6">
+  <div class="flex items-end gap-4 sm:gap-6 w-full">
 
     <%# Avatar ── real photo or gradient-initials fallback %>
     <% if @user.avatar.attached? %>
       <%= image_tag url_for(@user.avatar),
             alt: @user.username,
-            class: "w-28 h-28 rounded-full object-cover shadow-2xl ring-2 ring-white/15 shrink-0" %>
+            class: "w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover shadow-2xl ring-2 ring-white/15 shrink-0" %>
     <% else %>
-      <div class="w-28 h-28 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-4xl font-black shadow-2xl shrink-0 select-none ring-2 ring-white/15">
+      <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-3xl sm:text-4xl font-black shadow-2xl shrink-0 select-none ring-2 ring-white/15">
         <%= @user.username[0].upcase %>
       </div>
     <% end %>
@@ -45,10 +45,10 @@
 
       <%# Show display name as headline when set, username as subtitle %>
       <% if @user.name.present? %>
-        <h1 class="text-3xl font-extrabold text-white leading-tight"><%= @user.name %></h1>
+        <h1 class="text-xl sm:text-3xl font-extrabold text-white leading-tight"><%= @user.name %></h1>
         <p class="text-zinc-400 text-sm mt-0.5">@<%= @user.username %></p>
       <% else %>
-        <h1 class="text-3xl font-extrabold text-white">@<%= @user.username %></h1>
+        <h1 class="text-xl sm:text-3xl font-extrabold text-white">@<%= @user.username %></h1>
       <% end %>
 
       <div class="flex items-center gap-4 mt-2 text-sm text-zinc-400 flex-wrap">
@@ -101,7 +101,7 @@
   </div>
 </div>
 
-<div class="px-8 py-6 space-y-10">
+<div class="px-4 sm:px-8 py-5 sm:py-6 space-y-8 sm:space-y-10">
 
   <%# ── AI taste profile ── %>
   <% taste = @own_profile ? @taste_profile : @user.ai_taste_profile %>

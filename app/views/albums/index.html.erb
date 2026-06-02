@@ -1,13 +1,13 @@
 <% content_for :title, "Albums — Noted" %>
 
 <%# ── Page hero ── %>
-<div class="h-56 bg-gradient-to-b from-blue-900 via-zinc-950/80 to-zinc-950 px-8 pt-10 flex flex-col justify-end pb-6">
+<div class="h-44 sm:h-56 bg-gradient-to-b from-blue-900 via-zinc-950/80 to-zinc-950 px-4 sm:px-8 pt-8 sm:pt-10 flex flex-col justify-end pb-5 sm:pb-6">
   <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Music</p>
   <h1 class="text-4xl font-extrabold text-white">Albums</h1>
   <p class="text-zinc-400 text-sm mt-1">Apple Music charts · community logs</p>
 </div>
 
-<div class="px-8 py-8 space-y-12">
+<div class="px-3 sm:px-8 py-6 sm:py-8 space-y-10 sm:space-y-12">
 
   <%# ════════════════════════════════════════ %>
   <%# ── Top Charts section ── %>
@@ -98,7 +98,7 @@
     </div>
 
     <% if @albums.any? %>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5">
         <% @albums.each do |album| %>
           <%= link_to album_path(album), class: "group bg-sp-surface hover:bg-sp-raised rounded-lg p-4 transition-all cursor-pointer block" do %>
             <div class="aspect-square rounded-md mb-4 shadow-md group-hover:shadow-lg transition-shadow overflow-hidden">

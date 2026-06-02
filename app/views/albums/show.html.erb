@@ -1,25 +1,26 @@
 <% content_for :title, "#{@album.title} — Noted" %>
 
-<%# ── Hero (colour-shifts when we have real art) ── %>
+<%# ── Hero ── %>
 <div class="relative">
-  <div class="h-72 bg-gradient-to-b from-zinc-800 via-zinc-950/80 to-transparent px-8 pt-8 flex items-end pb-6">
-    <div class="flex items-end gap-6">
-      <%# Album art — real or gradient fallback %>
+  <div class="h-52 sm:h-72 bg-gradient-to-b from-zinc-800 via-zinc-950/80 to-transparent px-4 sm:px-8 pt-6 sm:pt-8 flex items-end pb-5 sm:pb-6">
+    <div class="flex items-end gap-4 sm:gap-6 w-full min-w-0">
+
+      <%# Album art %>
       <% if @album.cover_url.present? %>
         <img src="<%= @album.cover_url %>"
              alt="<%= @album.title %>"
-             class="w-44 h-44 rounded-lg shadow-2xl object-cover shrink-0" />
+             class="w-28 h-28 sm:w-44 sm:h-44 rounded-lg shadow-2xl object-cover shrink-0" />
       <% else %>
-        <div class="w-44 h-44 rounded-lg shadow-2xl bg-gradient-to-br <%= album_gradient(@album) %> to-zinc-900 shrink-0 flex items-center justify-center">
-          <svg class="w-20 h-20 text-white/20" viewBox="0 0 24 24" fill="currentColor">
+        <div class="w-28 h-28 sm:w-44 sm:h-44 rounded-lg shadow-2xl bg-gradient-to-br <%= album_gradient(@album) %> to-zinc-900 shrink-0 flex items-center justify-center">
+          <svg class="w-12 h-12 sm:w-20 sm:h-20 text-white/20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/>
           </svg>
         </div>
       <% end %>
 
-      <div class="pb-1">
+      <div class="pb-1 min-w-0 flex-1">
         <p class="text-xs uppercase tracking-widest text-zinc-300 mb-1">Album</p>
-        <h1 class="text-4xl font-extrabold text-white leading-tight"><%= @album.title %></h1>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight truncate"><%= @album.title %></h1>
         <div class="flex items-center gap-2 mt-2 text-sm flex-wrap">
           <span class="font-semibold text-white"><%= @album.artist %></span>
           <% if @album.release_year %>
@@ -27,8 +28,8 @@
             <span class="text-zinc-400"><%= @album.release_year %></span>
           <% end %>
           <% if @album.genre %>
-            <span class="text-zinc-500">·</span>
-            <span class="text-zinc-400"><%= @album.genre %></span>
+            <span class="text-zinc-500 hidden sm:inline">·</span>
+            <span class="text-zinc-400 hidden sm:inline"><%= @album.genre %></span>
           <% end %>
           <% if @album.average_rating %>
             <span class="text-zinc-500">·</span>
@@ -37,9 +38,9 @@
           <span class="text-zinc-500">·</span>
           <span class="text-zinc-400"><%= @album.log_count %> <%= @album.log_count == 1 ? "log" : "logs" %></span>
           <% if @album.apple_music_url.present? %>
-            <span class="text-zinc-500">·</span>
+            <span class="text-zinc-500 hidden sm:inline">·</span>
             <%= link_to "Apple Music", @album.apple_music_url, target: "_blank", rel: "noopener",
-                  class: "text-sp-green hover:underline text-xs font-semibold" %>
+                  class: "text-sp-green hover:underline text-xs font-semibold hidden sm:inline" %>
           <% end %>
         </div>
       </div>
@@ -47,7 +48,7 @@
   </div>
 </div>
 
-<div class="px-8 py-6 space-y-8">
+<div class="px-4 sm:px-8 py-5 sm:py-6 space-y-6 sm:space-y-8">
 
   <%# ── Tracklist ── %>
   <% if @album_tracks.any? %>
@@ -56,14 +57,14 @@
       <div class="bg-sp-surface rounded-xl overflow-hidden">
         <% @album_tracks.each do |track| %>
           <%= link_to track_path(track),
-                class: "flex items-center gap-4 px-5 py-2.5 hover:bg-sp-card transition-colors border-b border-white/5 last:border-0 group" do %>
+                class: "flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 hover:bg-sp-card transition-colors border-b border-white/5 last:border-0 group" do %>
             <span class="text-xs text-zinc-600 w-5 text-right shrink-0"><%= track.position %></span>
-            <span class="flex-1 text-sm text-zinc-200 group-hover:text-white transition-colors"><%= track.title %></span>
+            <span class="flex-1 text-sm text-zinc-200 group-hover:text-white transition-colors truncate"><%= track.title %></span>
             <% if (avg = @track_ratings[track.id]) %>
               <span class="text-xs font-bold tabular-nums shrink-0 <%= rating_color(avg) %>"><%= avg %></span>
             <% end %>
             <% if (dur = track.duration_formatted) %>
-              <span class="text-xs text-zinc-500 shrink-0"><%= dur %></span>
+              <span class="text-xs text-zinc-500 shrink-0 hidden sm:inline"><%= dur %></span>
             <% end %>
           <% end %>
         <% end %>
@@ -73,7 +74,7 @@
 
   <%# ── AI context card ── %>
   <% if @album.ai_context.present? %>
-    <div class="bg-sp-surface rounded-xl p-5 border-l-4 border-sp-green">
+    <div class="bg-sp-surface rounded-xl p-4 sm:p-5 border-l-4 border-sp-green">
       <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Context</p>
       <p class="text-zinc-300 text-sm leading-relaxed"><%= @album.ai_context %></p>
     </div>
@@ -81,16 +82,16 @@
 
   <%# ── Your log ── %>
   <% if @user_log %>
-    <div class="bg-sp-surface rounded-xl p-5">
-      <div class="flex justify-between items-start mb-3">
+    <div class="bg-sp-surface rounded-xl p-4 sm:p-5">
+      <div class="flex justify-between items-start mb-3 gap-3">
         <div>
           <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1">Your log</p>
           <span class="text-2xl font-extrabold <%= rating_color(@user_log.rating) %>"><%= @user_log.rating %><span class="text-zinc-600 text-base font-normal">/10</span></span>
         </div>
-        <div class="flex gap-3 text-sm">
-          <%= link_to "Edit", edit_listen_log_path(@user_log), class: "text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-full px-4 py-1.5 transition-colors text-xs font-semibold" %>
+        <div class="flex gap-2 text-sm shrink-0">
+          <%= link_to "Edit", edit_listen_log_path(@user_log), class: "text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-full px-3 sm:px-4 py-1.5 transition-colors text-xs font-semibold" %>
           <%= button_to "Remove", listen_log_path(@user_log), method: :delete,
-                class: "text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-900 rounded-full px-4 py-1.5 transition-colors text-xs font-semibold bg-transparent cursor-pointer" %>
+                class: "text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-900 rounded-full px-3 sm:px-4 py-1.5 transition-colors text-xs font-semibold bg-transparent cursor-pointer" %>
         </div>
       </div>
       <% if @user_log.review.present? %>
@@ -107,16 +108,18 @@
       <h2 class="text-xl font-bold mb-4">Community reviews</h2>
       <div class="space-y-3">
         <% community_logs.each do |log| %>
-          <div class="bg-sp-surface hover:bg-sp-card rounded-xl p-5 transition-colors">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex items-center gap-3">
+          <div class="bg-sp-surface hover:bg-sp-card rounded-xl p-4 sm:p-5 transition-colors">
+            <div class="flex items-start justify-between mb-2 gap-3">
+              <div class="flex items-center gap-3 min-w-0">
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-xs font-bold shrink-0">
                   <%= log.user.username[0].upcase %>
                 </div>
-                <%= link_to "@#{log.user.username}", user_path(log.user.username), class: "text-sm font-semibold text-white hover:underline" %>
-                <span class="text-xs text-zinc-500"><%= log.listened_on.strftime("%b %-d, %Y") %></span>
+                <div class="min-w-0">
+                  <%= link_to "@#{log.user.username}", user_path(log.user.username), class: "text-sm font-semibold text-white hover:underline truncate block" %>
+                  <span class="text-xs text-zinc-500"><%= log.listened_on.strftime("%b %-d, %Y") %></span>
+                </div>
               </div>
-              <span class="text-lg font-extrabold <%= rating_color(log.rating) %>"><%= log.rating %><span class="text-zinc-600 text-xs font-normal">/10</span></span>
+              <span class="text-lg font-extrabold shrink-0 <%= rating_color(log.rating) %>"><%= log.rating %><span class="text-zinc-600 text-xs font-normal">/10</span></span>
             </div>
             <% if log.review.present? %>
               <p class="text-zinc-300 text-sm leading-relaxed mt-1"><%= log.review %></p>
