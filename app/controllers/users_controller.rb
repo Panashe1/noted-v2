@@ -92,7 +92,7 @@ class UsersController < ApplicationController
     # Extra data only loaded when viewing your own profile
     if user_signed_in? && @user == current_user
       @own_profile     = true
-      @recent_logs     = @logs.first(10)
+      @recent_logs     = @logs.first(20)
       @following_logs  = ListenLog.includes(:user, :album)
                                   .where(user: current_user.following)
                                   .order(created_at: :desc)

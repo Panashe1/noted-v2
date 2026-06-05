@@ -125,12 +125,17 @@
   <%# ════════ Own-profile sections ════════ %>
   <% if @own_profile %>
 
-    <%# Recently logged grid %>
+    <%# Recently logged — grid on mobile, fanned deck on tablet/desktop. %>
     <% if @recent_logs.any? %>
       <section>
-        <h2 class="text-xl font-bold mb-4">Recently logged</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          <% @recent_logs.each do |log| %>
+        <div class="flex items-center gap-3 mb-4">
+          <h2 class="text-xl font-bold">Recently logged</h2>
+          <span class="hidden lg:inline text-xs text-zinc-600">hover to browse</span>
+        </div>
+
+        <%# ── Mobile (< sm): classic grid ── %>
+        <div class="grid grid-cols-2 gap-4 sm:hidden">
+          <% @recent_logs.first(10).each do |log| %>
             <%= link_to album_path(log.album), class: "group bg-sp-surface hover:bg-sp-raised rounded-lg p-3 transition-colors cursor-pointer block" do %>
               <div class="aspect-square rounded-md mb-3 shadow-md overflow-hidden relative">
                 <% if log.album.cover_url(size: 300).present? %>
@@ -145,6 +150,38 @@
               </div>
               <p class="font-semibold text-xs text-white truncate"><%= log.album.title %></p>
               <p class="text-xs text-zinc-500 truncate mt-0.5"><%= log.album.artist %></p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <%# ── Tablet/Desktop (sm+): fanned deck ──
+            Reversed so the most-recent log lands rightmost AND on top of the stack.
+            overflow-x-auto lets the fan scroll when it exceeds the viewport; the
+            vertical padding gives the hover lift/scale room so it's never clipped. %>
+        <div class="hidden sm:flex items-center overflow-x-auto overflow-y-hidden pt-12 pb-6 pr-12 [scrollbar-width:thin]">
+          <% @recent_logs.reverse.each_with_index do |log, i| %>
+            <%= link_to album_path(log.album),
+                  title: "#{log.album.title} — #{log.album.artist}",
+                  class: "group relative shrink-0 block w-36 aspect-square rounded-lg overflow-hidden shadow-lg ring-1 ring-white/10 transition-all duration-300 ease-out hover:scale-110 hover:-translate-y-4 hover:z-40 hover:shadow-2xl hover:ring-white/40 #{'-ml-20' unless i.zero?}" do %>
+
+              <%# Cover art or gradient fallback %>
+              <% if log.album.cover_url(size: 300).present? %>
+                <img src="<%= log.album.cover_url(size: 300) %>" alt="<%= log.album.title %>"
+                     class="w-full h-full object-cover" />
+              <% else %>
+                <div class="w-full h-full bg-gradient-to-br <%= album_gradient(log.album) %> to-zinc-900 flex items-center justify-center">
+                  <svg class="w-12 h-12 text-white/20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+                </div>
+              <% end %>
+
+              <%# Rating badge — always visible, pinned top-left %>
+              <span class="absolute top-1.5 left-1.5 text-xs font-bold text-white bg-black/60 px-1.5 py-0.5 rounded z-10"><%= log.rating %>/10</span>
+
+              <%# Title/artist caption — fades in on hover %>
+              <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p class="font-semibold text-xs text-white truncate"><%= log.album.title %></p>
+                <p class="text-[11px] text-zinc-300 truncate"><%= log.album.artist %></p>
+              </div>
             <% end %>
           <% end %>
         </div>
