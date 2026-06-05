@@ -87,4 +87,14 @@ class AlbumGenreFilterTest < ActionDispatch::IntegrationTest
     assert_match "Top Albums", response.body
     assert_match "ChartHit",   response.body
   end
+
+  test "album cards break out of the filter frame to avoid Turbo 'Content missing'" do
+    # Album cards link to the show page, which has no community-library frame —
+    # they must carry data-turbo-frame=_top so they navigate the whole page.
+    get_index(genres: ["Rock"])
+    rock = Album.find_by(title: "ZRock1")
+    # Must target _top so the card navigates the whole page instead of loading the
+    # show page (which has no community-library frame) into the filter frame.
+    assert_select %(a[href="#{album_path(rock)}"][data-turbo-frame="_top"])
+  end
 end

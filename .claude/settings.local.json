@@ -68,7 +68,8 @@
       "Bash(bundle show *)",
       "Bash(grep -rn 'def turbo_frame_request' __TRACKED_VAR__/app __TRACKED_VAR__/lib)",
       "Bash(bin/rails test *)",
-      "Bash(cd /Users/panashemugayapi/code/noted-v2 *)"
+      "Bash(cd /Users/panashemugayapi/code/noted-v2 *)",
+      "Bash(echo \"EXIT=$?\")"
     ]
   }
 }

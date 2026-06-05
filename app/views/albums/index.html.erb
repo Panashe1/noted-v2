@@ -133,7 +133,9 @@
       <% if @albums.any? %>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5">
           <% @albums.each do |album| %>
-            <%= link_to album_path(album), class: "group bg-sp-surface hover:bg-sp-raised rounded-lg p-4 transition-all cursor-pointer block" do %>
+            <%# turbo_frame: "_top" so the card navigates the whole page, not within the filter frame %>
+            <%= link_to album_path(album), data: { turbo_frame: "_top" },
+                  class: "group bg-sp-surface hover:bg-sp-raised rounded-lg p-4 transition-all cursor-pointer block" do %>
               <div class="aspect-square rounded-md mb-4 shadow-md group-hover:shadow-lg transition-shadow overflow-hidden">
                 <% if album.cover_url(size: 300).present? %>
                   <img src="<%= album.cover_url(size: 300) %>"
