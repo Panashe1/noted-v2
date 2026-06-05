@@ -87,6 +87,7 @@ class TracksController < ApplicationController
           new_track.title       = t[:title]
           new_track.position    = t[:position]
           new_track.duration_ms = t[:duration_ms]
+          new_track.genre       = t[:genre]
         end
       end
 

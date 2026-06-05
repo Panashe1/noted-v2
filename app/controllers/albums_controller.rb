@@ -10,14 +10,26 @@ class AlbumsController < ApplicationController
   end
 
   def index
-    @albums     = Album.order(created_at: :desc).page(params[:page])
-    @top_albums = MusicSearchService.new.fetch_top_albums(limit: 20)
+    # Genre filter — the available options and the currently-active selection.
+    # Intersecting with @genres sanitises the params against arbitrary/stale values.
+    @genres        = Album.where.not(genre: [nil, ""]).distinct.order(:genre).pluck(:genre)
+    @active_genres = Array(params[:genres]).select(&:present?) & @genres
 
-    # Pre-load local albums that match chart entries — one query, used by the view
-    # to show community ratings and correct link destinations without N+1 lookups.
-    chart_itunes_ids      = @top_albums.map { |a| a[:itunes_id] }
-    local_albums          = Album.where(itunes_id: chart_itunes_ids).index_by(&:itunes_id)
-    @chart_local_albums   = local_albums
+    scope   = Album.order(created_at: :desc)
+    scope   = scope.where(genre: @active_genres) if @active_genres.any?
+    @albums = scope.page(params[:page])
+
+    # The iTunes charts are only needed on a full page render. When the genre
+    # filter refreshes just the Community Library Turbo Frame, skip the external
+    # call entirely — the charts section is gated on @top_albums.any?.
+    if turbo_frame_request?
+      @top_albums         = []
+      @chart_local_albums = {}
+    else
+      @top_albums         = MusicSearchService.new.fetch_top_albums(limit: 20)
+      chart_itunes_ids    = @top_albums.map { |a| a[:itunes_id] }
+      @chart_local_albums = Album.where(itunes_id: chart_itunes_ids).index_by(&:itunes_id)
+    end
   end
 
   # GET /albums/from_itunes?itunes_id=123456

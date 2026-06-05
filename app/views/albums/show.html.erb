@@ -23,13 +23,13 @@
         <h1 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight truncate"><%= @album.title %></h1>
         <div class="flex items-center gap-2 mt-2 text-sm flex-wrap">
           <span class="font-semibold text-white"><%= @album.artist %></span>
+          <% if @album.genre.present? %>
+            <span class="text-zinc-500">·</span>
+            <span class="text-zinc-400"><%= @album.genre %></span>
+          <% end %>
           <% if @album.release_year %>
             <span class="text-zinc-500">·</span>
             <span class="text-zinc-400"><%= @album.release_year %></span>
-          <% end %>
-          <% if @album.genre %>
-            <span class="text-zinc-500 hidden sm:inline">·</span>
-            <span class="text-zinc-400 hidden sm:inline"><%= @album.genre %></span>
           <% end %>
           <% if @album.average_rating %>
             <span class="text-zinc-500">·</span>

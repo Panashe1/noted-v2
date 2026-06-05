@@ -14,6 +14,7 @@ class TrackImportJob < ApplicationJob
         track.title       = t[:title]
         track.position    = t[:position]
         track.duration_ms = t[:duration_ms]
+        track.genre       = t[:genre]
       end
     end
 

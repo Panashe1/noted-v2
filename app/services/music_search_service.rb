@@ -83,7 +83,8 @@ class MusicSearchService
         title:           t["trackName"],
         position:        t["trackNumber"].to_i,
         duration_ms:     t["trackTimeMillis"].to_i,
-        itunes_track_id: t["trackId"].to_s
+        itunes_track_id: t["trackId"].to_s,
+        genre:           t["primaryGenreName"]
       }
     end
 
@@ -172,6 +173,7 @@ class MusicSearchService
       title:           entry.dig("im:name", "label"),
       artist:          entry.dig("im:artist", "label"),
       release_year:    release_year,
+      genre:           entry.dig("category", "attributes", "label"),
       cover_url:       cover,
       apple_music_url: entry.dig("link", "attributes", "href"),
       chart_rank:      rank
@@ -204,6 +206,7 @@ class MusicSearchService
       position:        result["trackNumber"].to_i,
       cover_url:       result["artworkUrl100"]&.gsub("100x100bb", "60x60bb"),
       release_year:    year,
+      genre:           result["primaryGenreName"],
       is_single:       result["collectionType"] == "Single"
     }
   end

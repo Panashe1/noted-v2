@@ -62,7 +62,13 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Results:', d['resultCount']\\)\")",
       "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold+Choker&entity=album&limit=8&media=music&country=us&explicit=Yes\")",
       "Bash(curl -s \"https://itunes.apple.com/search?term=Heaven+Ain%27t+Sold+Choker&entity=song&limit=25&media=music\")",
-      "Bash(curl -s \"https://itunes.apple.com/search?term=Radiohead&entity=song&limit=25&media=music\")"
+      "Bash(curl -s \"https://itunes.apple.com/search?term=Radiohead&entity=song&limit=25&media=music\")",
+      "Bash(python3 -c \"import sys,json; r=json.load\\(sys.stdin\\)['results'][0]; print\\({k:v for k,v in r.items\\(\\) if 'enre' in k}\\)\")",
+      "Bash(bin/rails runner ' *)",
+      "Bash(bundle show *)",
+      "Bash(grep -rn 'def turbo_frame_request' __TRACKED_VAR__/app __TRACKED_VAR__/lib)",
+      "Bash(bin/rails test *)",
+      "Bash(cd /Users/panashemugayapi/code/noted-v2 *)"
     ]
   }
 }
