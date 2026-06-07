@@ -1,0 +1,60 @@
+en:
+  activerecord:
+    # Human-readable model names (used by full error messages, helpers, etc.)
+    models:
+      user: "user"
+      album: "album"
+      track: "track"
+      listen_log: "log"
+      track_log: "track log"
+      follow: "follow"
+
+    # Human-readable attribute names (prepended to full error messages and used
+    # by Model.human_attribute_name).
+    attributes:
+      user:
+        username: "Username"
+        email: "Email"
+        password: "Password"
+        name: "Display name"
+        bio: "Bio"
+        avatar: "Avatar"
+      listen_log:
+        rating: "Rating"
+        review: "Review"
+        listened_on: "Date listened"
+        is_relisten: "Relisten"
+        user_id: "User"
+      track_log:
+        rating: "Rating"
+        review: "Review"
+        listened_on: "Date listened"
+        is_relisten: "Relisten"
+        user_id: "User"
+
+    # Custom validation messages (built-in ones like blank/taken/too_long come
+    # from rails-i18n). Keys are referenced from the models as symbols.
+    errors:
+      models:
+        user:
+          attributes:
+            username:
+              invalid_format: "lowercase letters, numbers, underscores only"
+            avatar:
+              invalid_type: "must be a JPEG, PNG, GIF, or WebP image"
+        listen_log:
+          attributes:
+            listened_on:
+              future: "can't be in the future"
+            user_id:
+              taken_album: "you've already logged this album — edit your existing entry instead"
+        track_log:
+          attributes:
+            listened_on:
+              future: "can't be in the future"
+            user_id:
+              taken_track: "you've already logged this track — edit your existing entry instead"
+        follow:
+          attributes:
+            base:
+              self_follow: "You can't follow yourself"

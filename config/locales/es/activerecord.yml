@@ -1,0 +1,55 @@
+es:
+  activerecord:
+    models:
+      user: "usuario"
+      album: "álbum"
+      track: "canción"
+      listen_log: "registro"
+      track_log: "registro de canción"
+      follow: "seguimiento"
+
+    attributes:
+      user:
+        username: "Nombre de usuario"
+        email: "Correo electrónico"
+        password: "Contraseña"
+        name: "Nombre"
+        bio: "Biografía"
+        avatar: "Foto de perfil"
+      listen_log:
+        rating: "Valoración"
+        review: "Reseña"
+        listened_on: "Fecha de escucha"
+        is_relisten: "Reescucha"
+        user_id: "Usuario"
+      track_log:
+        rating: "Valoración"
+        review: "Reseña"
+        listened_on: "Fecha de escucha"
+        is_relisten: "Reescucha"
+        user_id: "Usuario"
+
+    errors:
+      models:
+        user:
+          attributes:
+            username:
+              invalid_format: "solo letras minúsculas, números y guiones bajos"
+            avatar:
+              invalid_type: "debe ser una imagen JPEG, PNG, GIF o WebP"
+        listen_log:
+          attributes:
+            listened_on:
+              future: "no puede estar en el futuro"
+            user_id:
+              taken_album: "ya has registrado este álbum — edita tu entrada existente"
+        track_log:
+          attributes:
+            listened_on:
+              future: "no puede estar en el futuro"
+            user_id:
+              taken_track: "ya has registrado esta canción — edita tu entrada existente"
+        follow:
+          attributes:
+            base:
+              self_follow: "No puedes seguirte a ti mismo"

@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_many :followers, through: :passive_follows, source: :follower
 
   validates :username, presence: true, uniqueness: { case_sensitive: false },
-                       format: { with: /\A[a-z0-9_]+\z/, message: "lowercase letters, numbers, underscores only" }
+                       format: { with: /\A[a-z0-9_]+\z/, message: :invalid_format }
   validates :name, length: { maximum: 60 }, allow_blank: true
   validates :bio,  length: { maximum: 300 }, allow_blank: true
   validate  :avatar_content_type
@@ -24,7 +24,7 @@ class User < ApplicationRecord
   def avatar_content_type
     return unless avatar.attached?
     unless avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
-      errors.add(:avatar, "must be a JPEG, PNG, GIF, or WebP image")
+      errors.add(:avatar, :invalid_type)
     end
   end
 

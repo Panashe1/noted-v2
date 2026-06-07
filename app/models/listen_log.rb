@@ -10,13 +10,13 @@ class ListenLog < ApplicationRecord
 
   def listened_on_not_in_future
     return unless listened_on.present?
-    errors.add(:listened_on, "can't be in the future") if listened_on > Date.current
+    errors.add(:listened_on, :future) if listened_on > Date.current
   end
 
   public
   validates :user_id, uniqueness: {
     scope: :album_id,
-    message: "you've already logged this album — edit your existing entry instead"
+    message: :taken_album
   }
 
   after_create :maybe_regenerate_taste_profile
