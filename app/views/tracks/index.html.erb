@@ -1,9 +1,9 @@
-<% content_for :title, "Tracks — Noted" %>
+<% content_for :title, t("tracks.index.title") %>
 
 <div class="h-44 sm:h-56 bg-gradient-to-b from-rose-900 via-zinc-950/80 to-zinc-950 px-4 sm:px-8 pt-8 sm:pt-10 flex flex-col justify-end pb-5 sm:pb-6">
-  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Library</p>
-  <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Tracks</h1>
-  <p class="text-zinc-400 text-sm mt-1"><%= Track.count %> songs across <%= Album.count %> albums</p>
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1"><%= t("tracks.index.eyebrow") %></p>
+  <h1 class="text-3xl sm:text-4xl font-extrabold text-white"><%= t("tracks.index.heading") %></h1>
+  <p class="text-zinc-400 text-sm mt-1"><%= Track.count %> <%= t("units.song", count: Track.count) %> <%= t("tracks.index.across") %> <%= Album.count %> <%= t("units.album", count: Album.count) %></p>
 </div>
 
 <div class="px-3 sm:px-8 py-5 sm:py-6">
@@ -19,7 +19,7 @@
       <input type="text"
              name="q"
              value="<%= @query %>"
-             placeholder="Search tracks, albums, artists…"
+             placeholder="<%= t("tracks.index.search_placeholder") %>"
              autocomplete="off"
              data-search-target="input"
              data-action="input->search#onInput"
@@ -34,16 +34,16 @@
       <%# ── LOCAL LIBRARY RESULTS ── %>
       <% if @tracks.any? %>
         <% if @itunes_tracks.any? %>
-          <p class="text-xs uppercase tracking-widest text-zinc-500 mb-3 px-1">In your library</p>
+          <p class="text-xs uppercase tracking-widest text-zinc-500 mb-3 px-1"><%= t("tracks.index.in_your_library") %></p>
         <% end %>
 
         <%# Header row — album col hidden on mobile %>
         <div class="grid grid-cols-[1.75rem_1fr_auto_auto] sm:grid-cols-[1.75rem_1fr_auto_auto_auto] gap-2 sm:gap-4 px-3 sm:px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
           <span>#</span>
-          <span>Title</span>
-          <span class="text-right hidden sm:block">Album</span>
-          <span class="text-right">Avg</span>
-          <span class="text-right">Time</span>
+          <span><%= t("tracks.index.col_title") %></span>
+          <span class="text-right hidden sm:block"><%= t("tracks.index.col_album") %></span>
+          <span class="text-right"><%= t("tracks.index.col_avg") %></span>
+          <span class="text-right"><%= t("tracks.index.col_time") %></span>
         </div>
 
         <div class="space-y-0.5 mt-1 mb-6">
@@ -102,8 +102,8 @@
       <%# ── ITUNES RESULTS ── %>
       <% if @itunes_tracks.any? %>
         <div class="flex items-center gap-3 mb-3 px-1">
-          <p class="text-xs uppercase tracking-widest text-zinc-500">From iTunes</p>
-          <span class="text-xs text-zinc-600">tap to add &amp; log</span>
+          <p class="text-xs uppercase tracking-widest text-zinc-500"><%= t("tracks.index.from_itunes") %></p>
+          <span class="text-xs text-zinc-600"><%= t("tracks.index.from_itunes_hint") %></span>
         </div>
 
         <div class="space-y-0.5">
@@ -134,7 +134,7 @@
                       <%= t[:title] %>
                     </p>
                     <% if t[:is_single] %>
-                      <span class="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-zinc-500 border border-zinc-700 rounded px-1 py-px">Single</span>
+                      <span class="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-zinc-500 border border-zinc-700 rounded px-1 py-px"><%= t("tracks.index.single") %></span>
                     <% end %>
                   </div>
                   <p class="text-xs text-zinc-500 truncate"><%= t[:artist] %></p>
@@ -159,7 +159,7 @@
 
       <% if @tracks.empty? && @itunes_tracks.empty? %>
         <div class="text-center py-16">
-          <p class="text-zinc-500 text-sm">No tracks found for "<%= @query %>"</p>
+          <p class="text-zinc-500 text-sm"><%= t("tracks.index.no_results", query: @query) %></p>
         </div>
       <% end %>
 
@@ -167,9 +167,9 @@
       <%# ── Default full list ── %>
       <div class="grid grid-cols-[1.75rem_1fr_auto] sm:grid-cols-[1.75rem_1fr_auto_auto] gap-2 sm:gap-4 px-2 sm:px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
         <span>#</span>
-        <span>Title</span>
-        <span class="text-right hidden sm:block">Album</span>
-        <span class="text-right">Time</span>
+        <span><%= t("tracks.index.col_title") %></span>
+        <span class="text-right hidden sm:block"><%= t("tracks.index.col_album") %></span>
+        <span class="text-right"><%= t("tracks.index.col_time") %></span>
       </div>
 
       <div class="space-y-0.5 mt-1">
@@ -220,7 +220,7 @@
 
     <% else %>
       <div class="text-center py-16">
-        <p class="text-zinc-500 text-sm">No tracks yet — log some albums to populate this page.</p>
+        <p class="text-zinc-500 text-sm"><%= t("tracks.index.empty") %></p>
       </div>
     <% end %>
 

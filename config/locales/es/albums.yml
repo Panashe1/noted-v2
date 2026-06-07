@@ -1,0 +1,32 @@
+es:
+  albums:
+    index:
+      title: "Álbumes — Noted"
+      eyebrow: "Música"
+      heading: "Álbumes"
+      subtitle: "Listas de Apple Music · registros de la comunidad"
+      top_albums: "Mejores álbumes"
+      top_albums_sub: "Apple Music · actualizado a diario"
+      chart: "Lista"
+      community_library: "Biblioteca de la comunidad"
+      count_matching:
+        one: "%{count} álbum coincidente"
+        other: "%{count} álbumes coincidentes"
+      count_total:
+        one: "%{count} álbum registrado en Noted"
+        other: "%{count} álbumes registrados en Noted"
+      no_genre_results: "No hay álbumes en %{genres}"
+      try_different_genre: "Prueba otro género o borra el filtro."
+      empty_title: "Aún no hay álbumes"
+      empty_subtitle: "Sé el primero en registrar uno."
+    show:
+      title: "%{title} — Noted"
+      eyebrow: "Álbum"
+      avg_suffix: "prom."
+      apple_music: "Apple Music"
+      tracklist: "Lista de canciones"
+      context: "Contexto"
+      your_log: "Tu registro"
+      listened_prefix: "Escuchado"
+      relisten_badge: " · reescucha"
+      community_reviews: "Reseñas de la comunidad"

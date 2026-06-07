@@ -8,3 +8,19 @@ en:
   actions:
     read_more: "Read more"
     see_less: "See less"
+    edit: "Edit"
+    remove: "Remove"
+    sign_in: "Sign in"
+    clear_all: "Clear all"
+    clear_filter: "Clear filter"
+  # Shared count-nouns (the number is rendered separately in the markup)
+  units:
+    log:
+      one: "log"
+      other: "logs"
+    song:
+      one: "song"
+      other: "songs"
+    album:
+      one: "album"
+      other: "albums"

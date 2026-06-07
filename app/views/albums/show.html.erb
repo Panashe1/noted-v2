@@ -1,4 +1,4 @@
-<% content_for :title, "#{@album.title} — Noted" %>
+<% content_for :title, t("albums.show.title", title: @album.title) %>
 
 <%# ── Hero ── %>
 <div class="relative">
@@ -19,7 +19,7 @@
       <% end %>
 
       <div class="pb-1 min-w-0 flex-1">
-        <p class="text-xs uppercase tracking-widest text-zinc-300 mb-1">Album</p>
+        <p class="text-xs uppercase tracking-widest text-zinc-300 mb-1"><%= t("albums.show.eyebrow") %></p>
         <h1 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight truncate"><%= @album.title %></h1>
         <div class="flex items-center gap-2 mt-2 text-sm flex-wrap">
           <span class="font-semibold text-white"><%= @album.artist %></span>
@@ -33,13 +33,13 @@
           <% end %>
           <% if @album.average_rating %>
             <span class="text-zinc-500">·</span>
-            <span class="font-bold <%= rating_color(@album.average_rating) %>"><%= @album.average_rating %>/10 avg</span>
+            <span class="font-bold <%= rating_color(@album.average_rating) %>"><%= @album.average_rating %>/10 <%= t("albums.show.avg_suffix") %></span>
           <% end %>
           <span class="text-zinc-500">·</span>
-          <span class="text-zinc-400"><%= @album.log_count %> <%= @album.log_count == 1 ? "log" : "logs" %></span>
+          <span class="text-zinc-400"><%= @album.log_count %> <%= t("units.log", count: @album.log_count) %></span>
           <% if @album.apple_music_url.present? %>
             <span class="text-zinc-500 hidden sm:inline">·</span>
-            <%= link_to "Apple Music", @album.apple_music_url, target: "_blank", rel: "noopener",
+            <%= link_to t("albums.show.apple_music"), @album.apple_music_url, target: "_blank", rel: "noopener",
                   class: "text-sp-green hover:underline text-xs font-semibold hidden sm:inline" %>
           <% end %>
         </div>
@@ -53,7 +53,7 @@
   <%# ── Tracklist ── %>
   <% if @album_tracks.any? %>
     <section>
-      <h2 class="text-lg font-bold mb-3">Tracklist</h2>
+      <h2 class="text-lg font-bold mb-3"><%= t("albums.show.tracklist") %></h2>
       <div class="bg-sp-surface rounded-xl overflow-hidden">
         <% @album_tracks.each do |track| %>
           <%= link_to track_path(track),
@@ -75,7 +75,7 @@
   <%# ── AI context card ── %>
   <% if @album.ai_context.present? %>
     <div class="bg-sp-surface rounded-xl p-4 sm:p-5 border-l-4 border-sp-green">
-      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Context</p>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2"><%= t("albums.show.context") %></p>
       <p class="text-zinc-300 text-sm leading-relaxed"><%= @album.ai_context %></p>
     </div>
   <% end %>
@@ -85,19 +85,19 @@
     <div class="bg-sp-surface rounded-xl p-4 sm:p-5">
       <div class="flex justify-between items-start mb-3 gap-3">
         <div>
-          <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1">Your log</p>
+          <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1"><%= t("albums.show.your_log") %></p>
           <span class="text-2xl font-extrabold <%= rating_color(@user_log.rating) %>"><%= @user_log.rating %><span class="text-zinc-600 text-base font-normal">/10</span></span>
         </div>
         <div class="flex gap-2 text-sm shrink-0">
-          <%= link_to "Edit", edit_listen_log_path(@user_log), class: "text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-full px-3 sm:px-4 py-1.5 transition-colors text-xs font-semibold" %>
-          <%= button_to "Remove", listen_log_path(@user_log), method: :delete,
+          <%= link_to t("actions.edit"), edit_listen_log_path(@user_log), class: "text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-full px-3 sm:px-4 py-1.5 transition-colors text-xs font-semibold" %>
+          <%= button_to t("actions.remove"), listen_log_path(@user_log), method: :delete,
                 class: "text-zinc-400 hover:text-red-400 border border-zinc-700 hover:border-red-900 rounded-full px-3 sm:px-4 py-1.5 transition-colors text-xs font-semibold bg-transparent cursor-pointer" %>
         </div>
       </div>
       <% if @user_log.review.present? %>
         <p class="text-zinc-300 text-sm leading-relaxed"><%= @user_log.review %></p>
       <% end %>
-      <p class="text-xs text-zinc-600 mt-3">Listened <%= @user_log.listened_on.strftime("%B %-d, %Y") %><%= " · relisten" if @user_log.is_relisten %></p>
+      <p class="text-xs text-zinc-600 mt-3"><%= t("albums.show.listened_prefix") %> <%= @user_log.listened_on.strftime("%B %-d, %Y") %><%= t("albums.show.relisten_badge") if @user_log.is_relisten %></p>
     </div>
   <% end %>
 
@@ -105,7 +105,7 @@
   <% community_logs = @logs.reject { |l| l.user == current_user } %>
   <% if community_logs.any? %>
     <section>
-      <h2 class="text-xl font-bold mb-4">Community reviews</h2>
+      <h2 class="text-xl font-bold mb-4"><%= t("albums.show.community_reviews") %></h2>
       <div class="space-y-3">
         <% community_logs.each do |log| %>
           <div class="bg-sp-surface hover:bg-sp-card rounded-xl p-4 sm:p-5 transition-colors">

@@ -8,3 +8,18 @@ es:
   actions:
     read_more: "Leer más"
     see_less: "Ver menos"
+    edit: "Editar"
+    remove: "Eliminar"
+    sign_in: "Iniciar sesión"
+    clear_all: "Borrar todo"
+    clear_filter: "Borrar filtro"
+  units:
+    log:
+      one: "registro"
+      other: "registros"
+    song:
+      one: "canción"
+      other: "canciones"
+    album:
+      one: "álbum"
+      other: "álbumes"

@@ -103,7 +103,8 @@
       "Bash(curl -s http://127.0.0.1:3991/es/users/sign_in)",
       "Bash(curl -s http://127.0.0.1:3991/es/users/sign_up)",
       "Bash(pkill -f \"puma.*3991\")",
-      "Bash(pkill -f \"puma.*3992\")"
+      "Bash(pkill -f \"puma.*3992\")",
+      "Bash(pkill -f \"puma.*3993\")"
     ]
   }
 }

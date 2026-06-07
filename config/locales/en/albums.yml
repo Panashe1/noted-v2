@@ -1,0 +1,32 @@
+en:
+  albums:
+    index:
+      title: "Albums — Noted"
+      eyebrow: "Music"
+      heading: "Albums"
+      subtitle: "Apple Music charts · community logs"
+      top_albums: "Top Albums"
+      top_albums_sub: "Apple Music · updated daily"
+      chart: "Chart"
+      community_library: "Community Library"
+      count_matching:
+        one: "%{count} matching album"
+        other: "%{count} matching albums"
+      count_total:
+        one: "%{count} album logged on Noted"
+        other: "%{count} albums logged on Noted"
+      no_genre_results: "No albums in %{genres}"
+      try_different_genre: "Try a different genre or clear the filter."
+      empty_title: "No albums yet"
+      empty_subtitle: "Be the first to log one."
+    show:
+      title: "%{title} — Noted"
+      eyebrow: "Album"
+      avg_suffix: "avg"
+      apple_music: "Apple Music"
+      tracklist: "Tracklist"
+      context: "Context"
+      your_log: "Your log"
+      listened_prefix: "Listened"
+      relisten_badge: " · relisten"
+      community_reviews: "Community reviews"
