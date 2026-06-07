@@ -69,7 +69,13 @@
       "Bash(grep -rn 'def turbo_frame_request' __TRACKED_VAR__/app __TRACKED_VAR__/lib)",
       "Bash(bin/rails test *)",
       "Bash(cd /Users/panashemugayapi/code/noted-v2 *)",
-      "Bash(echo \"EXIT=$?\")"
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(bin/importmap json *)",
+      "Bash(bin/rails runner *)",
+      "Bash(RAILS_ENV=development bin/rails server -p 3987 -d)",
+      "Bash(curl -s -o /dev/null http://127.0.0.1:3987/users/sign_in)",
+      "Bash(curl -s -D - -o /tmp/login.html http://127.0.0.1:3987/users/sign_in)",
+      "Bash(curl -s -D - -o /dev/null http://127.0.0.1:3987/albums)"
     ]
   }
 }

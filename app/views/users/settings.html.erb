@@ -20,20 +20,20 @@
     <div>
       <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4">Profile picture</p>
 
-      <div class="flex items-center gap-5">
-        <%# Live preview — swapped by the JS below when a file is chosen %>
+      <div class="flex items-center gap-5" data-controller="avatar-preview">
+        <%# Live preview — swapped by the avatar-preview Stimulus controller when a file is chosen %>
         <div class="shrink-0">
           <% if @user.avatar.attached? %>
-            <img id="avatar-preview"
+            <img data-avatar-preview-target="preview"
                  src="<%= url_for(@user.avatar) %>"
                  alt="Current avatar"
                  class="w-20 h-20 rounded-full object-cover ring-2 ring-white/10" />
           <% else %>
-            <div id="avatar-preview-placeholder"
+            <div data-avatar-preview-target="placeholder"
                  class="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-3xl font-black text-white select-none ring-2 ring-white/10">
               <%= @user.username[0].upcase %>
             </div>
-            <img id="avatar-preview" src="" alt="Preview" class="w-20 h-20 rounded-full object-cover ring-2 ring-white/10 hidden" />
+            <img data-avatar-preview-target="preview" src="" alt="Preview" class="w-20 h-20 rounded-full object-cover ring-2 ring-white/10 hidden" />
           <% end %>
         </div>
 
@@ -44,15 +44,7 @@
             </svg>
             Choose photo
             <%= f.file_field :avatar, accept: "image/*", class: "sr-only",
-                  onchange: "
-                    const file = this.files[0];
-                    if (!file) return;
-                    const preview = document.getElementById('avatar-preview');
-                    const placeholder = document.getElementById('avatar-preview-placeholder');
-                    preview.src = URL.createObjectURL(file);
-                    preview.classList.remove('hidden');
-                    if (placeholder) placeholder.classList.add('hidden');
-                  " %>
+                  data: { action: "change->avatar-preview#update" } %>
           </label>
           <p class="text-xs text-zinc-600">JPEG, PNG or WebP · max 5 MB</p>
         </div>
