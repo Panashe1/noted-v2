@@ -1,0 +1,7 @@
+en:
+  app:
+    name: "noted"
+    tagline: "Log the music you love"
+  language:
+    en: "English"
+    es: "Español"

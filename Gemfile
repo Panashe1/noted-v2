@@ -16,6 +16,7 @@ gem "image_processing", "~> 1.2"
 
 # Auth
 gem "devise"
+gem "devise-i18n"          # Translations for Devise's built-in views/messages
 
 # Background jobs
 gem "sidekiq", "~> 7.0"
@@ -31,6 +32,9 @@ gem "httparty"
 # Pagination
 gem "kaminari"
 
+# Internationalization — locale data (dates, numbers, AR errors) for ~70 languages
+gem "rails-i18n"
+
 group :development, :test do
   gem "dotenv-rails"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -39,6 +43,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "faker"
+  gem "i18n-tasks"          # Finds missing/unused keys, normalizes locale YAML
 end
 
 group :development do

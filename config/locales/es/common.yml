@@ -1,0 +1,7 @@
+es:
+  app:
+    name: "noted"
+    tagline: "Registra la música que amas"
+  language:
+    en: "English"
+    es: "Español"

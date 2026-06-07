@@ -33,4 +33,14 @@ module ApplicationHelper
     else             "Good evening"
     end
   end
+
+  # URL for the current page in the given locale. The default locale is rendered
+  # unprefixed (locale: nil). Falls back to the locale-scoped root if the current
+  # route can't be regenerated with a :locale param.
+  def locale_path(locale)
+    target = (locale.to_sym == I18n.default_locale ? nil : locale)
+    url_for(locale: target)
+  rescue ActionController::UrlGenerationError, ActionController::RoutingError
+    root_path(locale: target)
+  end
 end

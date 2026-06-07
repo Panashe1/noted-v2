@@ -78,7 +78,19 @@
       "Bash(curl -s -D - -o /dev/null http://127.0.0.1:3987/albums)",
       "Bash(RAILS_ENV=development bin/rails server -p 3988 -d)",
       "Bash(curl -s -o /dev/null http://127.0.0.1:3988/users/sign_in)",
-      "Bash(curl -s -D - -o /tmp/su.html http://127.0.0.1:3988/users/sign_in)"
+      "Bash(curl -s -D - -o /tmp/su.html http://127.0.0.1:3988/users/sign_in)",
+      "Bash(grep -vE \"^\\\\s*#|^\\\\s*$\" Gemfile)",
+      "Bash(bundle install *)",
+      "Bash(bin/rails routes *)",
+      "Bash(RAILS_ENV=development bin/rails server -p 3989 -d)",
+      "Bash(curl -s -o /dev/null http://127.0.0.1:3989/users/sign_in)",
+      "Bash(curl -s http://127.0.0.1:3989/users/sign_in)",
+      "Bash(curl -s http://127.0.0.1:3989/es/users/sign_in)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:3989/fr/users/sign_in)",
+      "Bash(pkill -f \"puma.*398\")",
+      "Bash(RAILS_ENV=development bin/rails server -p 3990)",
+      "Bash(curl -s http://127.0.0.1:3990/es/users/sign_in)",
+      "Bash(pkill -f \"puma.*3990\")"
     ]
   }
 }

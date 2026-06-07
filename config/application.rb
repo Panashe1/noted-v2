@@ -42,5 +42,13 @@ module NotedV2
     config.active_job.queue_adapter = :sidekiq
 
     config.autoload_paths << Rails.root.join("app/services")
+
+    # ── Internationalization ──────────────────────────────────────────
+    # Load nested locale files: config/locales/en/*.yml, config/locales/es/*.yml
+    config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**", "*.yml")]
+    config.i18n.available_locales = [:en, :es]
+    config.i18n.default_locale    = :en
+    # Fall back to the default locale for any key missing in another locale.
+    config.i18n.fallbacks = [:en]
   end
 end
