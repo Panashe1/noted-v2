@@ -21,6 +21,20 @@
   --sp-subtle:  #B4C5E4;   /* muted / secondary text  */
 }
 
+/* ── Base element styles ───────────────────────────── */
+/* App-wide font. Previously an inline style="" on <body>; moved here so the
+   CSP can drop 'unsafe-inline' from style-src. */
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* ── Brand ─────────────────────────────────────────── */
+/* The "noted" wordmark. Replaces inline letter-spacing styles in the layout
+   sidebar and the Devise auth pages. */
+.wordmark {
+  letter-spacing: -0.03em;
+}
+
 /* Background utilities */
 .bg-sp-black   { background-color: var(--sp-black); }
 .bg-sp-base    { background-color: var(--sp-base); }

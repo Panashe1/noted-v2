@@ -19,11 +19,12 @@ Rails.application.configure do
     # importmap bootstrap scripts are permitted through the nonce, NOT 'unsafe-inline'.
     policy.script_src       :self
 
-    # 'unsafe_inline' is required for inline style="" attributes (e.g. font-family,
-    # letter-spacing in the layout) and Turbo's injected progress-bar <style>.
-    # Inline style *attributes* cannot carry a nonce, so style-src is deliberately
-    # NOT added to the nonce directives below — a nonce would void 'unsafe-inline'.
-    policy.style_src        :self, :unsafe_inline, "https://fonts.googleapis.com"
+    # No 'unsafe-inline': all inline style="" attributes have been moved into
+    # app/assets/stylesheets/application.css. The only runtime inline <style> is
+    # Turbo's progress bar, which Turbo nonces from the csp-nonce meta tag, so
+    # style-src is added to the nonce directives below. The Google Fonts stylesheet
+    # is an external <link> permitted via the host source.
+    policy.style_src        :self, "https://fonts.googleapis.com"
 
     # Google Fonts font files.
     policy.font_src         :self, "https://fonts.gstatic.com"
@@ -38,11 +39,11 @@ Rails.application.configure do
     policy.connect_src      :self
   end
 
-  # Per-request nonce for the inline importmap bootstrap scripts.
-  # Only script-src is nonced — keeping style-src on 'unsafe-inline' (above) so
-  # inline style attributes keep working.
+  # Per-request nonce for inline tags Rails/Hotwire emit:
+  #   script-src -> importmap bootstrap scripts
+  #   style-src  -> Turbo's injected progress-bar <style>
   config.content_security_policy_nonce_generator = ->(_request) { SecureRandom.base64(16) }
-  config.content_security_policy_nonce_directives = %w[script-src]
+  config.content_security_policy_nonce_directives = %w[script-src style-src]
 
   # To audit without breaking anything, flip this on, watch the browser console
   # for violations, then turn it back off to enforce.

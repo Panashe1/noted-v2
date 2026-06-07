@@ -75,7 +75,10 @@
       "Bash(RAILS_ENV=development bin/rails server -p 3987 -d)",
       "Bash(curl -s -o /dev/null http://127.0.0.1:3987/users/sign_in)",
       "Bash(curl -s -D - -o /tmp/login.html http://127.0.0.1:3987/users/sign_in)",
-      "Bash(curl -s -D - -o /dev/null http://127.0.0.1:3987/albums)"
+      "Bash(curl -s -D - -o /dev/null http://127.0.0.1:3987/albums)",
+      "Bash(RAILS_ENV=development bin/rails server -p 3988 -d)",
+      "Bash(curl -s -o /dev/null http://127.0.0.1:3988/users/sign_in)",
+      "Bash(curl -s -D - -o /tmp/su.html http://127.0.0.1:3988/users/sign_in)"
     ]
   }
 }
