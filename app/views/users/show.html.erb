@@ -1,7 +1,9 @@
-<% content_for :title, "@#{@user.username} — Noted" %>
+<% content_for :title, t("users.show.title", username: @user.username) %>
 
 <%# ── Follows modal — controlled by follows-modal Stimulus controller ── %>
-<div data-controller="follows-modal">
+<div data-controller="follows-modal"
+     data-follows-modal-loading-value="<%= t("users.show.loading") %>"
+     data-follows-modal-error-value="<%= t("users.show.load_error") %>">
 
   <div data-follows-modal-target="panel"
        class="hidden fixed inset-0 z-50 items-center justify-center"
@@ -13,7 +15,7 @@
 
       <%# Modal header %>
       <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/10 shrink-0">
-        <h3 class="text-lg font-bold text-white" data-follows-modal-target="title">Following</h3>
+        <h3 class="text-lg font-bold text-white" data-follows-modal-target="title"><%= t("users.show.following_title") %></h3>
         <button data-action="click->follows-modal#closeBtn"
                 class="w-8 h-8 flex items-center justify-center rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-colors">
           ✕
@@ -41,7 +43,7 @@
     <% end %>
 
     <div class="flex-1 pb-1 min-w-0">
-      <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Profile</p>
+      <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1"><%= t("users.show.profile_label") %></p>
 
       <%# Show display name as headline when set, username as subtitle %>
       <% if @user.name.present? %>
@@ -52,22 +54,22 @@
       <% end %>
 
       <div class="flex items-center gap-4 mt-2 text-sm text-zinc-400 flex-wrap">
-        <span><strong class="text-white"><%= @user.listen_logs.count %></strong> logs</span>
+        <span><strong class="text-white"><%= @user.listen_logs.count %></strong> <%= t("users.logs", count: @user.listen_logs.count) %></span>
 
         <%# Following + Followers are wrapped together so they never split across lines %>
         <span class="flex items-center gap-4">
           <button data-action="click->follows-modal#open"
                   data-url="<%= user_following_path(@user.username) %>"
-                  data-title="Following"
+                  data-title="<%= t("users.show.following_title") %>"
                   class="hover:text-white transition-colors cursor-pointer">
-            <strong class="text-white"><%= @user.following.count %></strong> following
+            <strong class="text-white"><%= @user.following.count %></strong> <%= t("users.show.following_label") %>
           </button>
 
           <button data-action="click->follows-modal#open"
                   data-url="<%= user_followers_path(@user.username) %>"
-                  data-title="Followers"
+                  data-title="<%= t("users.show.followers_title") %>"
                   class="hover:text-white transition-colors cursor-pointer">
-            <strong class="text-white"><%= @user.followers.count %></strong> followers
+            <strong class="text-white"><%= @user.followers.count %></strong> <%= t("users.show.followers_label") %>
           </button>
         </span>
       </div>
@@ -85,16 +87,16 @@
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.22-.07.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
           </svg>
-          Settings
+          <%= t("users.show.settings") %>
         <% end %>
 
       <% elsif user_signed_in? %>
         <%= turbo_frame_tag "follow_#{@user.id}" do %>
           <% if @is_following %>
-            <%= button_to "Following", unfollow_user_path(@user.username), method: :delete,
+            <%= button_to t("users.show.following_button"), unfollow_user_path(@user.username), method: :delete,
                   class: "text-sm font-semibold border border-zinc-500 hover:border-white rounded-full px-5 py-2 transition-colors bg-transparent text-white cursor-pointer" %>
           <% else %>
-            <%= button_to "Follow", follow_user_path(@user.username),
+            <%= button_to t("users.show.follow"), follow_user_path(@user.username),
                   class: "text-sm font-bold bg-white text-black rounded-full px-5 py-2 hover:scale-105 transition-transform cursor-pointer" %>
           <% end %>
         <% end %>
@@ -109,15 +111,17 @@
   <%# ── AI taste profile ── %>
   <% taste = @own_profile ? @taste_profile : @user.ai_taste_profile %>
   <% if taste.present? %>
-    <div class="bg-sp-surface rounded-xl p-5 border-l-4 border-sp-green" data-controller="clamp">
-      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Taste profile</p>
+    <div class="bg-sp-surface rounded-xl p-5 border-l-4 border-sp-green" data-controller="clamp"
+         data-clamp-more-text-value="<%= t("actions.read_more") %>"
+         data-clamp-less-text-value="<%= t("actions.see_less") %>">
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2"><%= t("users.show.taste_profile") %></p>
       <%# Desktop: always fully expanded. Tablet/mobile: clamped to 3 lines until "Read more" is tapped. %>
       <p data-clamp-target="content" class="text-zinc-300 text-sm leading-relaxed line-clamp-3 lg:line-clamp-none">
         <%= taste %>
       </p>
       <button data-clamp-target="toggle" data-action="click->clamp#toggle"
               class="lg:hidden mt-2 text-xs font-semibold text-sp-green hover:underline focus:outline-none">
-        Read more
+        <%= t("actions.read_more") %>
       </button>
     </div>
   <% end %>
@@ -129,8 +133,8 @@
     <% if @recent_logs.any? %>
       <section>
         <div class="flex items-center gap-3 mb-4">
-          <h2 class="text-xl font-bold">Recently logged</h2>
-          <span class="hidden lg:inline text-xs text-zinc-600">hover to browse</span>
+          <h2 class="text-xl font-bold"><%= t("users.show.recently_logged") %></h2>
+          <span class="hidden lg:inline text-xs text-zinc-600"><%= t("users.show.hover_to_browse") %></span>
         </div>
 
         <%# ── Mobile (< sm): classic grid ── %>
@@ -191,7 +195,7 @@
     <%# Friends activity %>
     <% if @following_logs.any? %>
       <section>
-        <h2 class="text-xl font-bold mb-4">Friends activity</h2>
+        <h2 class="text-xl font-bold mb-4"><%= t("users.show.friends_activity") %></h2>
         <div class="space-y-1">
           <% @following_logs.each do |log| %>
             <div class="flex items-center gap-4 px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors">
@@ -230,18 +234,18 @@
 
     <%# Section header + tab switcher %>
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold"><%= @own_profile ? "All your logs" : "Listening history" %></h2>
+      <h2 class="text-xl font-bold"><%= @own_profile ? t("users.show.all_your_logs") : t("users.show.listening_history") %></h2>
 
       <div class="flex gap-1 bg-sp-surface rounded-lg p-1">
         <button data-tabs-target="tab"
                 data-action="click->tabs#switch"
                 class="text-xs font-semibold px-3 py-1.5 rounded-md transition-colors text-white bg-sp-card">
-          Albums <span class="ml-1 text-zinc-500 font-normal"><%= @logs.size %></span>
+          <%= t("users.show.tab_albums") %> <span class="ml-1 text-zinc-500 font-normal"><%= @logs.size %></span>
         </button>
         <button data-tabs-target="tab"
                 data-action="click->tabs#switch"
                 class="text-xs font-semibold px-3 py-1.5 rounded-md transition-colors text-zinc-400 bg-transparent">
-          Tracks <span class="ml-1 text-zinc-500 font-normal"><%= @track_logs.size %></span>
+          <%= t("users.show.tab_tracks") %> <span class="ml-1 text-zinc-500 font-normal"><%= @track_logs.size %></span>
         </button>
       </div>
     </div>
@@ -251,8 +255,8 @@
       <% if @logs.any? %>
         <div class="grid grid-cols-[2rem_1fr_auto] gap-4 px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
           <span>#</span>
-          <span>Album</span>
-          <span class="text-right">Rating</span>
+          <span><%= t("users.show.col_album") %></span>
+          <span class="text-right"><%= t("users.show.col_rating") %></span>
         </div>
 
         <div class="space-y-0.5 mt-1">
@@ -293,7 +297,7 @@
       <% else %>
         <div class="text-center py-16">
           <p class="text-zinc-500 text-sm">
-            <%= @own_profile ? "Nothing logged yet — hit Log an album to get started." : "No album logs yet." %>
+            <%= @own_profile ? t("users.show.empty_albums_own") : t("users.show.empty_albums_other") %>
           </p>
         </div>
       <% end %>
@@ -304,8 +308,8 @@
       <% if @track_logs.any? %>
         <div class="grid grid-cols-[2rem_1fr_auto] gap-4 px-4 pb-2 border-b border-zinc-800 text-xs uppercase tracking-widest text-zinc-500">
           <span>#</span>
-          <span>Track</span>
-          <span class="text-right">Rating</span>
+          <span><%= t("users.show.col_track") %></span>
+          <span class="text-right"><%= t("users.show.col_rating") %></span>
         </div>
 
         <div class="space-y-0.5 mt-1">
@@ -349,7 +353,7 @@
       <% else %>
         <div class="text-center py-16">
           <p class="text-zinc-500 text-sm">
-            <%= @own_profile ? "No tracks logged yet — head to a track page to log one." : "No track logs yet." %>
+            <%= @own_profile ? t("users.show.empty_tracks_own") : t("users.show.empty_tracks_other") %>
           </p>
         </div>
       <% end %>

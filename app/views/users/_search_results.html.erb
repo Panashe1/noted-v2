@@ -18,9 +18,9 @@
             @<%= user.username %>
           <% end %>
           <p class="text-xs text-zinc-500 mt-0.5">
-            <%= user.listen_logs.count %> logs
+            <%= user.listen_logs.count %> <%= t("users.logs", count: user.listen_logs.count) %>
             <span class="text-zinc-700 mx-1">·</span>
-            <%= user.followers.count %> <%= user.followers.count == 1 ? "follower" : "followers" %>
+            <%= user.followers.count %> <%= t("users.followers_count", count: user.followers.count) %>
           </p>
         </div>
 
@@ -28,10 +28,10 @@
         <% if user_signed_in? %>
           <%= turbo_frame_tag "follow_#{user.id}", class: "shrink-0" do %>
             <% if current_user.following.include?(user) %>
-              <%= button_to "Following", unfollow_user_path(user.username), method: :delete,
+              <%= button_to t("users.follow_list.following"), unfollow_user_path(user.username), method: :delete,
                     class: "text-sm font-semibold border border-zinc-600 hover:border-white rounded-full px-4 py-1.5 transition-colors bg-transparent text-white cursor-pointer" %>
             <% else %>
-              <%= button_to "Follow", follow_user_path(user.username),
+              <%= button_to t("users.follow_list.follow"), follow_user_path(user.username),
                     class: "text-sm font-bold bg-white text-black rounded-full px-4 py-1.5 hover:scale-105 transition-transform cursor-pointer" %>
             <% end %>
           <% end %>
@@ -43,7 +43,7 @@
 
 <% elsif query.length >= 2 %>
   <div class="text-center py-16">
-    <p class="text-zinc-500 text-sm">No users found for "<%= query %>"</p>
+    <p class="text-zinc-500 text-sm"><%= t("users.search.no_results", query: query) %></p>
   </div>
 
 <% else %>
@@ -51,6 +51,6 @@
     <svg class="w-12 h-12 mx-auto mb-3 opacity-40" viewBox="0 0 24 24" fill="currentColor">
       <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
     </svg>
-    <p class="text-sm">Type a username to find people</p>
+    <p class="text-sm"><%= t("users.search.prompt") %></p>
   </div>
 <% end %>

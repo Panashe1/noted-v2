@@ -5,3 +5,6 @@ en:
   language:
     en: "English"
     es: "Español"
+  actions:
+    read_more: "Read more"
+    see_less: "See less"

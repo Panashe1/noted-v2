@@ -1,4 +1,4 @@
-<% content_for :title, "Settings — Noted" %>
+<% content_for :title, t("users.settings.title") %>
 
 <div class="max-w-lg mx-auto px-4 sm:px-6 py-8 sm:py-10">
 
@@ -8,17 +8,17 @@
     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
       <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
     </svg>
-    Back to profile
+    <%= t("users.settings.back") %>
   <% end %>
 
-  <h1 class="text-2xl font-extrabold text-white mb-8">Profile settings</h1>
+  <h1 class="text-2xl font-extrabold text-white mb-8"><%= t("users.settings.heading") %></h1>
 
   <%= form_with model: @user, url: user_settings_path(@user.username),
         method: :patch, multipart: true, class: "space-y-8" do |f| %>
 
     <%# ── Avatar ── %>
     <div>
-      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4">Profile picture</p>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4"><%= t("users.settings.profile_picture") %></p>
 
       <div class="flex items-center gap-5" data-controller="avatar-preview">
         <%# Live preview — swapped by the avatar-preview Stimulus controller when a file is chosen %>
@@ -42,43 +42,43 @@
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
             </svg>
-            Choose photo
+            <%= t("users.settings.choose_photo") %>
             <%= f.file_field :avatar, accept: "image/*", class: "sr-only",
                   data: { action: "change->avatar-preview#update" } %>
           </label>
-          <p class="text-xs text-zinc-600">JPEG, PNG or WebP · max 5 MB</p>
+          <p class="text-xs text-zinc-600"><%= t("users.settings.avatar_hint") %></p>
         </div>
       </div>
     </div>
 
     <%# ── Name ── %>
     <div>
-      <%= f.label :name, "Display name",
+      <%= f.label :name, t("users.settings.display_name"),
             class: "text-xs uppercase tracking-widest text-zinc-500 mb-2 block" %>
       <%= f.text_field :name,
-            placeholder: "Your full name (optional)",
+            placeholder: t("users.settings.name_placeholder"),
             maxlength: 60,
             class: "w-full bg-sp-surface border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sp-green/50 focus:border-sp-green transition" %>
     </div>
 
     <%# ── Bio ── %>
     <div>
-      <%= f.label :bio, "Bio",
+      <%= f.label :bio, t("users.settings.bio"),
             class: "text-xs uppercase tracking-widest text-zinc-500 mb-2 block" %>
       <%= f.text_area :bio,
-            placeholder: "Say something about yourself… (optional)",
+            placeholder: t("users.settings.bio_placeholder"),
             maxlength: 300,
             rows: 4,
             class: "w-full bg-sp-surface border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-sp-green/50 focus:border-sp-green transition resize-none" %>
-      <p class="text-xs text-zinc-600 mt-1.5 text-right">max 300 characters</p>
+      <p class="text-xs text-zinc-600 mt-1.5 text-right"><%= t("users.settings.bio_hint") %></p>
     </div>
 
     <%# ── Username (read-only, for reference) ── %>
     <div>
-      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2">Username</p>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-2"><%= t("users.settings.username") %></p>
       <p class="text-sm text-zinc-400 bg-sp-surface border border-white/10 rounded-lg px-4 py-3">
         @<%= @user.username %>
-        <span class="text-zinc-700 ml-2 text-xs">· not editable here</span>
+        <span class="text-zinc-700 ml-2 text-xs"><%= t("users.settings.username_locked") %></span>
       </p>
     </div>
 
@@ -92,7 +92,7 @@
     <% end %>
 
     <%# ── Save ── %>
-    <%= f.submit "Save changes",
+    <%= f.submit t("users.settings.save"),
           class: "w-full bg-sp-green font-bold py-3 rounded-full hover:bg-sp-green2 hover:scale-[1.02] transition-all cursor-pointer" %>
 
   <% end %>

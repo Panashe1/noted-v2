@@ -8,6 +8,9 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["panel", "title", "content"]
 
+  // Localized strings supplied from the view via data-follows-modal-*-value.
+  static values = { loading: String, error: String }
+
   async open(event) {
     const url   = event.currentTarget.dataset.url
     const title = event.currentTarget.dataset.title
@@ -15,7 +18,7 @@ export default class extends Controller {
     // Show modal with loading state immediately
     this.titleTarget.textContent   = title
     this.contentTarget.innerHTML   = `
-      <div class="flex items-center justify-center py-16 text-zinc-500 text-sm">Loading…</div>`
+      <div class="flex items-center justify-center py-16 text-zinc-500 text-sm">${this.loadingValue}</div>`
     this.panelTarget.classList.remove("hidden")
     this.panelTarget.classList.add("flex")
     document.body.style.overflow = "hidden"
@@ -28,7 +31,7 @@ export default class extends Controller {
       this.contentTarget.innerHTML = await res.text()
     } catch {
       this.contentTarget.innerHTML =
-        `<p class="text-red-400 text-sm text-center py-12">Couldn't load list. Try again.</p>`
+        `<p class="text-red-400 text-sm text-center py-12">${this.errorValue}</p>`
     }
   }
 

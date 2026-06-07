@@ -16,7 +16,7 @@
           <%= link_to "@#{u.username}", user_path(u.username),
                 data: { turbo_frame: "_top" },
                 class: "font-semibold text-sm text-white hover:underline truncate block" %>
-          <p class="text-xs text-zinc-500"><%= u.listen_logs.count %> logs</p>
+          <p class="text-xs text-zinc-500"><%= u.listen_logs.count %> <%= t("users.logs", count: u.listen_logs.count) %></p>
         </div>
 
         <%# Follow button — hidden for current user, otherwise shows relationship state %>
@@ -26,13 +26,13 @@
 
           <%= turbo_frame_tag "follow_#{u.id}", class: "shrink-0" do %>
             <% if i_follow_them %>
-              <%= button_to "Following", unfollow_user_path(u.username), method: :delete,
+              <%= button_to t("users.follow_list.following"), unfollow_user_path(u.username), method: :delete,
                     class: "text-xs font-semibold border border-zinc-600 hover:border-red-500 hover:text-red-400 rounded-full px-3 py-1.5 transition-colors bg-transparent text-white cursor-pointer" %>
             <% elsif they_follow_me %>
-              <%= button_to "Follow back", follow_user_path(u.username),
+              <%= button_to t("users.follow_list.follow_back"), follow_user_path(u.username),
                     class: "text-xs font-bold bg-sp-green text-black rounded-full px-3 py-1.5 hover:bg-sp-green2 transition-colors cursor-pointer" %>
             <% else %>
-              <%= button_to "Follow", follow_user_path(u.username),
+              <%= button_to t("users.follow_list.follow"), follow_user_path(u.username),
                     class: "text-xs font-bold bg-white text-black rounded-full px-3 py-1.5 hover:scale-105 transition-transform cursor-pointer" %>
             <% end %>
           <% end %>
@@ -43,6 +43,6 @@
   </div>
 <% else %>
   <div class="text-center py-12 text-zinc-600">
-    <p class="text-sm">Nobody here yet.</p>
+    <p class="text-sm"><%= t("users.follow_list.empty") %></p>
   </div>
 <% end %>

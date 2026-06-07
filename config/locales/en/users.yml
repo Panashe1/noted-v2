@@ -1,0 +1,68 @@
+en:
+  users:
+    # Shared word-only plurals (count rendered separately in the markup)
+    logs:
+      one: "log"
+      other: "logs"
+    followers_count:
+      one: "follower"
+      other: "followers"
+
+    show:
+      title: "@%{username} — Noted"
+      profile_label: "Profile"
+      following_label: "following"
+      followers_label: "followers"
+      following_title: "Following"
+      followers_title: "Followers"
+      settings: "Settings"
+      follow: "Follow"
+      following_button: "Following"
+      taste_profile: "Taste profile"
+      recently_logged: "Recently logged"
+      hover_to_browse: "hover to browse"
+      friends_activity: "Friends activity"
+      all_your_logs: "All your logs"
+      listening_history: "Listening history"
+      tab_albums: "Albums"
+      tab_tracks: "Tracks"
+      col_album: "Album"
+      col_track: "Track"
+      col_rating: "Rating"
+      empty_albums_own: "Nothing logged yet — hit Log an album to get started."
+      empty_albums_other: "No album logs yet."
+      empty_tracks_own: "No tracks logged yet — head to a track page to log one."
+      empty_tracks_other: "No track logs yet."
+      # follows-modal Stimulus controller (client-rendered)
+      loading: "Loading…"
+      load_error: "Couldn't load list. Try again."
+
+    settings:
+      title: "Settings — Noted"
+      back: "Back to profile"
+      heading: "Profile settings"
+      profile_picture: "Profile picture"
+      choose_photo: "Choose photo"
+      avatar_hint: "JPEG, PNG or WebP · max 5 MB"
+      display_name: "Display name"
+      name_placeholder: "Your full name (optional)"
+      bio: "Bio"
+      bio_placeholder: "Say something about yourself… (optional)"
+      bio_hint: "max 300 characters"
+      username: "Username"
+      username_locked: "· not editable here"
+      save: "Save changes"
+
+    search:
+      title: "Find People — Noted"
+      community: "Community"
+      heading: "Find People"
+      placeholder: "Search by username…"
+      no_results: 'No users found for "%{query}"'
+      prompt: "Type a username to find people"
+
+    follow_list:
+      following: "Following"
+      follow: "Follow"
+      follow_back: "Follow back"
+      empty: "Nobody here yet."

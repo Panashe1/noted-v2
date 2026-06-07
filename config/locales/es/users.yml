@@ -1,0 +1,66 @@
+es:
+  users:
+    logs:
+      one: "registro"
+      other: "registros"
+    followers_count:
+      one: "seguidor"
+      other: "seguidores"
+
+    show:
+      title: "@%{username} — Noted"
+      profile_label: "Perfil"
+      following_label: "siguiendo"
+      followers_label: "seguidores"
+      following_title: "Siguiendo"
+      followers_title: "Seguidores"
+      settings: "Configuración"
+      follow: "Seguir"
+      following_button: "Siguiendo"
+      taste_profile: "Perfil de gustos"
+      recently_logged: "Registrado recientemente"
+      hover_to_browse: "pasa el cursor para explorar"
+      friends_activity: "Actividad de amigos"
+      all_your_logs: "Todos tus registros"
+      listening_history: "Historial de escucha"
+      tab_albums: "Álbumes"
+      tab_tracks: "Canciones"
+      col_album: "Álbum"
+      col_track: "Canción"
+      col_rating: "Valoración"
+      empty_albums_own: "Aún no has registrado nada — pulsa Registrar un álbum para empezar."
+      empty_albums_other: "Aún no hay registros de álbumes."
+      empty_tracks_own: "Aún no has registrado canciones — ve a la página de una canción para registrarla."
+      empty_tracks_other: "Aún no hay registros de canciones."
+      loading: "Cargando…"
+      load_error: "No se pudo cargar la lista. Inténtalo de nuevo."
+
+    settings:
+      title: "Configuración — Noted"
+      back: "Volver al perfil"
+      heading: "Configuración del perfil"
+      profile_picture: "Foto de perfil"
+      choose_photo: "Elegir foto"
+      avatar_hint: "JPEG, PNG o WebP · máx. 5 MB"
+      display_name: "Nombre"
+      name_placeholder: "Tu nombre completo (opcional)"
+      bio: "Biografía"
+      bio_placeholder: "Cuéntanos algo sobre ti… (opcional)"
+      bio_hint: "máx. 300 caracteres"
+      username: "Nombre de usuario"
+      username_locked: "· no editable aquí"
+      save: "Guardar cambios"
+
+    search:
+      title: "Buscar personas — Noted"
+      community: "Comunidad"
+      heading: "Buscar personas"
+      placeholder: "Busca por nombre de usuario…"
+      no_results: 'No se encontraron usuarios para "%{query}"'
+      prompt: "Escribe un nombre de usuario para buscar personas"
+
+    follow_list:
+      following: "Siguiendo"
+      follow: "Seguir"
+      follow_back: "Seguir también"
+      empty: "Aún no hay nadie aquí."

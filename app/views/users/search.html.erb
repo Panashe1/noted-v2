@@ -1,8 +1,8 @@
-<% content_for :title, "Find People — Noted" %>
+<% content_for :title, t("users.search.title") %>
 
 <div class="h-40 sm:h-48 bg-gradient-to-b from-violet-900 via-zinc-950/80 to-zinc-950 px-4 sm:px-8 pt-8 sm:pt-10 flex flex-col justify-end pb-5 sm:pb-6">
-  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">Community</p>
-  <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Find People</h1>
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1"><%= t("users.search.community") %></p>
+  <h1 class="text-3xl sm:text-4xl font-extrabold text-white"><%= t("users.search.heading") %></h1>
 </div>
 
 <div class="px-4 sm:px-8 py-6 sm:py-8 max-w-2xl">
@@ -18,7 +18,7 @@
       <input type="text"
              name="q"
              value="<%= @query %>"
-             placeholder="Search by username…"
+             placeholder="<%= t("users.search.placeholder") %>"
              autofocus
              autocomplete="off"
              data-search-target="input"
