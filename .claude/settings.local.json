@@ -90,7 +90,8 @@
       "Bash(pkill -f \"puma.*398\")",
       "Bash(RAILS_ENV=development bin/rails server -p 3990)",
       "Bash(curl -s http://127.0.0.1:3990/es/users/sign_in)",
-      "Bash(pkill -f \"puma.*3990\")"
+      "Bash(pkill -f \"puma.*3990\")",
+      "Bash(PARALLEL_WORKERS=1 bin/rails test test/)"
     ]
   }
 }

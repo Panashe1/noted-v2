@@ -16,6 +16,15 @@ if Gem::Version.new(Minitest::VERSION) >= Gem::Version.new("6")
   end
 end
 
+# The app's routes are wrapped in an optional (:locale) scope. In the running app,
+# ApplicationController#default_url_options supplies :locale so positional route args
+# (e.g. track_path(@track)) fill :id. Test-context url helpers (both the directly
+# included helpers and those proxied to the integration session) don't inherit that,
+# so the positional arg gets consumed by the optional :locale segment and raises
+# UrlGenerationError. Providing :locale on the route set itself covers every path;
+# a per-request controller (e.g. for :es) still overrides this.
+Rails.application.routes.default_url_options[:locale] = nil
+
 # Devise test helpers for controller/integration tests
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers

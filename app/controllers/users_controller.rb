@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   def update_settings
     @user = current_user
     if @user.update(settings_params)
-      redirect_to user_path(@user.username), notice: "Profile updated!"
+      redirect_to user_path(@user.username), notice: t("flash.users.profile_updated")
     else
       render :settings, status: :unprocessable_entity
     end
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
   def require_own_profile
     unless current_user.username == params[:username]
-      redirect_to user_path(current_user.username), alert: "Not authorised."
+      redirect_to user_path(current_user.username), alert: t("flash.users.not_authorised")
     end
   end
 

@@ -1,0 +1,21 @@
+en:
+  flash:
+    albums:
+      no_id: "No album ID supplied."
+      not_found: "Couldn't find that album. Try again."
+    tracks:
+      missing_info: "Missing track info."
+      itunes_failed: "Couldn't load that track from iTunes. Try again."
+      added_to_library: "Added to library! Find your track by searching for it."
+    track_logs:
+      not_found: "Track not found."
+      created: "Track logged!"
+      updated: "Log updated!"
+      removed: "Log removed."
+    listen_logs:
+      created: "Logged!"
+      updated: "Updated."
+      removed: "Log removed."
+    users:
+      profile_updated: "Profile updated!"
+      not_authorised: "Not authorised."

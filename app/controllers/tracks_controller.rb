@@ -43,7 +43,7 @@ class TracksController < ApplicationController
     itunes_album_id = params[:itunes_album_id].to_s.strip
 
     if itunes_track_id.blank? || itunes_album_id.blank?
-      redirect_to tracks_path, alert: "Missing track info." and return
+      redirect_to tracks_path, alert: t("flash.tracks.missing_info") and return
     end
 
     # Already have this track locally? Jump straight there.
@@ -54,7 +54,7 @@ class TracksController < ApplicationController
     result = MusicSearchService.new.fetch_album_with_tracks(itunes_album_id)
 
     if result.nil?
-      redirect_to tracks_path, alert: "Couldn't load that track from iTunes. Try again." and return
+      redirect_to tracks_path, alert: t("flash.tracks.itunes_failed") and return
     end
 
     album_data = result[:album]
@@ -98,7 +98,7 @@ class TracksController < ApplicationController
     if track
       redirect_to track_path(track)
     else
-      redirect_to tracks_path, notice: "Added to library! Find your track by searching for it."
+      redirect_to tracks_path, notice: t("flash.tracks.added_to_library")
     end
   end
 end

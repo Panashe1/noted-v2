@@ -6,7 +6,7 @@ class ListenLogsController < ApplicationController
     @log   = current_user.listen_logs.build(log_params.merge(album: @album))
 
     if @log.save
-      redirect_to album_path(@album), notice: "Logged!"
+      redirect_to album_path(@album), notice: t("flash.listen_logs.created")
     else
       redirect_back fallback_location: root_path, alert: @log.errors.full_messages.to_sentence
     end
@@ -17,7 +17,7 @@ class ListenLogsController < ApplicationController
 
   def update
     if @log.update(log_params)
-      redirect_to album_path(@log.album), notice: "Updated."
+      redirect_to album_path(@log.album), notice: t("flash.listen_logs.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -25,7 +25,7 @@ class ListenLogsController < ApplicationController
 
   def destroy
     @log.destroy
-    redirect_back fallback_location: root_path, notice: "Log removed."
+    redirect_back fallback_location: root_path, notice: t("flash.listen_logs.removed")
   end
 
   def assist_review

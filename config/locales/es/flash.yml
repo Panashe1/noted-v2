@@ -1,0 +1,21 @@
+es:
+  flash:
+    albums:
+      no_id: "No se proporcionó el ID del álbum."
+      not_found: "No se pudo encontrar ese álbum. Inténtalo de nuevo."
+    tracks:
+      missing_info: "Falta información de la canción."
+      itunes_failed: "No se pudo cargar esa canción desde iTunes. Inténtalo de nuevo."
+      added_to_library: "¡Añadida a la biblioteca! Busca tu canción para encontrarla."
+    track_logs:
+      not_found: "Canción no encontrada."
+      created: "¡Canción registrada!"
+      updated: "¡Registro actualizado!"
+      removed: "Registro eliminado."
+    listen_logs:
+      created: "¡Registrado!"
+      updated: "Actualizado."
+      removed: "Registro eliminado."
+    users:
+      profile_updated: "¡Perfil actualizado!"
+      not_authorised: "No autorizado."

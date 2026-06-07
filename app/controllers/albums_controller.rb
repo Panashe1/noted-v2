@@ -39,7 +39,7 @@ class AlbumsController < ApplicationController
     itunes_id = params[:itunes_id].to_s.strip
 
     if itunes_id.blank?
-      redirect_to recommendations_path, alert: "No album ID supplied."
+      redirect_to recommendations_path, alert: t("flash.albums.no_id")
       return
     end
 
@@ -50,7 +50,7 @@ class AlbumsController < ApplicationController
       result = MusicSearchService.new.fetch_album_with_tracks(itunes_id)
 
       if result.nil?
-        redirect_to recommendations_path, alert: "Couldn't find that album. Try again."
+        redirect_to recommendations_path, alert: t("flash.albums.not_found")
         return
       end
 
