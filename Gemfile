@@ -37,6 +37,9 @@ gem "rails-i18n"
 
 group :development, :test do
   gem "dotenv-rails"
+  # Pin to 5.x — Minitest 6 removed Minitest.run_one_method, which Rails 7.2's
+  # parallel-test worker still calls, crashing `rails test` above the parallelism threshold.
+  gem "minitest", "~> 5.0"
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false

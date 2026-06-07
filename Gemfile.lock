@@ -200,9 +200,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.8.1)
     multi_xml (0.9.1)
       bigdecimal (>= 3.1, < 5)
@@ -447,6 +445,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kaminari
+  minitest (~> 5.0)
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.2.3)
