@@ -95,7 +95,14 @@
       "Bash(bundle list *)",
       "Bash(gem list *)",
       "Bash(bundle update *)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "Bash(grep -nE '\"[A-Z][a-zA-Z][a-zA-Z ,!?\\\\x27…]+\"|`[^`]*[A-Za-z]{3}[^`]*`|textContent|innerHTML|modalTitle|placeholder' app/javascript/controllers/log_flow_controller.js)",
+      "Bash(RAILS_ENV=development bin/rails server -p 3991)",
+      "Bash(curl -s -o /dev/null http://127.0.0.1:3991/users/sign_in)",
+      "Bash(curl -s http://127.0.0.1:3991/users/sign_in)",
+      "Bash(curl -s http://127.0.0.1:3991/es/users/sign_in)",
+      "Bash(curl -s http://127.0.0.1:3991/es/users/sign_up)",
+      "Bash(pkill -f \"puma.*3991\")"
     ]
   }
 }

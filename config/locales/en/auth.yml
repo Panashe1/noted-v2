@@ -1,0 +1,23 @@
+en:
+  auth:
+    login:
+      title: "Log in — Noted"
+      subtitle: "Log in to continue"
+      email: "Email address"
+      password: "Password"
+      remember_me: "Remember me"
+      submit: "Log in"
+      no_account: "Don't have an account?"
+      sign_up_link: "Sign up for Noted"
+      forgot_password: "Forgot your password?"
+    signup:
+      title: "Sign up — Noted"
+      subtitle: "Create your free account"
+      username: "Username (e.g. panashe_sounds)"
+      email: "Email address"
+      password: "Password"
+      password_with_min: "Password (%{count}+ characters)"
+      confirm_password: "Confirm password"
+      submit: "Create account"
+      have_account: "Already have an account?"
+      log_in_link: "Log in"

@@ -1,0 +1,23 @@
+es:
+  auth:
+    login:
+      title: "Iniciar sesión — Noted"
+      subtitle: "Inicia sesión para continuar"
+      email: "Correo electrónico"
+      password: "Contraseña"
+      remember_me: "Recordarme"
+      submit: "Iniciar sesión"
+      no_account: "¿No tienes una cuenta?"
+      sign_up_link: "Regístrate en Noted"
+      forgot_password: "¿Olvidaste tu contraseña?"
+    signup:
+      title: "Regístrate — Noted"
+      subtitle: "Crea tu cuenta gratis"
+      username: "Nombre de usuario (p. ej. panashe_sounds)"
+      email: "Correo electrónico"
+      password: "Contraseña"
+      password_with_min: "Contraseña (%{count}+ caracteres)"
+      confirm_password: "Confirmar contraseña"
+      submit: "Crear cuenta"
+      have_account: "¿Ya tienes una cuenta?"
+      log_in_link: "Iniciar sesión"

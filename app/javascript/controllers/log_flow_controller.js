@@ -18,6 +18,21 @@ export default class extends Controller {
     "formItunesId", "formCoverUrl", "formAppleUrl"
   ]
 
+  // Localized UI strings, supplied from the server-rendered modal via data-*-value
+  // attributes so this controller holds no hardcoded copy.
+  static values = {
+    titleStep1:   String,
+    titleStep2:   String,
+    searching:    String,
+    searchError:  String,
+    loading:      String,
+    loadError:    String,
+    manualTitle:  String,
+    manualArtist: String,
+    manualYear:   String,
+    manualGenre:  String
+  }
+
   connect() {
     this._debounceTimer = null
     this._searchAbort   = null
@@ -43,7 +58,7 @@ export default class extends Controller {
     this._searchAbort = new AbortController()
 
     this.searchResultsTarget.innerHTML = `
-      <p class="text-zinc-500 text-sm text-center py-4">Searching…</p>`
+      <p class="text-zinc-500 text-sm text-center py-4">${this.searchingValue}</p>`
 
     try {
       const url = `/music/search?q=${encodeURIComponent(query)}`
@@ -56,7 +71,7 @@ export default class extends Controller {
     } catch (e) {
       if (e.name !== "AbortError") {
         this.searchResultsTarget.innerHTML = `
-          <p class="text-red-400 text-sm text-center py-4">Search error. Please try again.</p>`
+          <p class="text-red-400 text-sm text-center py-4">${this.searchErrorValue}</p>`
       }
     }
   }
@@ -72,7 +87,7 @@ export default class extends Controller {
     // Move to step 2 immediately, show loading state
     this.showStep2()
     this.previewAreaTarget.innerHTML = `
-      <div class="flex items-center justify-center py-8 text-zinc-500 text-sm">Loading…</div>`
+      <div class="flex items-center justify-center py-8 text-zinc-500 text-sm">${this.loadingValue}</div>`
 
     try {
       const url = `/music/preview?itunes_id=${encodeURIComponent(itunesId)}`
@@ -87,7 +102,7 @@ export default class extends Controller {
     } catch (e) {
       if (e.name !== "AbortError") {
         this.previewAreaTarget.innerHTML = `
-          <p class="text-red-400 text-sm text-center py-4">Could not load album. Please go back and try again.</p>`
+          <p class="text-red-400 text-sm text-center py-4">${this.loadErrorValue}</p>`
       }
     }
   }
@@ -121,18 +136,18 @@ export default class extends Controller {
     this.showStep2()
     this.previewAreaTarget.innerHTML = `
       <div class="space-y-3 mb-5">
-        <input name="_manual_title" placeholder="Album title" required
+        <input name="_manual_title" placeholder="${this.manualTitleValue}" required
                data-action="input->log-flow#syncManualTitle"
                class="w-full bg-sp-input rounded-md px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/30" />
         <div class="grid grid-cols-2 gap-3">
-          <input name="_manual_artist" placeholder="Artist" required
+          <input name="_manual_artist" placeholder="${this.manualArtistValue}" required
                  data-action="input->log-flow#syncManualArtist"
                  class="bg-sp-input rounded-md px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/30" />
-          <input name="_manual_year" placeholder="Year" type="number"
+          <input name="_manual_year" placeholder="${this.manualYearValue}" type="number"
                  data-action="input->log-flow#syncManualYear"
                  class="bg-sp-input rounded-md px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/30" />
         </div>
-        <input name="_manual_genre" placeholder="Genre (optional)"
+        <input name="_manual_genre" placeholder="${this.manualGenreValue}"
                data-action="input->log-flow#syncManualGenre"
                class="w-full bg-sp-input rounded-md px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-white/30" />
       </div>`
@@ -148,14 +163,14 @@ export default class extends Controller {
     if (this.hasStep1Target)    this.step1Target.classList.remove("hidden")
     if (this.hasStep2Target)    this.step2Target.classList.add("hidden")
     if (this.hasBackBtnTarget)  this.backBtnTarget.classList.add("hidden")
-    if (this.hasModalTitleTarget) this.modalTitleTarget.textContent = "Log an Album"
+    if (this.hasModalTitleTarget) this.modalTitleTarget.textContent = this.titleStep1Value
   }
 
   showStep2() {
     if (this.hasStep1Target)    this.step1Target.classList.add("hidden")
     if (this.hasStep2Target)    this.step2Target.classList.remove("hidden")
     if (this.hasBackBtnTarget)  this.backBtnTarget.classList.remove("hidden")
-    if (this.hasModalTitleTarget) this.modalTitleTarget.textContent = "Confirm & Rate"
+    if (this.hasModalTitleTarget) this.modalTitleTarget.textContent = this.titleStep2Value
   }
 
   reset() {

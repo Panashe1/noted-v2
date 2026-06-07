@@ -1,38 +1,38 @@
-<% content_for :title, "Sign up — Noted" %>
+<% content_for :title, t("auth.signup.title") %>
 
 <div class="min-h-screen flex items-center justify-center py-16 px-4">
   <div class="w-full max-w-sm">
     <div class="text-center mb-10">
       <p class="wordmark font-bold text-4xl text-white mb-3">noted</p>
-      <p class="text-zinc-400 text-sm">Create your free account</p>
+      <p class="text-zinc-400 text-sm"><%= t("auth.signup.subtitle") %></p>
     </div>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-4" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <%= f.text_field :username, autofocus: true, autocomplete: "username",
-            placeholder: "Username (e.g. panashe_sounds)",
+            placeholder: t("auth.signup.username"),
             class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
 
       <%= f.email_field :email, autocomplete: "email",
-            placeholder: "Email address",
+            placeholder: t("auth.signup.email"),
             class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
 
       <%= f.password_field :password, autocomplete: "new-password",
-            placeholder: "Password #{ "(#{@minimum_password_length}+ characters)" if @minimum_password_length }",
+            placeholder: (@minimum_password_length ? t("auth.signup.password_with_min", count: @minimum_password_length) : t("auth.signup.password")),
             class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
 
       <%= f.password_field :password_confirmation, autocomplete: "new-password",
-            placeholder: "Confirm password",
+            placeholder: t("auth.signup.confirm_password"),
             class: "w-full bg-sp-muted rounded-md px-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
 
-      <%= f.submit "Create account",
+      <%= f.submit t("auth.signup.submit"),
             class: "w-full bg-sp-green text-black font-bold py-3 rounded-full hover:bg-sp-green2 hover:scale-[1.02] transition-all cursor-pointer mt-2" %>
     <% end %>
 
     <div class="mt-8 text-center text-sm text-zinc-500">
-      Already have an account?
-      <%= link_to "Log in", new_user_session_path, class: "text-white font-semibold hover:underline" %>
+      <%= t("auth.signup.have_account") %>
+      <%= link_to t("auth.signup.log_in_link"), new_user_session_path, class: "text-white font-semibold hover:underline" %>
     </div>
   </div>
 </div>
