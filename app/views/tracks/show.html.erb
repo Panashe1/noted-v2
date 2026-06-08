@@ -80,7 +80,7 @@
         <% end %>
 
         <p class="text-xs text-zinc-600 mt-3">
-          <%= t("tracks.show.listened_prefix") %> <%= @user_log.listened_on.strftime("%B %-d, %Y") %><%= t("tracks.show.relisten_badge") if @user_log.is_relisten %>
+          <%= t("tracks.show.listened_prefix") %> <%= l(@user_log.listened_on, format: :noted_long) %><%= t("tracks.show.relisten_badge") if @user_log.is_relisten %>
         </p>
       </div>
 

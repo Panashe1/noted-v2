@@ -289,7 +289,7 @@
 
               <div class="text-right shrink-0">
                 <span class="text-sm font-bold <%= rating_color(log.rating) %>"><%= log.rating %><span class="text-zinc-600 font-normal text-xs">/10</span></span>
-                <p class="text-xs text-zinc-600 mt-0.5"><%= log.listened_on.strftime("%b %-d") %></p>
+                <p class="text-xs text-zinc-600 mt-0.5"><%= l(log.listened_on, format: :noted_short) %></p>
               </div>
             </div>
           <% end %>
@@ -345,7 +345,7 @@
                 <% else %>
                   <span class="text-sm text-zinc-600">—</span>
                 <% end %>
-                <p class="text-xs text-zinc-600 mt-0.5"><%= tlog.listened_on.strftime("%b %-d") %></p>
+                <p class="text-xs text-zinc-600 mt-0.5"><%= l(tlog.listened_on, format: :noted_short) %></p>
               </div>
             </div>
           <% end %>

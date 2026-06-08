@@ -111,7 +111,9 @@
       "Bash(echo \"\")",
       "Bash(echo \"=== JS syntax ===\")",
       "Bash(git mv *)",
-      "Bash(sed -i '' 's/class I18nBatch7RenderTest/class I18nRenderTest/' test/integration/i18n_render_test.rb)"
+      "Bash(sed -i '' 's/class I18nBatch7RenderTest/class I18nRenderTest/' test/integration/i18n_render_test.rb)",
+      "Bash(perl -0pi -e 's/\\\\.strftime\\\\\\(\"%b %-d\"\\\\\\)/UNUSED/g' /dev/null)",
+      "Bash(pkill -f \"puma.*3994\")"
     ]
   }
 }

@@ -1,7 +1,11 @@
 en:
-  app:
-    name: "noted"
-    tagline: "Log the music you love"
+  # Custom date formats used with l(date, format: :…). Month/day names are
+  # localized by rails-i18n; these only set the arrangement.
+  date:
+    formats:
+      noted_long: "%B %-d, %Y"       # June 8, 2026
+      noted_short: "%b %-d"          # Jun 8
+      noted_short_year: "%b %-d, %Y" # Jun 8, 2026
   language:
     en: "English"
     es: "Español"

@@ -1,0 +1,31 @@
+base_locale: en
+locales: [en, es]
+
+data:
+  read:
+    - config/locales/%{locale}/*.yml
+    - config/locales/*.%{locale}.yml
+  write:
+    - config/locales/%{locale}/unsorted.yml
+
+search:
+  paths:
+    - app/
+  relative_roots:
+    - app/views
+    - app/controllers
+    - app/models
+    - app/helpers
+
+ignore_unused:
+  # Built-in / framework namespaces resolved dynamically by Rails, Devise, rails-i18n
+  - "activerecord.*"
+  - "date.formats.*"
+  - "devise.*"
+  - "errors.*"
+
+ignore_missing:
+  # Devise's own error messages — Spanish provided by the devise-i18n gem at
+  # runtime (i18n-tasks only scans config/locales, not gem-provided translations).
+  - "devise.*"
+  - "errors.*"

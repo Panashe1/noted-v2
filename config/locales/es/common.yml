@@ -1,7 +1,9 @@
 es:
-  app:
-    name: "noted"
-    tagline: "Registra la música que amas"
+  date:
+    formats:
+      noted_long: "%-d de %B de %Y"  # 8 de junio de 2026
+      noted_short: "%-d %b"          # 8 jun
+      noted_short_year: "%-d %b %Y"  # 8 jun 2026
   language:
     en: "English"
     es: "Español"
