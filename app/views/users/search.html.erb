@@ -29,7 +29,10 @@
 
   <%# Results rendered into this Turbo Frame %>
   <%= turbo_frame_tag "search-results" do %>
-    <%= render "users/search_results", results: @results, query: @query %>
+    <%= render "users/search_results",
+          results: @results, query: @query,
+          log_counts: @log_counts, follower_counts: @follower_counts,
+          following_ids: @my_following_ids %>
   <% end %>
 
 </div>

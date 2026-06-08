@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_05_051946) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_08_115548) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_05_051946) do
     t.datetime "updated_at", null: false
     t.string "itunes_id"
     t.string "apple_music_url"
+    t.index ["genre"], name: "index_albums_on_genre"
     t.index ["itunes_id"], name: "index_albums_on_itunes_id", unique: true
     t.index ["title", "artist"], name: "index_albums_on_title_and_artist", unique: true
   end
@@ -79,6 +80,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_05_051946) do
     t.datetime "updated_at", null: false
     t.index ["album_id"], name: "index_listen_logs_on_album_id"
     t.index ["user_id", "album_id"], name: "index_listen_logs_on_user_id_and_album_id", unique: true
+    t.index ["user_id", "listened_on"], name: "index_listen_logs_on_user_id_and_listened_on"
     t.index ["user_id"], name: "index_listen_logs_on_user_id"
   end
 
@@ -92,6 +94,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_05_051946) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["track_id"], name: "index_track_logs_on_track_id"
+    t.index ["user_id", "listened_on"], name: "index_track_logs_on_user_id_and_listened_on"
     t.index ["user_id", "track_id"], name: "index_track_logs_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_track_logs_on_user_id"
   end
@@ -106,6 +109,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_05_051946) do
     t.datetime "updated_at", null: false
     t.string "genre"
     t.index ["album_id"], name: "index_tracks_on_album_id"
+    t.index ["itunes_track_id"], name: "index_tracks_on_itunes_track_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

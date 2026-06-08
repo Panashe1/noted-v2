@@ -19,16 +19,22 @@ class AlbumsController < ApplicationController
     scope   = scope.where(genre: @active_genres) if @active_genres.any?
     @albums = scope.page(params[:page])
 
+    # Per-album log_count + average_rating for the grid — two grouped queries
+    # instead of ~3 per album (prevents N+1).
+    @album_stats = preload_album_stats(@albums)
+
     # The iTunes charts are only needed on a full page render. When the genre
     # filter refreshes just the Community Library Turbo Frame, skip the external
     # call entirely — the charts section is gated on @top_albums.any?.
     if turbo_frame_request?
       @top_albums         = []
       @chart_local_albums = {}
+      @chart_stats        = preload_album_stats([])
     else
       @top_albums         = MusicSearchService.new.fetch_top_albums(limit: 20)
       chart_itunes_ids    = @top_albums.map { |a| a[:itunes_id] }
       @chart_local_albums = Album.where(itunes_id: chart_itunes_ids).index_by(&:itunes_id)
+      @chart_stats        = preload_album_stats(@chart_local_albums.values)
     end
   end
 

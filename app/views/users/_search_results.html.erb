@@ -1,4 +1,5 @@
-<%# Rendered inside the turbo-frame "search-results" %>
+<%# locals: results, query, log_counts, follower_counts, following_ids
+    Rendered inside the turbo-frame "search-results" %>
 
 <% if results.any? %>
   <div class="space-y-2">
@@ -17,17 +18,18 @@
           <%= link_to user_path(user.username), data: { turbo_frame: "_top" }, class: "font-bold text-white hover:underline block truncate" do %>
             @<%= user.username %>
           <% end %>
+          <% log_n = log_counts[user.id]; follower_n = follower_counts[user.id] %>
           <p class="text-xs text-zinc-500 mt-0.5">
-            <%= user.listen_logs.count %> <%= t("users.logs", count: user.listen_logs.count) %>
+            <%= log_n %> <%= t("users.logs", count: log_n) %>
             <span class="text-zinc-700 mx-1">·</span>
-            <%= user.followers.count %> <%= t("users.followers_count", count: user.followers.count) %>
+            <%= follower_n %> <%= t("users.followers_count", count: follower_n) %>
           </p>
         </div>
 
         <%# Follow / Unfollow button %>
         <% if user_signed_in? %>
           <%= turbo_frame_tag "follow_#{user.id}", class: "shrink-0" do %>
-            <% if current_user.following.include?(user) %>
+            <% if following_ids.include?(user.id) %>
               <%= button_to t("users.follow_list.following"), unfollow_user_path(user.username), method: :delete,
                     class: "text-sm font-semibold border border-zinc-600 hover:border-white rounded-full px-4 py-1.5 transition-colors bg-transparent text-white cursor-pointer" %>
             <% else %>

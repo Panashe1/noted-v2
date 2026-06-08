@@ -60,3 +60,35 @@ class I18nRenderTest < ActionDispatch::IntegrationTest
     assert_match "No se encontraron álbumes", response.body
   end
 end
+
+class PerfPreloadRenderTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:alice)
+    @bob  = users(:bob)
+    @user.active_follows.find_or_create_by(following: @bob)
+    sign_in @user
+  end
+
+  test "find people search renders with preloaded user counts" do
+    get "/search?q=bo"
+    assert_response :success
+    # Real usage is a Turbo Frame request (HTML + Turbo-Frame header), not turbo_stream.
+    get "/search?q=bo", headers: { "Turbo-Frame" => "search-results" }
+    assert_response :success
+    assert_match "@bob", response.body
+  end
+
+  test "following + followers lists render with preloaded log counts" do
+    get "/u/#{@user.username}/following"
+    assert_response :success
+    get "/u/#{@bob.username}/followers"
+    assert_response :success
+  end
+
+  test "albums index grid renders with preloaded album stats" do
+    stub_instance_method(MusicSearchService, :fetch_top_albums, []) do
+      get "/albums"
+    end
+    assert_response :success
+  end
+end

@@ -58,10 +58,23 @@ class UsersController < ApplicationController
       User.none
     end
 
-    # For Turbo Frame requests just render the results partial
+    # Preload aggregates so the results partial avoids a per-user N+1
+    # (log count, follower count, and follow-button state).
+    prep_follow_sets
+    @log_counts      = preload_user_log_counts(@results)
+    @follower_counts = preload_follower_counts(@results)
+
+    locals = {
+      results:         @results,
+      query:           @query,
+      log_counts:      @log_counts,
+      follower_counts: @follower_counts,
+      following_ids:   @my_following_ids
+    }
+
     respond_to do |format|
       format.html
-      format.turbo_stream { render partial: "users/search_results", locals: { results: @results, query: @query } }
+      format.turbo_stream { render partial: "users/search_results", locals: locals }
     end
   end
 
@@ -70,6 +83,7 @@ class UsersController < ApplicationController
     @user = User.find_by!(username: params[:username])
     @list = @user.following.order(:username)
     prep_follow_sets
+    @list_log_counts = preload_user_log_counts(@list)
     render layout: false
   end
 
@@ -78,6 +92,7 @@ class UsersController < ApplicationController
     @user = User.find_by!(username: params[:username])
     @list = @user.followers.order(:username)
     prep_follow_sets
+    @list_log_counts = preload_user_log_counts(@list)
     render layout: false
   end
 

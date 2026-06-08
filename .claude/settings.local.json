@@ -113,7 +113,10 @@
       "Bash(git mv *)",
       "Bash(sed -i '' 's/class I18nBatch7RenderTest/class I18nRenderTest/' test/integration/i18n_render_test.rb)",
       "Bash(perl -0pi -e 's/\\\\.strftime\\\\\\(\"%b %-d\"\\\\\\)/UNUSED/g' /dev/null)",
-      "Bash(pkill -f \"puma.*3994\")"
+      "Bash(pkill -f \"puma.*3994\")",
+      "Bash(bin/rails generate *)",
+      "Bash(bin/rails db:migrate)",
+      "Bash(bin/rails db:test:prepare)"
     ]
   }
 }

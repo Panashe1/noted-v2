@@ -1,4 +1,4 @@
-<%# locals: list, my_following_ids, my_follower_ids %>
+<%# locals: list, my_following_ids, my_follower_ids, log_counts %>
 
 <% if list.any? %>
   <div class="space-y-1 py-2">
@@ -16,7 +16,8 @@
           <%= link_to "@#{u.username}", user_path(u.username),
                 data: { turbo_frame: "_top" },
                 class: "font-semibold text-sm text-white hover:underline truncate block" %>
-          <p class="text-xs text-zinc-500"><%= u.listen_logs.count %> <%= t("users.logs", count: u.listen_logs.count) %></p>
+          <% log_n = log_counts[u.id] %>
+          <p class="text-xs text-zinc-500"><%= log_n %> <%= t("users.logs", count: log_n) %></p>
         </div>
 
         <%# Follow button — hidden for current user, otherwise shows relationship state %>
