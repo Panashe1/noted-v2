@@ -1,0 +1,14 @@
+es:
+  log_edit:
+    listen_title: "Editar registro — Noted"
+    track_title: "Editar registro — %{track} — Noted"
+    editing_log: "Editando registro"
+    editing_track_log: "Editando registro de canción"
+    rating: "Valoración"
+    rating_optional: "(opcional)"
+    clear: "borrar"
+    date_listened: "Fecha de escucha"
+    review: "Reseña"
+    review_placeholder: "¿Qué te pareció?"
+    review_placeholder_optional: "¿Qué te pareció? (opcional)"
+    is_relisten: "Esto es una reescucha"

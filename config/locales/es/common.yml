@@ -13,6 +13,8 @@ es:
     sign_in: "Iniciar sesión"
     clear_all: "Borrar todo"
     clear_filter: "Borrar filtro"
+    cancel: "Cancelar"
+    save_changes: "Guardar cambios"
   units:
     log:
       one: "registro"
@@ -23,3 +25,6 @@ es:
     album:
       one: "álbum"
       other: "álbumes"
+    track:
+      one: "canción"
+      other: "canciones"

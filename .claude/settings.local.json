@@ -104,7 +104,14 @@
       "Bash(curl -s http://127.0.0.1:3991/es/users/sign_up)",
       "Bash(pkill -f \"puma.*3991\")",
       "Bash(pkill -f \"puma.*3992\")",
-      "Bash(pkill -f \"puma.*3993\")"
+      "Bash(pkill -f \"puma.*3993\")",
+      "Bash(echo \"=== ERB syntax ===\")",
+      "Bash(echo 'OK: __TRACKED_VAR__')",
+      "Bash(echo 'ERR: __TRACKED_VAR__')",
+      "Bash(echo \"\")",
+      "Bash(echo \"=== JS syntax ===\")",
+      "Bash(git mv *)",
+      "Bash(sed -i '' 's/class I18nBatch7RenderTest/class I18nRenderTest/' test/integration/i18n_render_test.rb)"
     ]
   }
 }

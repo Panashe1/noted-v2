@@ -1,9 +1,9 @@
-<% content_for :title, "Discover — Noted" %>
+<% content_for :title, t("discover.title") %>
 
 <div class="h-44 sm:h-56 bg-gradient-to-b from-green-900 via-zinc-950/80 to-zinc-950 px-4 sm:px-8 pt-8 sm:pt-10 flex flex-col justify-end pb-5 sm:pb-6">
-  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1">AI-powered</p>
-  <h1 class="text-4xl font-extrabold text-white">Discover</h1>
-  <p class="text-zinc-400 text-sm mt-1">Ask Claude for music based on your taste</p>
+  <p class="text-xs uppercase tracking-widest text-zinc-400 mb-1"><%= t("discover.eyebrow") %></p>
+  <h1 class="text-4xl font-extrabold text-white"><%= t("discover.heading") %></h1>
+  <p class="text-zinc-400 text-sm mt-1"><%= t("discover.subtitle") %></p>
 </div>
 
 <div class="px-4 sm:px-8 py-6 sm:py-8">
@@ -17,13 +17,13 @@
         </svg>
         <%= f.text_field :q,
               value: @query,
-              placeholder: "e.g. cinematic post-rock with big dynamics…",
+              placeholder: t("discover.placeholder"),
               autofocus: !@query.present?,
               class: "w-full bg-sp-muted text-white rounded-full pl-11 pr-4 py-3 text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/20 transition" %>
       </div>
       <button type="submit"
               class="bg-sp-green text-black font-bold text-sm px-6 py-3 rounded-full hover:bg-sp-green2 hover:scale-105 transition-all shrink-0">
-        Ask Claude
+        <%= t("discover.ask_claude") %>
       </button>
     </div>
   <% end %>
@@ -32,7 +32,7 @@
   <% if @recommendations.any? %>
     <div class="mt-8 max-w-2xl">
       <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4">
-        Results for "<%= @query %>"
+        <%= t("discover.results_for", query: @query) %>
       </p>
 
       <div class="space-y-2">
@@ -62,7 +62,7 @@
               <div class="flex-1 min-w-0">
                 <div class="flex items-baseline gap-2 flex-wrap">
                   <span class="font-semibold text-white text-sm truncate"><%= rec["title"] %></span>
-                  <span class="text-zinc-500 text-xs shrink-0">by</span>
+                  <span class="text-zinc-500 text-xs shrink-0"><%= t("discover.by") %></span>
                   <span class="text-zinc-300 text-sm truncate"><%= rec["artist"] %></span>
                   <% if rec["year"].present? %>
                     <span class="text-zinc-600 text-xs shrink-0"><%= rec["year"] %></span>
@@ -86,22 +86,15 @@
 
   <% elsif @query.present? %>
     <div class="mt-10 text-center py-12">
-      <p class="text-zinc-500 text-sm">Claude couldn't respond right now. Try again.</p>
+      <p class="text-zinc-500 text-sm"><%= t("discover.error") %></p>
     </div>
 
   <% else %>
     <%# Prompt suggestions when idle %>
     <div class="mt-10 max-w-2xl">
-      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4">Try asking…</p>
+      <p class="text-xs uppercase tracking-widest text-zinc-500 mb-4"><%= t("discover.try_asking") %></p>
       <div class="flex flex-wrap gap-2">
-        <% [
-          "something like Radiohead but more rhythmic",
-          "jazz for late night focus",
-          "heavy albums with emotional depth",
-          "90s R&B classics I might have missed",
-          "ambient music for studying",
-          "guitar-driven albums under 40 minutes"
-        ].each do |suggestion| %>
+        <% t("discover.suggestions").each do |suggestion| %>
           <%= link_to recommendations_path(q: suggestion),
                 class: "bg-sp-muted hover:bg-sp-raised text-zinc-300 hover:text-white text-sm px-4 py-2 rounded-full transition-colors border border-zinc-800 hover:border-zinc-600" do %>
             <%= suggestion %>

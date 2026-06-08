@@ -29,3 +29,5 @@ es:
     manual_artist: "Artista"
     manual_year: "Año"
     manual_genre: "Género (opcional)"
+    no_results: "No se encontraron álbumes. Prueba otra búsqueda."
+    album_label: "Álbum"

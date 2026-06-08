@@ -1,7 +1,7 @@
 <%# Rendered without layout — injected into the modal search results area %>
 
 <% if @results.empty? %>
-  <p class="text-zinc-500 text-sm text-center py-4">No albums found. Try a different search.</p>
+  <p class="text-zinc-500 text-sm text-center py-4"><%= t("log_modal.no_results") %></p>
 <% else %>
   <% @results.each do |album| %>
     <button type="button"
@@ -27,7 +27,7 @@
             <span class="text-zinc-600">·</span> <%= album[:release_year] %>
           <% end %>
           <% if album[:track_count]&.positive? %>
-            <span class="text-zinc-600">·</span> <%= album[:track_count] %> tracks
+            <span class="text-zinc-600">·</span> <%= album[:track_count] %> <%= t("units.track", count: album[:track_count]) %>
           <% end %>
         </p>
       </div>

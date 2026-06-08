@@ -13,6 +13,8 @@ en:
     sign_in: "Sign in"
     clear_all: "Clear all"
     clear_filter: "Clear filter"
+    cancel: "Cancel"
+    save_changes: "Save changes"
   # Shared count-nouns (the number is rendered separately in the markup)
   units:
     log:
@@ -24,3 +26,6 @@ en:
     album:
       one: "album"
       other: "albums"
+    track:
+      one: "track"
+      other: "tracks"

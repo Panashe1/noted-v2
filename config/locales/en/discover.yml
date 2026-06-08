@@ -1,0 +1,19 @@
+en:
+  discover:
+    title: "Discover — Noted"
+    eyebrow: "AI-powered"
+    heading: "Discover"
+    subtitle: "Ask Claude for music based on your taste"
+    placeholder: "e.g. cinematic post-rock with big dynamics…"
+    ask_claude: "Ask Claude"
+    results_for: 'Results for "%{query}"'
+    by: "by"
+    error: "Claude couldn't respond right now. Try again."
+    try_asking: "Try asking…"
+    suggestions:
+      - "something like Radiohead but more rhythmic"
+      - "jazz for late night focus"
+      - "heavy albums with emotional depth"
+      - "90s R&B classics I might have missed"
+      - "ambient music for studying"
+      - "guitar-driven albums under 40 minutes"

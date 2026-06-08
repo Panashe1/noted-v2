@@ -1,0 +1,15 @@
+en:
+  # Shared by the two log-edit forms (listen_logs/edit, track_logs/edit)
+  log_edit:
+    listen_title: "Edit log — Noted"
+    track_title: "Edit log — %{track} — Noted"
+    editing_log: "Editing log"
+    editing_track_log: "Editing track log"
+    rating: "Rating"
+    rating_optional: "(optional)"
+    clear: "clear"
+    date_listened: "Date listened"
+    review: "Review"
+    review_placeholder: "What did you think?"
+    review_placeholder_optional: "What did you think? (optional)"
+    is_relisten: "This is a relisten"

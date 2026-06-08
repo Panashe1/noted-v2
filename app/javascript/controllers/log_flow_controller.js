@@ -30,7 +30,11 @@ export default class extends Controller {
     manualTitle:  String,
     manualArtist: String,
     manualYear:   String,
-    manualGenre:  String
+    manualGenre:  String,
+    // Locale-aware endpoint paths (carry the /:locale prefix) so the injected
+    // search/preview HTML is rendered in the current locale.
+    searchUrl:    String,
+    previewUrl:   String
   }
 
   connect() {
@@ -61,7 +65,7 @@ export default class extends Controller {
       <p class="text-zinc-500 text-sm text-center py-4">${this.searchingValue}</p>`
 
     try {
-      const url = `/music/search?q=${encodeURIComponent(query)}`
+      const url = `${this.searchUrlValue}?q=${encodeURIComponent(query)}`
       const res = await fetch(url, {
         headers: { "X-CSRF-Token": this._csrfToken() },
         signal: this._searchAbort.signal
@@ -90,7 +94,7 @@ export default class extends Controller {
       <div class="flex items-center justify-center py-8 text-zinc-500 text-sm">${this.loadingValue}</div>`
 
     try {
-      const url = `/music/preview?itunes_id=${encodeURIComponent(itunesId)}`
+      const url = `${this.previewUrlValue}?itunes_id=${encodeURIComponent(itunesId)}`
       const res = await fetch(url, {
         headers: { "X-CSRF-Token": this._csrfToken() },
         signal: this._previewAbort.signal

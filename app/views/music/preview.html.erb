@@ -13,13 +13,13 @@
     </div>
   <% end %>
   <div class="flex-1 min-w-0 pt-1">
-    <p class="text-xs uppercase tracking-widest text-zinc-500 mb-0.5">Album</p>
+    <p class="text-xs uppercase tracking-widest text-zinc-500 mb-0.5"><%= t("log_modal.album_label") %></p>
     <h3 class="text-xl font-extrabold text-white leading-tight truncate"><%= @album_data[:title] %></h3>
     <p class="text-sm text-zinc-300 mt-0.5"><%= @album_data[:artist] %></p>
     <p class="text-xs text-zinc-500 mt-1">
       <% if @album_data[:release_year] %><%= @album_data[:release_year] %><% end %>
       <% if @album_data[:genre] %> · <%= @album_data[:genre] %><% end %>
-      <% if @tracks.any? %> · <%= @tracks.size %> tracks<% end %>
+      <% if @tracks.any? %> · <%= @tracks.size %> <%= t("units.track", count: @tracks.size) %><% end %>
     </p>
   </div>
 </div>

@@ -1,7 +1,7 @@
-<% content_for :title, "Edit log — Noted" %>
+<% content_for :title, t("log_edit.listen_title") %>
 
 <div class="h-36 sm:h-40 bg-gradient-to-b from-zinc-800 to-zinc-950 px-4 sm:px-8 pt-6 sm:pt-8 flex flex-col justify-end pb-4">
-  <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1">Editing log</p>
+  <p class="text-xs uppercase tracking-widest text-zinc-500 mb-1"><%= t("log_edit.editing_log") %></p>
   <h1 class="text-2xl font-bold"><%= @log.album.artist %> — <%= @log.album.title %></h1>
 </div>
 
@@ -10,7 +10,7 @@
 
     <%# Rating picker %>
     <div>
-      <label class="block text-xs uppercase tracking-widest text-zinc-500 mb-3">Rating</label>
+      <label class="block text-xs uppercase tracking-widest text-zinc-500 mb-3"><%= t("log_edit.rating") %></label>
       <div class="flex gap-1.5">
         <% (1..10).each do |i| %>
           <label class="rating-option cursor-pointer">
@@ -24,29 +24,29 @@
     </div>
 
     <div>
-      <%= f.label :listened_on, "Date listened", class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
+      <%= f.label :listened_on, t("log_edit.date_listened"), class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
       <%= f.date_field :listened_on, required: true, max: Date.today,
             class: "w-full bg-sp-muted rounded-lg px-4 py-3 text-sm text-zinc-300 focus:outline-none focus:ring-1 focus:ring-white/30 transition" %>
     </div>
 
     <div>
-      <%= f.label :review, "Review", class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
+      <%= f.label :review, t("log_edit.review"), class: "block text-xs uppercase tracking-widest text-zinc-500 mb-2" %>
       <%= f.text_area :review, rows: 6,
-            placeholder: "What did you think?",
+            placeholder: t("log_edit.review_placeholder"),
             class: "w-full bg-sp-muted rounded-lg px-4 py-3 text-sm placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition resize-none" %>
     </div>
 
     <div class="flex items-center gap-3">
       <%= f.check_box :is_relisten,
             class: "w-4 h-4 rounded accent-sp-green cursor-pointer" %>
-      <%= f.label :is_relisten, "This is a relisten",
+      <%= f.label :is_relisten, t("log_edit.is_relisten"),
             class: "text-sm text-zinc-400 cursor-pointer" %>
     </div>
 
     <div class="flex items-center gap-4 pt-2">
-      <%= f.submit "Save changes",
+      <%= f.submit t("actions.save_changes"),
             class: "bg-white text-black font-bold text-sm px-6 py-3 rounded-full hover:scale-105 transition-transform cursor-pointer" %>
-      <%= link_to "Cancel", album_path(@log.album),
+      <%= link_to t("actions.cancel"), album_path(@log.album),
             class: "text-zinc-400 hover:text-white text-sm transition-colors" %>
     </div>
 

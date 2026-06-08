@@ -1,0 +1,19 @@
+es:
+  discover:
+    title: "Descubrir — Noted"
+    eyebrow: "Con IA"
+    heading: "Descubrir"
+    subtitle: "Pídele música a Claude según tus gustos"
+    placeholder: "p. ej. post-rock cinematográfico con grandes dinámicas…"
+    ask_claude: "Preguntar a Claude"
+    results_for: 'Resultados para "%{query}"'
+    by: "de"
+    error: "Claude no pudo responder ahora mismo. Inténtalo de nuevo."
+    try_asking: "Prueba a preguntar…"
+    suggestions:
+      - "algo como Radiohead pero más rítmico"
+      - "jazz para concentrarse de noche"
+      - "álbumes intensos con profundidad emocional"
+      - "clásicos del R&B de los 90 que quizá me perdí"
+      - "música ambiental para estudiar"
+      - "álbumes con guitarra de menos de 40 minutos"
