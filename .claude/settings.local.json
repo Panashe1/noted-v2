@@ -118,7 +118,10 @@
       "Bash(bin/rails db:migrate)",
       "Bash(bin/rails db:test:prepare)",
       "Bash(grep -iE \"\\\\.env$|master\\\\.key|credentials\")",
-      "Bash(bin/rails middleware *)"
+      "Bash(bin/rails middleware *)",
+      "Bash(ruby -c config/environments/production.rb)",
+      "Bash(ruby -c config/initializers/devise.rb)",
+      "Bash(SECRET_KEY_BASE=dummy_for_boot_check APP_HOST=noted.example.com,.noted.example.com RAILS_ENV=production bin/rails runner 'puts \"require_master_key = #{Rails.application.config.require_master_key}\"; puts \"hosts = #{Rails.application.config.hosts.inspect}\"; puts \"mailer_sender = #{Devise.mailer_sender}\"')"
     ]
   }
 }

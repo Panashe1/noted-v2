@@ -46,7 +46,7 @@ class ActiveSupport::TestCase
     {
       track_log: {
         track_id:    track.id,
-        listened_on: Date.today.iso8601,
+        listened_on: Date.current.iso8601,
         rating:      nil,
         review:      nil,
         is_relisten: false

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 Devise.setup do |config|
-  config.mailer_sender = 'noreply@soundlog.app'
+  # The "From" address for Devise emails. Currently dormant — no Devise mailer is active
+  # (password reset / :recoverable is disabled until an email provider is wired up). Kept
+  # Noted-branded and ENV-overridable so it's correct the moment email is re-enabled.
+  config.mailer_sender = ENV.fetch("MAILER_SENDER", "noreply@noted.app")
 
   require 'devise/orm/active_record'
 

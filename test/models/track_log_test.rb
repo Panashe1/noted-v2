@@ -20,7 +20,7 @@ class TrackLogTest < ActiveSupport::TestCase
     log = TrackLog.new(
       user:        @alice,
       track:       @track,
-      listened_on: Date.today,
+      listened_on: Date.current,
       rating:      nil
     )
     assert log.valid?, log.errors.full_messages.inspect
@@ -37,34 +37,34 @@ class TrackLogTest < ActiveSupport::TestCase
   # ---------------------------------------------------------------------------
 
   test "is valid with a rating of 1" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: 1)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: 1)
     assert log.valid?
   end
 
   test "is valid with a rating of 10" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: 10)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: 10)
     assert log.valid?
   end
 
   test "is valid when rating is nil" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: nil)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: nil)
     assert log.valid?
   end
 
   test "is invalid with a rating of 0" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: 0)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: 0)
     assert_not log.valid?
     assert log.errors[:rating].any?
   end
 
   test "is invalid with a rating of 11" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: 11)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: 11)
     assert_not log.valid?
     assert log.errors[:rating].any?
   end
 
   test "is invalid with a non-integer rating" do
-    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.today, rating: 7.5)
+    log = TrackLog.new(user: @alice, track: @track, listened_on: Date.current, rating: 7.5)
     assert_not log.valid?
     assert log.errors[:rating].any?
   end
@@ -78,7 +78,7 @@ class TrackLogTest < ActiveSupport::TestCase
     duplicate = TrackLog.new(
       user:        @alice,
       track:       tracks(:paranoid_android),
-      listened_on: Date.today
+      listened_on: Date.current
     )
     assert_not duplicate.valid?
     assert duplicate.errors[:user_id].any?,
@@ -89,7 +89,7 @@ class TrackLogTest < ActiveSupport::TestCase
     log = TrackLog.new(
       user:        @bob,
       track:       tracks(:paranoid_android),   # alice's track, not bob's
-      listened_on: Date.today
+      listened_on: Date.current
     )
     assert log.valid?, log.errors.full_messages.inspect
   end
@@ -107,13 +107,13 @@ class TrackLogTest < ActiveSupport::TestCase
   end
 
   test "is invalid without a user" do
-    log = TrackLog.new(track: @track, listened_on: Date.today)
+    log = TrackLog.new(track: @track, listened_on: Date.current)
     assert_not log.valid?
     assert log.errors[:user].any?
   end
 
   test "is invalid without a track" do
-    log = TrackLog.new(user: @alice, listened_on: Date.today)
+    log = TrackLog.new(user: @alice, listened_on: Date.current)
     assert_not log.valid?
     assert log.errors[:track].any?
   end

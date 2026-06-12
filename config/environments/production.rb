@@ -18,7 +18,8 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  # Enabled so production refuses to boot without the key, instead of silently running with credentials disabled.
+  config.require_master_key = true
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
@@ -95,11 +96,14 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  # config.hosts = [
-  #   "example.com",     # Allow requests from example.com
-  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
-  # ]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # DNS-rebinding / Host-header protection. Set APP_HOST at deploy time — comma-separated
+  # for multiple hosts, and prefix with a dot for wildcard subdomains
+  # (e.g. "noted.example.com,.noted.example.com"). Left empty (allow all) when unset so a
+  # misconfigured APP_HOST can't lock you out before the domain is wired up.
+  # Rails treats a leading-dot string (".example.com") as the domain plus all subdomains.
+  ENV.fetch("APP_HOST", "").split(",").map(&:strip).reject(&:empty?).each do |host|
+    config.hosts << host
+  end
+  # Skip host authorization for the health check endpoint (load balancers hit it by IP).
+  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
