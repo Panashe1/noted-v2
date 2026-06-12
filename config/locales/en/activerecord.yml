@@ -42,6 +42,7 @@ en:
               invalid_format: "lowercase letters, numbers, underscores only"
             avatar:
               invalid_type: "must be a JPEG, PNG, GIF, or WebP image"
+              too_large: "must be smaller than %{max}"
         listen_log:
           attributes:
             listened_on:

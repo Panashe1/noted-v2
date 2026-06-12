@@ -32,6 +32,9 @@ gem "httparty"
 # Pagination
 gem "kaminari"
 
+# Rate limiting / throttling (brute-force + AI-cost protection)
+gem "rack-attack"
+
 # Internationalization — locale data (dates, numbers, AR errors) for ~70 languages
 gem "rails-i18n"
 

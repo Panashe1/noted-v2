@@ -116,7 +116,9 @@
       "Bash(pkill -f \"puma.*3994\")",
       "Bash(bin/rails generate *)",
       "Bash(bin/rails db:migrate)",
-      "Bash(bin/rails db:test:prepare)"
+      "Bash(bin/rails db:test:prepare)",
+      "Bash(grep -iE \"\\\\.env$|master\\\\.key|credentials\")",
+      "Bash(bin/rails middleware *)"
     ]
   }
 }

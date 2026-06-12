@@ -24,6 +24,18 @@ class Album < ApplicationRecord
     cover_image_url.gsub(/\d+x\d+bb/, "#{size}x#{size}bb")
   end
 
+  # The Apple Music URL, but only if it's a real http(s) link. Guards against a
+  # javascript:/data: scheme ending up in an href (an XSS vector) — the value comes
+  # from an external API, so we never trust it blindly. Returns nil otherwise.
+  def apple_music_link
+    return if apple_music_url.blank?
+
+    uri = URI.parse(apple_music_url)
+    apple_music_url if uri.is_a?(URI::HTTP) # URI::HTTPS is a subclass, so this allows both
+  rescue URI::InvalidURIError
+    nil
+  end
+
   private
 
   def enqueue_context_generation

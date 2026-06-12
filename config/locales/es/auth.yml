@@ -9,7 +9,6 @@ es:
       submit: "Iniciar sesión"
       no_account: "¿No tienes una cuenta?"
       sign_up_link: "Regístrate en Noted"
-      forgot_password: "¿Olvidaste tu contraseña?"
     signup:
       title: "Regístrate — Noted"
       subtitle: "Crea tu cuenta gratis"

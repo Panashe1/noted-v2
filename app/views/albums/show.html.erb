@@ -37,9 +37,9 @@
           <% end %>
           <span class="text-zinc-500">·</span>
           <span class="text-zinc-400"><%= @album.log_count %> <%= t("units.log", count: @album.log_count) %></span>
-          <% if @album.apple_music_url.present? %>
+          <% if (apple_url = @album.apple_music_link) %>
             <span class="text-zinc-500 hidden sm:inline">·</span>
-            <%= link_to t("albums.show.apple_music"), @album.apple_music_url, target: "_blank", rel: "noopener",
+            <%= link_to t("albums.show.apple_music"), apple_url, target: "_blank", rel: "noopener",
                   class: "text-sp-green hover:underline text-xs font-semibold hidden sm:inline" %>
           <% end %>
         </div>

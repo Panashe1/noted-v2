@@ -9,7 +9,6 @@ en:
       submit: "Log in"
       no_account: "Don't have an account?"
       sign_up_link: "Sign up for Noted"
-      forgot_password: "Forgot your password?"
     signup:
       title: "Sign up — Noted"
       subtitle: "Create your free account"

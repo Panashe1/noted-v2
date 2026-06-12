@@ -1,6 +1,12 @@
 class User < ApplicationRecord
+  # NOTE: :recoverable (password reset) is intentionally disabled for launch — there's
+  # no transactional email provider wired up yet, so a reset request would 500. The
+  # reset_password_* columns are left in the schema so re-enabling is just adding the
+  # module back once email is configured. See docs / production checklist.
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :rememberable, :validatable
+
+  MAX_AVATAR_SIZE = 5.megabytes
 
   has_one_attached :avatar
 
@@ -18,6 +24,7 @@ class User < ApplicationRecord
   validates :name, length: { maximum: 60 }, allow_blank: true
   validates :bio,  length: { maximum: 300 }, allow_blank: true
   validate  :avatar_content_type
+  validate  :avatar_size
 
   private
 
@@ -25,6 +32,15 @@ class User < ApplicationRecord
     return unless avatar.attached?
     unless avatar.content_type.in?(%w[image/jpeg image/png image/gif image/webp])
       errors.add(:avatar, :invalid_type)
+    end
+  end
+
+  # Server-side enforcement of the "max 5 MB" the settings UI promises. Without this an
+  # oversized file could be uploaded and stored (cost / memory / DoS).
+  def avatar_size
+    return unless avatar.attached?
+    if avatar.blob.byte_size > MAX_AVATAR_SIZE
+      errors.add(:avatar, :too_large, max: ActiveSupport::NumberHelper.number_to_human_size(MAX_AVATAR_SIZE))
     end
   end
 

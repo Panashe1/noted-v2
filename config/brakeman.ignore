@@ -1,0 +1,15 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 84,
+      "fingerprint": "2343b8a76528abdd5db79020b5a4777826d36dd22cfb0c2ddf8692cc8db786b9",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/albums/show.html.erb",
+      "line": 42,
+      "note": "Reviewed false positive: the href comes from Album#apple_music_link, which parses the value and returns it only when it is a real URI::HTTP(S) URL — javascript:/data: and malformed values return nil. Covered by test/models/album_test.rb."
+    }
+  ],
+  "brakeman_version": "8.0.4"
+}
