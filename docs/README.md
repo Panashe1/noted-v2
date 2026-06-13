@@ -8,12 +8,14 @@ Noted is a music-logging web application built with Ruby on Rails. Users discove
 
 | Document | What it covers |
 |---|---|
+| [Onboarding](./onboarding.md) | **Start here if new to the project or to Rails** — core concepts, features, and coding practices with the "why" |
 | [MVC Architecture](./mvc-architecture.md) | Core Rails MVC patterns and how Noted uses them |
 | [Views](./views.md) | Every page: what it renders, what data it needs, how interactions work |
 | [Controllers](./controllers.md) | Every controller and action: routing, business logic, security |
 | [Models](./models.md) | Database schema, associations, validations, callbacks, key methods |
 | [Tests](./tests.md) | Test organisation, helpers, what is and isn't covered |
 | [APIs & External Services](./apis.md) | iTunes Search API, Anthropic Claude API, error codes, failure modes |
+| [Deployment](./deployment.md) | **Going live** — env vars, processes, gotchas, post-deploy smoke test |
 
 ---
 
