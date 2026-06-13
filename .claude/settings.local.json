@@ -121,7 +121,22 @@
       "Bash(bin/rails middleware *)",
       "Bash(ruby -c config/environments/production.rb)",
       "Bash(ruby -c config/initializers/devise.rb)",
-      "Bash(SECRET_KEY_BASE=dummy_for_boot_check APP_HOST=noted.example.com,.noted.example.com RAILS_ENV=production bin/rails runner 'puts \"require_master_key = #{Rails.application.config.require_master_key}\"; puts \"hosts = #{Rails.application.config.hosts.inspect}\"; puts \"mailer_sender = #{Devise.mailer_sender}\"')"
+      "Bash(SECRET_KEY_BASE=dummy_for_boot_check APP_HOST=noted.example.com,.noted.example.com RAILS_ENV=production bin/rails runner 'puts \"require_master_key = #{Rails.application.config.require_master_key}\"; puts \"hosts = #{Rails.application.config.hosts.inspect}\"; puts \"mailer_sender = #{Devise.mailer_sender}\"')",
+      "Bash(git --version)",
+      "Bash(brew --version)",
+      "Bash(brew install *)",
+      "Bash(/opt/homebrew/bin/git --version)",
+      "Bash(zsh -lic 'echo \"which git -> $\\(which git\\)\"; git --version')",
+      "Bash(heroku config:get APP_HOST)",
+      "Bash(heroku logs *)",
+      "Bash(heroku config:set APP_HOST=noted-app-d09d6265c805.herokuapp.com)",
+      "Bash(curl -s -o /dev/null -w 'GET /users/sign_in -> HTTP %{http_code}\\\\n' https://noted-app-d09d6265c805.herokuapp.com/users/sign_in)",
+      "Bash(curl -s -o /dev/null -w 'GET / -> HTTP %{http_code}\\\\n' https://noted-app-d09d6265c805.herokuapp.com/)",
+      "Bash(curl -s -o /dev/null -w 'GET /albums -> HTTP %{http_code}\\\\n' https://noted-app-d09d6265c805.herokuapp.com/albums)",
+      "Bash(curl -s https://noted-app-d09d6265c805.herokuapp.com/users/sign_in)",
+      "Bash(heroku config:get REDIS_URL)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
