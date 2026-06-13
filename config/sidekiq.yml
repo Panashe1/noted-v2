@@ -1,0 +1,9 @@
+# Sidekiq auto-loads this file. The app splits work across two queues:
+#   :default — track imports (TrackImportJob)
+#   :ai      — Claude calls (AlbumContextJob, TasteProfileJob)
+# Without listing :ai here, Sidekiq would only process :default and the AI jobs
+# would queue up and never run.
+:concurrency: 5
+:queues:
+  - default
+  - ai
