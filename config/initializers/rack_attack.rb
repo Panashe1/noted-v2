@@ -13,9 +13,11 @@
 # default store untouched so throttles don't bleed across runs or require Redis — the
 # rate-limit test installs its own in-memory store.
 unless Rails.env.test?
-  Rack::Attack.cache.store = ActiveSupport::Cache::RedisCacheStore.new(
-    url: ENV.fetch("RATE_LIMIT_REDIS_URL") { ENV.fetch("REDIS_URL", "redis://localhost:6379/1") }
-  )
+  rate_limit_redis_url = ENV.fetch("RATE_LIMIT_REDIS_URL") { ENV.fetch("REDIS_URL", "redis://localhost:6379/1") }
+  store_options = { url: rate_limit_redis_url }
+  # Heroku Redis uses TLS (rediss://) with a self-signed cert — skip verification (still encrypted).
+  store_options[:ssl_params] = { verify_mode: OpenSSL::SSL::VERIFY_NONE } if rate_limit_redis_url.start_with?("rediss://")
+  Rack::Attack.cache.store = ActiveSupport::Cache::RedisCacheStore.new(**store_options)
 end
 
 ### Throttles ###
