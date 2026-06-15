@@ -1,0 +1,10 @@
+<%# locals: user, following
+    The ?source=profile flag tells FollowsController to respond with a Turbo Stream
+    (updating the button AND the follower count) instead of a plain redirect. %>
+<% if following %>
+  <%= button_to t("users.show.following_button"), unfollow_user_path(user.username, source: "profile"), method: :delete,
+        class: "text-sm font-semibold border border-zinc-500 hover:border-white rounded-full px-5 py-2 transition-colors bg-transparent text-white cursor-pointer" %>
+<% else %>
+  <%= button_to t("users.show.follow"), follow_user_path(user.username, source: "profile"),
+        class: "text-sm font-bold bg-white text-black rounded-full px-5 py-2 hover:scale-105 transition-transform cursor-pointer" %>
+<% end %>

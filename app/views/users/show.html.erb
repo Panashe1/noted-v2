@@ -69,7 +69,7 @@
                   data-url="<%= user_followers_path(@user.username) %>"
                   data-title="<%= t("users.show.followers_title") %>"
                   class="hover:text-white transition-colors cursor-pointer">
-            <strong class="text-white"><%= @user.followers.count %></strong> <%= t("users.show.followers_label") %>
+            <strong class="text-white" id="profile-followers-count"><%= @user.followers.count %></strong> <%= t("users.show.followers_label") %>
           </button>
         </span>
       </div>
@@ -92,13 +92,7 @@
 
       <% elsif user_signed_in? %>
         <%= turbo_frame_tag "follow_#{@user.id}" do %>
-          <% if @is_following %>
-            <%= button_to t("users.show.following_button"), unfollow_user_path(@user.username), method: :delete,
-                  class: "text-sm font-semibold border border-zinc-500 hover:border-white rounded-full px-5 py-2 transition-colors bg-transparent text-white cursor-pointer" %>
-          <% else %>
-            <%= button_to t("users.show.follow"), follow_user_path(@user.username),
-                  class: "text-sm font-bold bg-white text-black rounded-full px-5 py-2 hover:scale-105 transition-transform cursor-pointer" %>
-          <% end %>
+          <%= render "users/profile_follow_button", user: @user, following: @is_following %>
         <% end %>
       <% end %>
     </div>

@@ -136,7 +136,9 @@
       "Bash(curl -s https://noted-app-d09d6265c805.herokuapp.com/users/sign_in)",
       "Bash(heroku config:get REDIS_URL)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(heroku run *)",
+      "Bash(grep -vE \"^$\")"
     ]
   }
 }

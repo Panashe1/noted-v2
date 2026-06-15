@@ -1,0 +1,7 @@
+<%# Swap the follow/unfollow button inside its turbo-frame... %>
+<%= turbo_stream.update "follow_#{@user.id}" do %>
+  <%= render "users/profile_follow_button", user: @user, following: @following %>
+<% end %>
+
+<%# ...and refresh the follower count in the stats row. %>
+<%= turbo_stream.update "profile-followers-count", @user.followers.count %>
