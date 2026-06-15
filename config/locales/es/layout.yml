@@ -2,6 +2,7 @@ es:
   nav:
     profile: "Perfil"
     find_people: "Buscar personas"
+    find_people_short: "Personas"
     discover: "Descubrir"
     albums: "Álbumes"
     tracks: "Canciones"

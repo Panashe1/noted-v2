@@ -2,6 +2,7 @@ en:
   nav:
     profile: "Profile"
     find_people: "Find People"
+    find_people_short: "People"
     discover: "Discover"
     albums: "Albums"
     tracks: "Tracks"

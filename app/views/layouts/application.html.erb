@@ -137,6 +137,12 @@
         <span class="text-[9px] font-semibold"><%= t("nav.profile") %></span>
       <% end %>
 
+      <%# Find People %>
+      <%= link_to user_search_path, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(user_search_path)} hover:text-white" do %>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.53 12.59 16 11.11 16 9.5 16 5.42 12.58 2 8.5 2S1 5.42 1 9.5 4.42 17 8.5 17c1.61 0 3.09-.47 4.23-1.57l.27.28v.79l5 4.99L19.49 19l-4.99-5zm-7 0C5.01 14 3 11.99 3 9.5S5.01 5 7.5 5 12 7.01 12 9.5 9.99 14 7.5 14zm3.5-5H9v2H7v-2H5V7h2V5h2v2h2v2z"/></svg>
+        <span class="text-[9px] font-semibold"><%= t("nav.find_people_short") %></span>
+      <% end %>
+
       <%# Albums %>
       <%= link_to albums_path, class: "flex-1 flex flex-col items-center justify-center py-2 gap-0.5 transition-colors #{mobile_active.call(albums_path)} hover:text-white" do %>
         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
