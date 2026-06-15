@@ -138,7 +138,9 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(heroku run *)",
-      "Bash(grep -vE \"^$\")"
+      "Bash(grep -vE \"^$\")",
+      "Bash(awk '/^  nav:/{f=1} f{print} /^  [a-z]/{if\\(f && $0 !~ /nav:/\\) exit}' config/locales/en.yml)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }
